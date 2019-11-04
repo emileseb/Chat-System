@@ -21,15 +21,7 @@ sessions ouvertes</body>
       <include xmi:type="uml:Include" xmi:id="_YZFEUP8fEemVur1dwbwUJg" addition="_8xY28P8bEemVur1dwbwUJg"/>
     </packagedElement>
     <packagedElement xmi:type="uml:UseCase" xmi:id="_8xY28P8bEemVur1dwbwUJg" name="Identifier agents actifs"/>
-    <packagedElement xmi:type="uml:UseCase" xmi:id="_NblRcP8eEemVur1dwbwUJg" name="Démarrer session">
-      <include xmi:type="uml:Include" xmi:id="_tFQN4P8eEemVur1dwbwUJg" addition="_8xY28P8bEemVur1dwbwUJg"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:UseCase" xmi:id="_G0X3cP8fEemVur1dwbwUJg" name="Envoi message">
-      <include xmi:type="uml:Include" xmi:id="_Q_-v0P8fEemVur1dwbwUJg" addition="_JuoCEP8fEemVur1dwbwUJg"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:UseCase" xmi:id="_JuoCEP8fEemVur1dwbwUJg" name="Horodatage"/>
     <packagedElement xmi:type="uml:UseCase" xmi:id="_DdV0wP8gEemVur1dwbwUJg" name="Afficher historique"/>
-    <packagedElement xmi:type="uml:UseCase" xmi:id="_apsmoP8gEemVur1dwbwUJg" name="Fermer session"/>
     <packagedElement xmi:type="uml:UseCase" xmi:id="_kCLY8P8gEemVur1dwbwUJg" name="Réduire"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_ikEOcP8bEemVur1dwbwUJg" memberEnd="_ikN_cv8bEemVur1dwbwUJg _ikXwcP8bEemVur1dwbwUJg">
@@ -61,35 +53,7 @@ sessions ouvertes</body>
     <ownedEnd xmi:type="uml:Property" xmi:id="_QpaxUv8cEemVur1dwbwUJg" name="liste utilisateurs" type="_oR3ewP8bEemVur1dwbwUJg" association="_QpRAUP8cEemVur1dwbwUJg"/>
     <ownedEnd xmi:type="uml:Property" xmi:id="_QpaxU_8cEemVur1dwbwUJg" name="identifier agents actifs" type="_8xY28P8bEemVur1dwbwUJg" association="_QpRAUP8cEemVur1dwbwUJg"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_hjs2QP8eEemVur1dwbwUJg" memberEnd="_hj2AMv8eEemVur1dwbwUJg _hj2AM_8eEemVur1dwbwUJg">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_hj2AMP8eEemVur1dwbwUJg" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_hj2AMf8eEemVur1dwbwUJg" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_hj2AMv8eEemVur1dwbwUJg" name="utilisateur" type="_pW3NYP8aEemVur1dwbwUJg" association="_hjs2QP8eEemVur1dwbwUJg"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_hj2AM_8eEemVur1dwbwUJg" name="démarrer session" type="_NblRcP8eEemVur1dwbwUJg" association="_hjs2QP8eEemVur1dwbwUJg"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_dE4FEP8fEemVur1dwbwUJg" memberEnd="_dE4FE_8fEemVur1dwbwUJg _dE4FFP8fEemVur1dwbwUJg">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_dE4FEf8fEemVur1dwbwUJg" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_dE4FEv8fEemVur1dwbwUJg" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_dE4FE_8fEemVur1dwbwUJg" name="utilisateur" type="_pW3NYP8aEemVur1dwbwUJg" association="_dE4FEP8fEemVur1dwbwUJg"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_dE4FFP8fEemVur1dwbwUJg" name="envoi message" type="_G0X3cP8fEemVur1dwbwUJg" association="_dE4FEP8fEemVur1dwbwUJg"/>
-  </packagedElement>
   <packagedElement xmi:type="uml:Actor" xmi:id="_pCdRYP8fEemVur1dwbwUJg" name="Sessions actives"/>
-  <packagedElement xmi:type="uml:Association" xmi:id="_5kFQoP8fEemVur1dwbwUJg" memberEnd="_5kFQo_8fEemVur1dwbwUJg _5kFQpP8fEemVur1dwbwUJg">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_5kFQof8fEemVur1dwbwUJg" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_5kFQov8fEemVur1dwbwUJg" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_5kFQo_8fEemVur1dwbwUJg" name="sessions actives" type="_pCdRYP8fEemVur1dwbwUJg" association="_5kFQoP8fEemVur1dwbwUJg"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_5kFQpP8fEemVur1dwbwUJg" name="envoi message" type="_G0X3cP8fEemVur1dwbwUJg" association="_5kFQoP8fEemVur1dwbwUJg"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_6anQAP8fEemVur1dwbwUJg" memberEnd="_6anQA_8fEemVur1dwbwUJg _6anQBP8fEemVur1dwbwUJg">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_6anQAf8fEemVur1dwbwUJg" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_6anQAv8fEemVur1dwbwUJg" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_6anQA_8fEemVur1dwbwUJg" name="sessions actives" type="_pCdRYP8fEemVur1dwbwUJg" association="_6anQAP8fEemVur1dwbwUJg"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_6anQBP8fEemVur1dwbwUJg" name="démarrer session" type="_NblRcP8eEemVur1dwbwUJg" association="_6anQAP8fEemVur1dwbwUJg"/>
-  </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_RqQmcP8gEemVur1dwbwUJg" memberEnd="_RqQmc_8gEemVur1dwbwUJg _RqQmdP8gEemVur1dwbwUJg">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_RqQmcf8gEemVur1dwbwUJg" source="org.eclipse.papyrus">
       <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_RqQmcv8gEemVur1dwbwUJg" key="nature" value="UML_Nature"/>
@@ -104,25 +68,53 @@ sessions ouvertes</body>
     <ownedEnd xmi:type="uml:Property" xmi:id="_S4VjI_8gEemVur1dwbwUJg" name="liste utilisateurs" type="_oR3ewP8bEemVur1dwbwUJg" association="_S4VjIP8gEemVur1dwbwUJg"/>
     <ownedEnd xmi:type="uml:Property" xmi:id="_S4VjJP8gEemVur1dwbwUJg" name="afficher historique" type="_DdV0wP8gEemVur1dwbwUJg" association="_S4VjIP8gEemVur1dwbwUJg"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_fjMsMP8gEemVur1dwbwUJg" memberEnd="_fjMsM_8gEemVur1dwbwUJg _fjMsNP8gEemVur1dwbwUJg">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_fjMsMf8gEemVur1dwbwUJg" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_fjMsMv8gEemVur1dwbwUJg" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_fjMsM_8gEemVur1dwbwUJg" type="_dE4FEP8fEemVur1dwbwUJg" association="_fjMsMP8gEemVur1dwbwUJg"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_fjMsNP8gEemVur1dwbwUJg" name="fermer session" type="_apsmoP8gEemVur1dwbwUJg" association="_fjMsMP8gEemVur1dwbwUJg"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_ghe5YP8gEemVur1dwbwUJg" memberEnd="_ghoqYv8gEemVur1dwbwUJg _ghoqY_8gEemVur1dwbwUJg">
-    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_ghoqYP8gEemVur1dwbwUJg" source="org.eclipse.papyrus">
-      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_ghoqYf8gEemVur1dwbwUJg" key="nature" value="UML_Nature"/>
-    </eAnnotations>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_ghoqYv8gEemVur1dwbwUJg" name="sessions actives" type="_pCdRYP8fEemVur1dwbwUJg" association="_ghe5YP8gEemVur1dwbwUJg"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_ghoqY_8gEemVur1dwbwUJg" name="fermer session" type="_apsmoP8gEemVur1dwbwUJg" association="_ghe5YP8gEemVur1dwbwUJg"/>
-  </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_lYvjQP8gEemVur1dwbwUJg" memberEnd="_lYvjQ_8gEemVur1dwbwUJg _lYvjRP8gEemVur1dwbwUJg">
     <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_lYvjQf8gEemVur1dwbwUJg" source="org.eclipse.papyrus">
       <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_lYvjQv8gEemVur1dwbwUJg" key="nature" value="UML_Nature"/>
     </eAnnotations>
     <ownedEnd xmi:type="uml:Property" xmi:id="_lYvjQ_8gEemVur1dwbwUJg" name="utilisateur" type="_pW3NYP8aEemVur1dwbwUJg" association="_lYvjQP8gEemVur1dwbwUJg"/>
     <ownedEnd xmi:type="uml:Property" xmi:id="_lYvjRP8gEemVur1dwbwUJg" name="réduire" type="_kCLY8P8gEemVur1dwbwUJg" association="_lYvjQP8gEemVur1dwbwUJg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interaction" xmi:id="_bf-ccP8iEemVur1dwbwUJg" name="Interaction21">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_HfOZAf8kEemVur1dwbwUJg" name="" type="_bf-ccP8iEemVur1dwbwUJg"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_l9mR4P8iEemVur1dwbwUJg" name="Utilisateur"/>
+    <lifeline xmi:type="uml:Lifeline" xmi:id="_HfOZAP8kEemVur1dwbwUJg" name="" represents="_HfOZAf8kEemVur1dwbwUJg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_LTJzEP8jEemVur1dwbwUJg" name="Session">
+    <packagedElement xmi:type="uml:UseCase" xmi:id="_Xr2OEP8jEemVur1dwbwUJg" name="Envoi message">
+      <include xmi:type="uml:Include" xmi:id="_dKckwP8jEemVur1dwbwUJg" addition="_bmwkcP8jEemVur1dwbwUJg"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:UseCase" xmi:id="_bmwkcP8jEemVur1dwbwUJg" name="Horodatage"/>
+    <packagedElement xmi:type="uml:UseCase" xmi:id="_e9U3oP8jEemVur1dwbwUJg" name="Démarrer session"/>
+    <packagedElement xmi:type="uml:UseCase" xmi:id="_ne-voP8jEemVur1dwbwUJg" name="Fermer session"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Actor" xmi:id="_RBsqQP8jEemVur1dwbwUJg" name="Utilisateur"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_pt4QIP8jEemVur1dwbwUJg" memberEnd="_puCBIf8jEemVur1dwbwUJg _puCBIv8jEemVur1dwbwUJg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_pt4QIf8jEemVur1dwbwUJg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_puCBIP8jEemVur1dwbwUJg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_puCBIf8jEemVur1dwbwUJg" name="utilisateur" type="_RBsqQP8jEemVur1dwbwUJg" association="_pt4QIP8jEemVur1dwbwUJg"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_puCBIv8jEemVur1dwbwUJg" name="démarrer session" type="_e9U3oP8jEemVur1dwbwUJg" association="_pt4QIP8jEemVur1dwbwUJg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_rMDeUP8jEemVur1dwbwUJg" memberEnd="_rMDeU_8jEemVur1dwbwUJg _rMDeVP8jEemVur1dwbwUJg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_rMDeUf8jEemVur1dwbwUJg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_rMDeUv8jEemVur1dwbwUJg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_rMDeU_8jEemVur1dwbwUJg" name="sessions actives" type="_pCdRYP8fEemVur1dwbwUJg" association="_rMDeUP8jEemVur1dwbwUJg"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_rMDeVP8jEemVur1dwbwUJg" name="démarrer session" type="_e9U3oP8jEemVur1dwbwUJg" association="_rMDeUP8jEemVur1dwbwUJg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_sQ4_cP8jEemVur1dwbwUJg" memberEnd="_sQ4_c_8jEemVur1dwbwUJg _sQ4_dP8jEemVur1dwbwUJg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_sQ4_cf8jEemVur1dwbwUJg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_sQ4_cv8jEemVur1dwbwUJg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_sQ4_c_8jEemVur1dwbwUJg" name="utilisateur" type="_RBsqQP8jEemVur1dwbwUJg" association="_sQ4_cP8jEemVur1dwbwUJg"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_sQ4_dP8jEemVur1dwbwUJg" name="envoi message" type="_Xr2OEP8jEemVur1dwbwUJg" association="_sQ4_cP8jEemVur1dwbwUJg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_tg6c4P8jEemVur1dwbwUJg" memberEnd="_thDm0v8jEemVur1dwbwUJg _thDm0_8jEemVur1dwbwUJg">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_thDm0P8jEemVur1dwbwUJg" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_thDm0f8jEemVur1dwbwUJg" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_thDm0v8jEemVur1dwbwUJg" name="utilisateur" type="_RBsqQP8jEemVur1dwbwUJg" association="_tg6c4P8jEemVur1dwbwUJg"/>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_thDm0_8jEemVur1dwbwUJg" name="fermer session" type="_ne-voP8jEemVur1dwbwUJg" association="_tg6c4P8jEemVur1dwbwUJg"/>
   </packagedElement>
 </uml:Model>
