@@ -23,5 +23,5 @@ existant. Si en revanche aucun historique n'existe alors il va en créer un, ajou
 passer la référence vers cet historique aux 2 utilisateurs dans la BDD.
 
 ### Rafraichisseur
-Il permet de rafraichir la liste des utilisateurs visibles par l'agent. Toutes les X secondes il envoie à l'agent
+Il permet de rafraichir la liste des utilisateurs visibles par l'agent. Toutes les 5 secondes il envoie à l'agent
 le pseudo et si les utilisateurs sont actifs ou non
