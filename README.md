@@ -25,3 +25,8 @@ passer la référence vers cet historique aux 2 utilisateurs dans la BDD.
 ### Rafraichisseur
 Il permet de rafraichir la liste des utilisateurs visibles par l'agent. Toutes les 5 secondes il envoie à l'agent
 le pseudo et si les utilisateurs sont actifs ou non
+
+### Suppositions
+Utilisateur sur un seul poste, donc historique stocké sur le poste
+Pour récupérer l'historique qui est stocké sur la machine on associe les historiques avec les ids des utilisateurs avec qui ont a parlé
+Id = adresse mac de la machine de l'utilisateur avec qui on a parlé
