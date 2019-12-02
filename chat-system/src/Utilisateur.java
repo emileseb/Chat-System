@@ -11,21 +11,22 @@ public class Utilisateur {
 		this.pseudo = pseudo;
 		this.idUtilisateur = idUtilisateur;
 		this.actif = actif;
+		this.adresseIp = "";
 		
 		try {
+			//recupere la premiere interface reseau
 			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
-		    while (e.hasMoreElements()){
-		      Enumeration<InetAddress> i = e.nextElement().getInetAddresses();
-		      while (i.hasMoreElements()){
-		        InetAddress a = i.nextElement();
-		        if (a.isSiteLocalAddress()){
-		        	this.adresseIp = a.getHostAddress();
-		        }
-		      }
-		    }
+			Enumeration<InetAddress> i = e.nextElement().getInetAddresses();
+			//recupere l'adresse ip locale
+			while (i.hasMoreElements()){
+				InetAddress a = i.nextElement();
+				if (a.isSiteLocalAddress()){
+					this.adresseIp = a.getHostAddress();
+				}
+			}
 		}
 		catch(SocketException e){
-			
+			System.out.println("Pas d'adresse ip valide");
 		}
 	}
 	
