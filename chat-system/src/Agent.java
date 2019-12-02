@@ -1,6 +1,14 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Agent {
+
+    private Id id;
+
+
+    public Id getId() {
+        return id;
+    }
 
     //utilisateur
     private ArrayList<Utilisateur> listeUtilisateurs;
@@ -17,14 +25,50 @@ public class Agent {
     }
 
     //historique
+    //attributs
+    private ArrayList<Historique> mesHistoriques;
+
+    public ArrayList<Historique> getMesHistoriques() {
+        return mesHistoriques;
+    }
+
+    //méthodes
+    public boolean HistoriqueExiste(Id idPartenaire){
+        boolean result = false;
+        Iterator<Historique> iter = mesHistoriques.iterator();
+        while (iter.hasNext() && !result) {
+            if (iter.next().getIdPartenaire().equals(idPartenaire))
+                result = true;
+        }
+        return result;
+    }
+
+    public ArrayList<Message> getHistoriqueDe(Id idPartenaire){
+        ArrayList<Message> listeMessage = new ArrayList<Message>();
+        Iterator<Historique> iter = mesHistoriques.iterator();
+        while (iter.hasNext()) {
+            Historique hist = iter.next();
+            if (hist.getIdPartenaire().equals(idPartenaire)) {
+                return hist.getHistorique();
+            }
+        }
+        return listeMessage;
+    }
+
+    public void MettreAJourHistorique(ArrayList<Message> conversation, Id idPartenaire) {
+        boolean pastrouve = true;
+        Iterator<Historique> iter = mesHistoriques.iterator();
+        while (iter.hasNext() && pastrouve) {
+            Historique hist = iter.next();
+            if (hist.getIdPartenaire().equals(idPartenaire)) {
+                hist.ajouterMessage(conversation);
+                pastrouve = false;
+            }
+        }
+        if (pastrouve)
+            mesHistoriques.add(new Historique(idPartenaire, conversation));
+    }
 
 
-    public static void main(String[] args) {
-		// TODO Auto-generated method stub
-        Utilisateur jj = new Utilisateur("JJ", new Id(), true);
-        Utilisateur thomas = new Utilisateur("Thomas", new Id(), true);
-        ArrayList<Message> msglist = new ArrayList<Message>();
-        System.out.println(thomas.getAdresseIp());
-	}
 
 }
