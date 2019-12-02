@@ -12,12 +12,20 @@ public class Utilisateur {
 		this.idUtilisateur = idUtilisateur;
 		this.actif = actif;
 		
-	    
 		try {
-			this.adresseIp = InetAddress.getLocalHost().getHostAddress();
+			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+		    while (e.hasMoreElements()){
+		      Enumeration<InetAddress> i = e.nextElement().getInetAddresses();
+		      while (i.hasMoreElements()){
+		        InetAddress a = i.nextElement();
+		        if (a.isSiteLocalAddress()){
+		        	this.adresseIp = a.getHostAddress();
+		        }
+		      }
+		    }
 		}
-		catch (UnknownHostException e) {
-			this.adresseIp = "";
+		catch(SocketException e){
+			
 		}
 	}
 	
