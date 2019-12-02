@@ -50,7 +50,11 @@ public class Utilisateur {
 		this.actif = actif;
 	}
 	
-	public void changePseudo(String pseudo) {
+	public void changerPseudo(String pseudo) {
 		this.pseudo = pseudo;
+	}
+	
+	public String toString() {
+		return ("Pseudo : " + this.pseudo + ", Id : " + this.idUtilisateur.getValue() + ", Actif : " + this.actif + ", Adresse Ip : " + this.adresseIp);
 	}
 }

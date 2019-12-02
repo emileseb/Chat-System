@@ -20,12 +20,17 @@ public class Id {
             e.printStackTrace();
         }
     }
+    
+    public Id(long valeur) {
+    	this.value = valeur;
+    }
+    
     public long getValue () {
         return this.value;
     }
 
-
     public boolean equals(Id id) {
         return (this.value == id.value);
     }
+    
 }
