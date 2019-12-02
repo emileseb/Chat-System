@@ -1,28 +1,33 @@
 import java.util.ArrayList;
 
 public class Historique {
-    private ArrayList<Message> list_message;
+    private Id idPartenaire;
+    private ArrayList<Message> historique;
 
-    public Historique(ArrayList<Message> list_msg){
-        this.list_message = new ArrayList<Message>();
-        this.ajouterMessage(list_msg);
+    //Constructor
+    public Historique(Id idPartenaire, ArrayList<Message> historique){
+        this.idPartenaire = idPartenaire;
+        this.historique= new ArrayList<Message>();
+        this.ajouterMessage(historique);
     }
 
     public void ajouterMessage(ArrayList<Message> conversation){
         for (Message msg : conversation) {
-            this.list_message.add(msg);
+            this.historique.add(msg);
         }
     }
-    public ArrayList<Message> getHistorique(){
-        return list_message;
-    }
+
+    //Getters
+    public Id getIdPartenaire() { return this.idPartenaire; }
+    public ArrayList<Message> getHistorique() { return this.historique; }
 
     @Override
     public String toString() {
         String retour = "";
-        for (Message m : list_message ) {
+        for (Message m : historique ) {
             retour += m.toString() + "\n";
         }
         return retour;
     }
+
 }
