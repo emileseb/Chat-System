@@ -27,7 +27,8 @@ public class Message {
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyy");
 		return format.format(this.date);
 	}
-	
+
+	@Override
 	public String toString() {
 		return ("Auteur - " + this.auteur.getPseudo() + ", Destinataire - " + this.destinataire.getPseudo() + ", Date - " +
 	getDate() + " : " + this.contenu);
