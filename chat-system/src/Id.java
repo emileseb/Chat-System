@@ -25,6 +25,10 @@ public class Id {
     	this.value = valeur;
     }
     
+    public Id(String valeur) {
+    	this.value = Long.parseLong(valeur);
+    }
+    
     public long getValue () {
         return this.value;
     }
