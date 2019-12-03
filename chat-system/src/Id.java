@@ -37,4 +37,9 @@ public class Id {
         return (this.value == id.value);
     }
     
+    @Override
+    public String toString() {
+    	return Long.toString(this.value);
+    }
+    
 }
