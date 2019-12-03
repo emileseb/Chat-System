@@ -2,14 +2,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Agent {
-    private Id id;
+    private Utilisateur me;
 
-    //constructor
+    //getters
 
-    public Id getId() {
-        return id;
+
+    public Utilisateur getMe() {
+        return me;
     }
-    //utilisateur
+
+    //------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------utilisateur---------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
     public ArrayList<Utilisateur> listeUtilisateurs;
 
     public boolean clientExiste(Id idAgent){
@@ -58,7 +62,10 @@ public class Agent {
         }
     }
 
-    //historique
+
+    //------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------Historique---------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
     //attributs
     private ArrayList<Historique> mesHistoriques;
 
@@ -103,7 +110,9 @@ public class Agent {
             mesHistoriques.add(new Historique(idPartenaire, conversation));
     }
 
+    //-------------------------------------------Constructor------------------------------------------------------------
     public Agent() {
+        this.me = new Utilisateur(/*TODO*/"TODO",new Id(),true)
         Utilisateur user1 = new Utilisateur("emile", new Id(1), true);
         Utilisateur user2 = new Utilisateur("thomas", new Id(2), true);
         Utilisateur user3 = new Utilisateur("morvan", new Id(), true);
