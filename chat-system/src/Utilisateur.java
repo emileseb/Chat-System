@@ -11,10 +11,11 @@ public class Utilisateur {
     private ArrayList<Utilisateur> listeUtilisateurs;
     private ArrayList<Historique> listeHistoriques;
 	
-	public Utilisateur(String pseudo, Id idUtilisateur, boolean actif) {
-		this.pseudo = pseudo;
-		this.idUtilisateur = idUtilisateur;
-		this.actif = actif;
+    //creation de l'utilisateur sur le poste
+	public Utilisateur() {
+		this.pseudo = "";
+		this.idUtilisateur = new Id();
+		this.actif = true;
 		this.adresseIp = "";		
 		try {
 			//recupere la premiere interface reseau
@@ -32,6 +33,16 @@ public class Utilisateur {
 			System.out.println("Pas d'adresse ip valide");
 		}
 		
+		this.listeUtilisateurs = new ArrayList<Utilisateur>();
+		this.listeHistoriques = new ArrayList<Historique>();
+	}
+
+	//creation d'utilisateurs pour la liste utilisateurs
+	public Utilisateur(String pseudo, Id idUtilisateur, String adresseIp) {
+		this.pseudo = pseudo;
+		this.idUtilisateur = idUtilisateur;
+		this.actif = true;
+		this.adresseIp = adresseIp;		
 		this.listeUtilisateurs = new ArrayList<Utilisateur>();
 		this.listeHistoriques = new ArrayList<Historique>();
 	}
@@ -141,7 +152,7 @@ public class Utilisateur {
         return listeMessage;
     }
 
-    public void MettreAJourHistorique(ArrayList<Message> conversation, Id idPartenaire) {
+    public void mettreAJourHistorique(ArrayList<Message> conversation, Id idPartenaire) {
         boolean pastrouve = true;
         Iterator<Historique> iter = listeHistoriques.iterator();
         while (iter.hasNext() && pastrouve) {
