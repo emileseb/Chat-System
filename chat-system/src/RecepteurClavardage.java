@@ -8,11 +8,11 @@ public class RecepteurClavardage extends Thread{
     private ArrayList<Session> clavadeursListe;
     private boolean continuer;
 
-    public RecepteurClavardage (Utilisateur me, boolean continuer){
+    public RecepteurClavardage (Utilisateur me){
         super();
         this.me = me;
         this.clavadeursListe = new ArrayList<Session>();
-        this.continuer = continuer;
+        this.continuer = true;
     }
     public void run() {
         try {
@@ -41,4 +41,6 @@ public class RecepteurClavardage extends Thread{
             this.clavadeursListe.add(new Session(servSock.accept(), me));
         }
     }
+
+    public void arreter(){this.continuer = false;}
 }
