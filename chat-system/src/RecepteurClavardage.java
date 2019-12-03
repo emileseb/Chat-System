@@ -1,23 +1,18 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class RecepteurClavardage extends Thread{
     private static int port = 5678;
     private Utilisateur me;
     private ArrayList<Session> clavadeursListe;
+    private boolean continuer;
 
-    public RecepteurClavardage (Utilisateur me){
+    public RecepteurClavardage (Utilisateur me, boolean continuer){
         super();
         this.me = me;
-        clavadeursListe = new ArrayList<>();
+        this.clavadeursListe = new ArrayList<Session>();
+        this.continuer = continuer;
     }
     public void run() {
         try {
@@ -31,16 +26,19 @@ public class RecepteurClavardage extends Thread{
         System.out.println(me.getAdresseIp());
         // Création du serveur Socket
         ServerSocket servSock = new ServerSocket(port);
-        /* // Configuration des input et output
-        BufferedReader in = new BufferedReader(new InputStreamReader(link.getInputStream()));
-        PrintWriter out = new PrintWriter(link.getOutputStream(), true);*/
-        // Envoi des données
-        boolean continuer = true;
-        while (continuer) {
-            System.out.println("waiting for gadjo to come ...");
+        int i = 0;
+        while (this.continuer) {
+            if (i==50){
+                for (Session s : this.clavadeursListe)
+                    if (!s.isActive())
+                        this.clavadeursListe.remove(s);
+                i = 0;
+            }else{
+                i++;
+            }
+            System.out.println("waiting for clavateur to clavarde ...");
             // Récupération du socket associé
-            clavadeursListe.add(new Session(servSock.accept()));
+            this.clavadeursListe.add(new Session(servSock.accept(), me));
         }
     }
-
 }
