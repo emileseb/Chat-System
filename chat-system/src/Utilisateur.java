@@ -8,6 +8,7 @@ public class Utilisateur {
 	private Id idUtilisateur;
 	private boolean actif;
 	private String adresseIp;
+	private String adresseBroadcast;
     private ArrayList<Utilisateur> listeUtilisateurs;
     private ArrayList<Historique> listeHistoriques;
 	
@@ -16,16 +17,16 @@ public class Utilisateur {
 		this.pseudo = "";
 		this.idUtilisateur = new Id();
 		this.actif = true;
-		this.adresseIp = "";		
+		this.adresseIp = "";	
+		this.adresseBroadcast = "";	
 		try {
 			//recupere la premiere interface reseau
 			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
-			Enumeration<InetAddress> i = e.nextElement().getInetAddresses();
-			//recupere l'adresse ip locale
-			while (i.hasMoreElements()){
-				InetAddress a = i.nextElement();
-				if (a.isSiteLocalAddress()){
-					this.adresseIp = a.getHostAddress();
+			while(e.hasMoreElements()) {
+				NetworkInterface interfaceReseau = e.nextElement();
+				if (interfaceReseau.getDisplayName().contains("eth0")){
+					this.adresseBroadcast = interfaceReseau.getInterfaceAddresses().get(1).getBroadcast().getHostAddress();
+					this.adresseIp = interfaceReseau.getInterfaceAddresses().get(1).getAddress().getHostAddress();					
 				}
 			}
 		}
@@ -42,7 +43,8 @@ public class Utilisateur {
 		this.pseudo = pseudo;
 		this.idUtilisateur = idUtilisateur;
 		this.actif = true;
-		this.adresseIp = adresseIp;		
+		this.adresseIp = adresseIp;
+		this.adresseBroadcast = "";
 		this.listeUtilisateurs = new ArrayList<Utilisateur>();
 		this.listeHistoriques = new ArrayList<Historique>();
 	}
@@ -57,6 +59,10 @@ public class Utilisateur {
 	
 	public String getAdresseIp() {
 		return this.adresseIp;
+	}
+
+	public String getAdresseBroadcast() {
+		return this.adresseBroadcast;
 	}
 	
 	public boolean getActif() {
