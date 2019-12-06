@@ -76,16 +76,21 @@ public class Utilisateur {
     public ArrayList<Utilisateur> getListeUtilisateurs() {
         return listeUtilisateurs;
     }
-	
-    public boolean clientExiste(Id idAgent){
-        boolean result = false;
+
+    public Utilisateur trouveClient(Id idAgent){
+        Utilisateur user;
         Iterator<Utilisateur> iter = listeUtilisateurs.iterator();
-        while(iter.hasNext() && !result) {
-            if (iter.next().getId().equals(idAgent)) {
-                result = true;
+        while(iter.hasNext()) {
+            user = iter.next();
+            if (user.getId().equals(idAgent)) {
+                return user;
             }
         }
-        return result;
+        return null;
+    }
+
+    public boolean clientExiste(Id idAgent){
+	    return (trouveClient(idAgent) != null);
     }
 
     public boolean pseudoPris(String pseudo) {
@@ -100,27 +105,11 @@ public class Utilisateur {
     }
 
     public void changerPseudo(String pseudo, Id idAgent) {
-        boolean result = false;
-        Iterator<Utilisateur> iter = listeUtilisateurs.iterator();
-        while(iter.hasNext() && !result) {
-            Utilisateur user = iter.next();
-            if (user.getId().equals(idAgent)) {
-                user.changerPseudo(pseudo);
-                result = true;
-            }
-        }
+	    trouveClient(idAgent).changerPseudo(pseudo);
     }
 
     public void changeActif(boolean actif, Id idAgent) {
-        boolean result = false;
-        Iterator<Utilisateur> iter = listeUtilisateurs.iterator();
-        while(iter.hasNext() && !result) {
-            Utilisateur user = iter.next();
-            if (user.getId().equals(idAgent)) {
-                user.setActif(actif);
-                result = true;
-            }
-        }
+        trouveClient(idAgent).changeActif(actif,idAgent);
     }
 
     //liste historique
@@ -130,7 +119,7 @@ public class Utilisateur {
     }
 
     //méthodes
-    public boolean HistoriqueExiste(Id idPartenaire){
+    public boolean historiqueExiste(Id idPartenaire){
         boolean result = false;
         Iterator<Historique> iter = listeHistoriques.iterator();
         while (iter.hasNext() && !result) {
@@ -165,9 +154,18 @@ public class Utilisateur {
         if (pastrouve)
         	listeHistoriques.add(new Historique(idPartenaire, conversation));
     }
+
+    public void connectWith(Id destinataire){
+		//Faut-il créer une classe spéciale pour établir des connections ?
+		//Faut ils une grande liste des sessions en cours ? Des sessions dont je suis l'initiateur ? Récepteur ?
+
+	}
     
 	public String toString() {
 		return ("Pseudo : " + this.pseudo + ", Id : " + this.idUtilisateur.getValue() + ", Actif : " + this.actif + ", Adresse Ip : " + this.adresseIp);
 	}
-	
+
+    public boolean equals(Utilisateur user) {
+        return this.getId().equals(user.getId());
+    }
 }

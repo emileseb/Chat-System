@@ -1,12 +1,10 @@
-import jdk.jshell.execution.Util;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Session extends Thread {
     private Socket clientSock_fd;
@@ -16,6 +14,7 @@ public class Session extends Thread {
     private ArrayList<Message> conversation;
     private Utilisateur me;
     private Id you;
+    private Scanner scan;
 
     Session(Socket sock_fd, Utilisateur me) throws IOException {
         super();
@@ -23,9 +22,10 @@ public class Session extends Thread {
         this.clientSock_fd = sock_fd;
         this.in = new BufferedReader(new InputStreamReader(clientSock_fd.getInputStream()));
         this.out = new PrintWriter(clientSock_fd.getOutputStream(), true);
-        this.start();
         this.conversation = new ArrayList<Message>();
         this.me = me;
+        this.scan = new Scanner(System.in);
+        this.start();
     }
 
     public boolean isActive() {
@@ -38,9 +38,7 @@ public class Session extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //Clavardage
-
+        this.clavardage();
         this.closeSession();
     }
 
@@ -60,6 +58,18 @@ public class Session extends Thread {
             this.active = false;
         } catch (IOException e) {
             System.out.println("Unable to close Socket");;
+        }
+    }
+
+    private void clavardage(){
+        boolean continuer = true;
+        String scanned = "Arg";
+        while(continuer)
+        scanned = scan.nextLine();
+        if (scanned.equals("quit")) {
+            continuer = false;
+        }else {
+            this.out.println(scanned);
         }
     }
 }
