@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Session extends Thread {
-    private Socket clientSock_fd;
+    private Socket Sock_fd;
     private BufferedReader in;
     private PrintWriter out;
     private boolean active;
@@ -15,13 +15,14 @@ public class Session extends Thread {
     private Utilisateur me;
     private Id you;
     private Scanner scan;
+    private Ecouteur oreille;
 
     Session(Socket sock_fd, Utilisateur me) throws IOException {
         super();
         this.active = true;
-        this.clientSock_fd = sock_fd;
-        this.in = new BufferedReader(new InputStreamReader(clientSock_fd.getInputStream()));
-        this.out = new PrintWriter(clientSock_fd.getOutputStream(), true);
+        this.Sock_fd = sock_fd;
+        this.in = new BufferedReader(new InputStreamReader(Sock_fd.getInputStream()));
+        this.out = new PrintWriter(Sock_fd.getOutputStream(), true);
         this.conversation = new ArrayList<Message>();
         this.me = me;
         this.scan = new Scanner(System.in);
@@ -49,27 +50,30 @@ public class Session extends Thread {
         String input = in.readLine();
         this.you = new Id(input);
         System.out.println("Etablissement du clavardage avec " + this.you);
+        oreille = new Ecouteur(Sock_fd, me, conversation);
     }
 
     private void closeSession (){
+        System.out.println("Closing");
         me.mettreAJourHistorique(conversation,you);
         try {
-            clientSock_fd.close();
+            Sock_fd.close();
             this.active = false;
         } catch (IOException e) {
-            System.out.println("Unable to close Socket");;
+            System.out.println("Unable to close Socket");
         }
     }
 
     private void clavardage(){
         boolean continuer = true;
-        String scanned = "Arg";
-        while(continuer)
-        scanned = scan.nextLine();
-        if (scanned.equals("quit")) {
-            continuer = false;
-        }else {
-            this.out.println(scanned);
+        String scanned = "";
+        while(continuer) {
+            scanned = scan.nextLine();
+            if (scanned.equals("quit")) {
+                continuer = false;
+            } else {
+                this.out.println(scanned);
+            }
         }
     }
 }
