@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.*;
 
+// Cette classe permet de rafraichir la page. Elle reçoit des messages UDP d'un utilisateur pour actualiser ses infos 
 public class Rafraichisseur extends Thread {
 
 	Utilisateur utilisateur;
@@ -17,6 +18,7 @@ public class Rafraichisseur extends Thread {
 			DatagramSocket udpSocket= new DatagramSocket(1234);
 			byte[] buffer = new byte[256];
 			while(this.actif) {
+				
 				DatagramPacket inPacket = new DatagramPacket(buffer, buffer.length);
 				//attend de recevoir un message (changement Actif ou changement Pseudo)
 				try {
@@ -39,6 +41,7 @@ public class Rafraichisseur extends Thread {
 							break;
 						case "1":
 							utilisateur.changeActif(false, new Id(messageFormate[1]));
+							System.out.println("Message broadcast recu : " + messageRecu);
 							break;
 						case "2":
 							utilisateur.changerPseudo(messageFormate[1], new Id(messageFormate[2]));
