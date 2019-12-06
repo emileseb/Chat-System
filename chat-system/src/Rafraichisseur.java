@@ -26,28 +26,31 @@ public class Rafraichisseur extends Thread {
 					String messageRecu = new String(inPacket.getData(), 0, inPacket.getLength());
 					
 					//messages recus sous la forme info/Id ou info/pseudo/Id ou info/pseudo/Id/adresseIp
-					//info = 0 : changerActif(true), info = 1 : changerActif(false), info = 2 : changerPseudo(pseudo)
-					//info = 3 : listeUtilisateurs.add(utilisateur)
+					//info = 0 : demandeInfo, info = 1 : envoiInfo, info = 2 : notifChangementInActif
+					//info = 3 : notifChangementPseudo
 					String[] messageFormate = messageRecu.split("/");
 					switch (messageFormate[0]) {
 						case "0":
-							utilisateur.changeActif(true, new Id(messageFormate[1]));
+							System.out.println("Demande d'infos recue");
 							//envoie ses infos a l'utilisateur qui a envoye le message
 							InetAddress clientAddress = inPacket.getAddress();
-							int clientPort = inPacket.getPort();
-							String reponse = new String("3/" + utilisateur.getPseudo() + "/" + utilisateur.getId() + "/" + utilisateur.getAdresseIp());
-							DatagramPacket outPacket = new DatagramPacket(reponse.getBytes(), reponse.length(),clientAddress, clientPort);
+							String reponse = new String("1/" + utilisateur.getId() + "/" + utilisateur.getPseudo() + "/" + utilisateur.getAdresseIp());
+							DatagramPacket outPacket = new DatagramPacket(reponse.getBytes(), reponse.length(),clientAddress, 1234);
 							udpSocket.send(outPacket);
 							break;
 						case "1":
-							utilisateur.changeActif(false, new Id(messageFormate[1]));
-							System.out.println("Message broadcast recu : " + messageRecu);
+							// reception des infos
+							System.out.println("Reception des infos");
+							utilisateur.getListeUtilisateurs().add(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), messageFormate[3]));
 							break;
 						case "2":
-							utilisateur.changerPseudo(messageFormate[1], new Id(messageFormate[2]));
+							System.out.println("Reception utilisateur inactif");
+							utilisateur.changeActif(false, new Id(messageFormate[1]));
 							break;
 						case "3":
-							utilisateur.getListeUtilisateurs().add(new Utilisateur(messageFormate[1], new Id(messageFormate[2]), messageFormate[3]));
+							System.out.println("Reception changement pseudo");
+							utilisateur.changerPseudo(messageFormate[2], new Id(messageFormate[1]));
+							break;
 						default:
 							System.out.println("Mauvais format de message");
 							break;
