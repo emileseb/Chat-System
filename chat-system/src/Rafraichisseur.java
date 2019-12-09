@@ -66,6 +66,7 @@ public class Rafraichisseur extends Thread {
 				// reception des infos
 				System.out.println("Reception des infos");
 				System.out.println("Ajout utilisateur dans liste utilisateurs");
+				System.out.println(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), messageFormate[3]));
 				utilisateur.getListeUtilisateurs().add(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), messageFormate[3]));
 				break;
 			case "2":
