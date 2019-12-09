@@ -25,7 +25,7 @@ public class Notifieur{
 
 	public void demandeInformation() throws IOException {
 		//message envoye sous la forme info, demande les infos des utilisateurs pour remplir liste utilisateur
-		String message = "0";
+		String message = new String("0/" + this.utilisateur.getId());
 		envoiBroadcast(message);
 	}
 	
