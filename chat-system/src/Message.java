@@ -1,18 +1,18 @@
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Message {
 
 	private Utilisateur auteur;
 	private Utilisateur destinataire;
 	private String contenu;
-	private Date date;
+	private LocalDateTime date;
 	
 	public Message(Utilisateur auteur, Utilisateur destinataire, String contenu) {
 		this.auteur = auteur;
 		this.destinataire = destinataire;
 		this.contenu = contenu;
-		this.date = new Date();
+		this.date = LocalDateTime.now();
 	}
 	
 	public Utilisateur getAuteur() {
@@ -24,8 +24,8 @@ public class Message {
 	}
 	
 	public String getDate() {
-		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyy");
-		return format.format(this.date);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");;
+		return date.format(formatter);
 	}
 
 	public String getContenu() {return this.contenu;}
