@@ -28,6 +28,8 @@ public class Message {
 		return format.format(this.date);
 	}
 
+	public String getContenu() {return this.contenu;}
+
 	@Override
 	public String toString() {
 		return ("Auteur - " + this.auteur.getPseudo() + ", Destinataire - " + this.destinataire.getPseudo() + ", Date - " +

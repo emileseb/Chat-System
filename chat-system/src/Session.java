@@ -50,7 +50,7 @@ public class Session extends Thread {
         String input = in.readLine();
         this.you = new Id(input);
         System.out.println("Etablissement du clavardage avec " + this.you);
-        oreille = new Ecouteur(Sock_fd, me, conversation);
+        oreille = new Ecouteur(Sock_fd, me, conversation, you);
     }
 
     private void closeSession (){
@@ -62,17 +62,22 @@ public class Session extends Thread {
         } catch (IOException e) {
             System.out.println("Unable to close Socket");
         }
+        System.out.println(me.getHistoriqueDe(new Id(222222222)));
     }
 
     private void clavardage(){
         boolean continuer = true;
         String scanned = "";
+        Message sentMsg;
         while(continuer) {
             scanned = scan.nextLine();
             if (scanned.equals("quit")) {
                 continuer = false;
             } else {
-                this.out.println(scanned);
+                sentMsg = new Message(me,me.trouveClient(you),scanned);
+                conversation.add(sentMsg);
+                this.out.println(sentMsg.getContenu());
+                System.out.println(sentMsg);
             }
         }
     }

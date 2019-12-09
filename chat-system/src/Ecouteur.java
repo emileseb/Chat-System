@@ -12,25 +12,29 @@ public class Ecouteur extends Thread {
     private Utilisateur me;
     private Id you;
 
-    Ecouteur(Socket sock_fd, Utilisateur me, ArrayList<Message> conv) throws IOException {
+    Ecouteur(Socket sock_fd, Utilisateur me, ArrayList<Message> conv, Id you) throws IOException {
         super();
         this.Sock_fd = sock_fd;
         this.in = new BufferedReader(new InputStreamReader(Sock_fd.getInputStream()));
         this.conversation = conv;
         this.me = me;
+        this.you = you;
         this.start();
     }
 
     public void run() {
         boolean continuer = true;
         String input;
+        Message rcvMsg;
         try {
             while (continuer) {
                 input = in.readLine();
                 if ( (input == null) || (input.equals("quit"))) {
                     continuer = false;
                 }else {
-                    System.out.println(you.getValue() + " : " + input);
+                    rcvMsg = new Message(me.trouveClient(you),me,input);
+                    this.conversation.add(rcvMsg);
+                    System.out.println(rcvMsg);
                 }
             }
         }catch (SocketException e){

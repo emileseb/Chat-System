@@ -43,7 +43,7 @@ public class EtablissementClavardage extends Thread{
             }else{
                 i++;
             }
-            System.out.println("waiting for clavateur to clavarde ...");
+            System.out.println("waiting for clavardeur to clavarde ...");
             // Récupération du socket associé
             Session sess = new Session(servSock.accept(), me);
             synchronized (clavadeursListe) {
