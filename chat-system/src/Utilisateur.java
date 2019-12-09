@@ -160,12 +160,6 @@ public class Utilisateur {
         if (pastrouve)
         	listeHistoriques.add(new Historique(idPartenaire, conversation));
     }
-
-    public void connectWith(Id destinataire){
-		//Faut-il créer une classe spéciale pour établir des connections ?
-		//Faut ils une grande liste des sessions en cours ? Des sessions dont je suis l'initiateur ? Récepteur ?
-
-	}
     
 	public String toString() {
 		return ("Pseudo : " + this.pseudo + ", Id : " + this.idUtilisateur.getValue() + ", Actif : " + this.actif + ", Adresse Ip : " + this.adresseIp);

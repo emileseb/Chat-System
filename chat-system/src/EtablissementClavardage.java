@@ -54,7 +54,6 @@ public class EtablissementClavardage extends Thread{
     public void arreter(){this.continuer = false;}
 
     public static void demandeClavardage(Utilisateur moi, Id id){
-        int port = 5678;
         InetAddress serverAdress = null;
         try {
             serverAdress = InetAddress.getByName(moi.trouveClient(id).getAdresseIp());

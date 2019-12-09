@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -28,10 +27,10 @@ public class Ecouteur extends Thread {
         try {
             while (continuer) {
                 input = in.readLine();
-                if (input.equals("quit")) {
-                    System.out.println(input);
-                }else {
+                if ( (input == null) || (input.equals("quit"))) {
                     continuer = false;
+                }else {
+                    System.out.println(you.getValue() + " : " + input);
                 }
             }
         }catch (SocketException e){
