@@ -50,7 +50,7 @@ class Session{
             System.out.println("Unable to close Socket");
         }
 
-        System.out.println("Historique de la Parleur  : \n" + moi.getHistoriqueDe(new Id(222222222)));
+        System.out.println("Historique : \n" + moi.getHistoriqueDe(new Id(222222222)));
         ClavardageManager.supprimerSession(this);
     }
 }

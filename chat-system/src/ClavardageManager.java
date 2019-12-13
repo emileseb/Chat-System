@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class ClavardageManager extends Thread{
     private static int port = 5678;
     private Utilisateur me;
-    private static final ArrayList<Session> listeClavardage = new ArrayList<>();
+    private static ArrayList<Session> listeClavardage = new ArrayList<>();
     private boolean continuer;
 
 

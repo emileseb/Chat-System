@@ -16,23 +16,24 @@ public class Ecouteur extends Thread {
     }
 
     public void run() {
-        boolean continuer = true;
         String input;
         Message rcvMsg;
         try {
-            while (continuer) {
+            while (true) {
                 input = in.readLine();
-                if (input == null) {
-                    currentSession.fermerSession();
-                    continuer = false;
-                }else {
-                    rcvMsg = new Message(currentSession.getMoi().trouveClient(currentSession.getSonId()),currentSession.getMoi(),input);
-                    this.currentSession.getConversation().add(rcvMsg);
-                    System.out.println(rcvMsg);
+                if (input != null) {
+                    if (input.equals("quit")){
+                        currentSession.fermerSession();
+                    }else {
+                        rcvMsg = new Message(currentSession.getMoi().trouveClient(currentSession.getSonId()), currentSession.getMoi(), input);
+                        this.currentSession.getConversation().add(rcvMsg);
+                        System.out.println(rcvMsg);
+                    }
                 }
             }
         }catch (SocketException e){
             System.out.println("closing oreille");
+            currentSession.fermerSession();
         } catch (IOException e) {
             e.printStackTrace();
         }

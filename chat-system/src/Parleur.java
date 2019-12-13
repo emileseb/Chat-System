@@ -24,8 +24,8 @@ public class Parleur extends Thread {
         while (continuer) {
             scanned = this.scan.nextLine();
             if (scanned.equals("quit")) {
+                this.out.println("quit");
                 currentSession.fermerSession();
-                continuer = false;
             } else {
                 sentMsg = new Message(currentSession.getMoi(), currentSession.getMoi().trouveClient(currentSession.getSonId()), scanned);
                 currentSession.getConversation().add(sentMsg);
