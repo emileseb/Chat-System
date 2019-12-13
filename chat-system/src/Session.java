@@ -6,79 +6,55 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Session extends Thread {
-    private Socket Sock_fd;
-    private BufferedReader in;
-    private PrintWriter out;
-    private boolean active;
-    private ArrayList<Message> conversation;
-    private Utilisateur me;
-    private Id you;
-    private Scanner scan;
+public class Session{
+    private Parleur bouche;
     private Ecouteur oreille;
+    private ArrayList<Message> conversation;
+    private Utilisateur moi;
+    private Id sonId;
+    private Socket sock;
 
-    Session(Socket sock_fd, Utilisateur me) throws IOException {
-        super();
-        this.active = true;
-        this.Sock_fd = sock_fd;
-        this.in = new BufferedReader(new InputStreamReader(Sock_fd.getInputStream()));
-        this.out = new PrintWriter(Sock_fd.getOutputStream(), true);
+
+    Session(Socket sock, Utilisateur me) throws IOException {
+        this.moi = me;
+        this.sock = sock;
         this.conversation = new ArrayList<Message>();
-        this.me = me;
-        this.scan = new Scanner(System.in);
-        this.start();
+        this.bouche = new Parleur(this);
+        this.oreille = new Ecouteur(this);
+        System.out.println("Etablissement du clavardage avec " + this.sonId);
     }
 
-    public boolean isActive() {
-        return active;
+    public Socket getSock() {
+        return sock;
     }
 
-    public void run() {
+    public void setSonId(Id sonId) {
+        this.sonId = sonId;
+    }
+
+    public Utilisateur getMoi() {
+        return moi;
+    }
+
+    public ArrayList<Message> getConversation() {
+        return conversation;
+    }
+
+    public Id getSonId() {
+        return sonId;
+    }
+
+    public void fermerSession(){
+        moi.mettreAJourHistorique(conversation,sonId);
+        oreille.interrupt();
+        bouche.interrupt();
         try {
-            this.initializeSession();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.clavardage();
-        this.closeSession();
-    }
-
-
-    private void initializeSession() throws IOException {
-        //send my identity
-        this.out.println(me.getId().toString());
-        String input = in.readLine();
-        this.you = new Id(input);
-        System.out.println("Etablissement du clavardage avec " + this.you);
-        oreille = new Ecouteur(Sock_fd, me, conversation, you);
-    }
-
-    private void closeSession (){
-        System.out.println("Closing");
-        me.mettreAJourHistorique(conversation,you);
-        try {
-            Sock_fd.close();
-            this.active = false;
+            sock.close();
         } catch (IOException e) {
             System.out.println("Unable to close Socket");
         }
-        System.out.println(me.getHistoriqueDe(new Id(222222222)));
-    }
 
-    private void clavardage(){
-        boolean continuer = true;
-        String scanned = "";
-        Message sentMsg;
-        while(continuer) {
-            scanned = scan.nextLine();
-            if (scanned.equals("quit")) {
-                continuer = false;
-            } else {
-                sentMsg = new Message(me,me.trouveClient(you),scanned);
-                conversation.add(sentMsg);
-                this.out.println(sentMsg.getContenu());
-                System.out.println(sentMsg);
-            }
-        }
+        System.out.println("Historique de la Parleur  : \n" + moi.getHistoriqueDe(new Id(222222222)));
+        ClavardageManager.supprimerSession(this);
     }
 }
