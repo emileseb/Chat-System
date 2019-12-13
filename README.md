@@ -59,9 +59,3 @@ Utilisateur sur un seul poste, donc historique stocké sur le poste.
 Pour récupérer l'historique qui est stocké sur la machine on associe les historiques avec les ids des utilisateurs
 avec qui on a parlé Id = adresse mac de la machine de l'utilisateur avec qui on a parlé
 
-
-Packages : 
-User -> Utilisateur Id
-Clavardage -> ClavardageM, Sess, Ecouteur, Parleur
-Conversation -> Hist Message
-ChatSystemInfo-> Notifieur Rafraichisseur
