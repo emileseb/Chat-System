@@ -1,5 +1,8 @@
+package conversation;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import utilisateur.Utilisateur;
 
 public class Message {
 

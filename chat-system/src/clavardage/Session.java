@@ -1,6 +1,11 @@
+package clavardage;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+
+import conversation.Message;
+import utilisateur.Id;
+import utilisateur.Utilisateur;
 
 class Session{
     private Parleur bouche;

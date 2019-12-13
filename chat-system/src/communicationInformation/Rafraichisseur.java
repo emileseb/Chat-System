@@ -1,5 +1,9 @@
+package communicationInformation;
 import java.io.IOException;
 import java.net.*;
+
+import utilisateur.Id;
+import utilisateur.Utilisateur;
 
 // Cette classe permet de rafraichir la page. Elle reçoit des messages UDP d'un utilisateur pour actualiser ses infos 
 public class Rafraichisseur extends Thread {

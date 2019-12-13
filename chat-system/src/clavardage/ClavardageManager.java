@@ -1,8 +1,12 @@
+package clavardage;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+
+import utilisateur.Id;
+import utilisateur.Utilisateur;
 
 public class ClavardageManager extends Thread{
     private static int port = 5678;
@@ -11,7 +15,7 @@ public class ClavardageManager extends Thread{
     private boolean continuer;
 
 
-    ClavardageManager (Utilisateur me){
+    public ClavardageManager(Utilisateur me){
         super();
         this.me = me;
         this.continuer = true;

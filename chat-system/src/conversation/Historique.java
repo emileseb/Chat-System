@@ -1,4 +1,7 @@
+package conversation;
 import java.util.ArrayList;
+
+import utilisateur.Id;
 
 public class Historique {
     private Id idPartenaire;

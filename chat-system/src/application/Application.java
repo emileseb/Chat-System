@@ -1,4 +1,10 @@
+package application;
 import javax.swing.plaf.multi.MultiToolTipUI;
+import clavardage.*;
+
+import clavardage.ClavardageManager;
+import utilisateur.Id;
+import utilisateur.Utilisateur;
 
 public class Application {
 

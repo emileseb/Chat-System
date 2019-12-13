@@ -1,7 +1,11 @@
+package clavardage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.SocketException;
+import conversation.*;
+
+import utilisateur.Id;
 
 public class Ecouteur extends Thread {
     private BufferedReader in;

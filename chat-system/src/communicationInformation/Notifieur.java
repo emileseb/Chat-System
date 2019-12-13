@@ -1,6 +1,10 @@
+package communicationInformation;
+
 import java.io.IOException;
 import java.net.*;
 import java.net.SocketException;
+
+import utilisateur.Utilisateur;
 
 // Cette classe permet de notifier aux autres agents de l'activité ou du changement de pseudo d'un utilisateur
 public class Notifieur{
