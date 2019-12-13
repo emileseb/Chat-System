@@ -6,46 +6,125 @@ import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import utilisateur.*;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.awt.event.ActionEvent;
+import java.awt.Color;
+import javax.swing.JLayeredPane;
 import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import java.awt.CardLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Fenetre {
 
-	private JFrame frame;
-	private JTextField textField;
+	private JFrame frmChatsystem;
+	private JTextField fieldEntreePseudo;
+	private JLabel labelErreurPseudo;
+	JPanel welcomePage;
+	JPanel homePage;
+	
+	Controleur controleur;
 
 	/**
 	 * Create the application.
 	 */
-	public Fenetre() {
+	public Fenetre(Utilisateur modele) {
+		controleur = new Controleur(modele, this);
 		initialize();
-		frame.setVisible(true);
+		frmChatsystem.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 538, 413);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmChatsystem = new JFrame();
+		frmChatsystem.setTitle("ChatSystem");
+		frmChatsystem.setResizable(false);
+		frmChatsystem.setBounds(100, 100, 538, 413);
+		frmChatsystem.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmChatsystem.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JPanel panel = new JPanel();
-		frame.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(null);
+		JLayeredPane layeredPane = new JLayeredPane();
+		frmChatsystem.getContentPane().add(layeredPane, BorderLayout.CENTER);
 		
-		JButton btnNewButton = new JButton("Valider");
-		btnNewButton.setBounds(218, 267, 82, 25);
-		panel.add(btnNewButton);
 		
-		JLabel lblChoisissezUnPseudo = new JLabel("Choisissez un pseudo");
-		lblChoisissezUnPseudo.setBounds(186, 180, 146, 15);
-		panel.add(lblChoisissezUnPseudo);
+		welcomePage = welcomePage();
+		homePage = homePage();
+		homePage.setVisible(false);
 		
-		textField = new JTextField();
-		textField.setBounds(197, 221, 124, 19);
-		panel.add(textField);
-		textField.setColumns(10);
+		layeredPane.add(welcomePage);		
+		layeredPane.add(homePage);
+		
+	}
+	
+	public JPanel welcomePage() {
+		JPanel welcomePage = new JPanel();
+		welcomePage.setBounds(0, 0, 534, 385);
+		welcomePage.setLayout(null);
+		
+		JLabel labelChoisirPseudo = new JLabel("Choisissez un pseudo");
+		labelChoisirPseudo.setBounds(221, 228, 157, 13);
+		welcomePage.add(labelChoisirPseudo);
+		
+		JButton buttonValider = new JButton("Valider");
+		buttonValider.setBounds(240, 300, 79, 21);
+		buttonValider.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clicValider();
+			}
+		});
+		welcomePage.add(buttonValider);
+		
+		fieldEntreePseudo = new JTextField();
+		fieldEntreePseudo.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER){
+					clicValider();
+				}
+			}
+		});
+		fieldEntreePseudo.setBounds(223, 271, 96, 19);
+		welcomePage.add(fieldEntreePseudo);
+		fieldEntreePseudo.setColumns(10);
+		
+		JLabel labelLogo = new JLabel("Logo");
+		labelLogo.setBounds(183, 40, 195, 157);
+		labelLogo.setIcon(new ImageIcon(new File("image/logo.jpg").getAbsolutePath()));
+		welcomePage.add(labelLogo);
+		
+		labelErreurPseudo = new JLabel("Pseudo d\u00E9j\u00E0 pris, veuillez en choisir un autre");
+		labelErreurPseudo.setBounds(173, 251, 301, 13);
+		labelErreurPseudo.setForeground(Color.RED);
+		labelErreurPseudo.setVisible(false);
+		welcomePage.add(labelErreurPseudo);
+		return welcomePage;
+	}
+	
+	public JPanel homePage() {
+		JPanel homePage = new JPanel();
+		homePage.setBounds(0, 0, 534, 385);
+		
+		return homePage;
+	}
+	
+	private void clicValider() {
+		controleur.verifierPseudo(fieldEntreePseudo.getText());
+	}
+	
+	public void erreurPseudo() {
+		labelErreurPseudo.setVisible(true);
+	}
+	
+	public void toHomePage() {
+		welcomePage.setVisible(false);
+		homePage.setVisible(true);
 	}
 }

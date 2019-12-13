@@ -107,7 +107,7 @@ public class Utilisateur {
         boolean result = false;
         Iterator<Utilisateur> iter = listeUtilisateurs.iterator();
         while(iter.hasNext() && !result) {
-            if (iter.next().getPseudo() == pseudo) {
+            if (iter.next().getPseudo().equals(pseudo)) {
                 result = true;
             }
         }
