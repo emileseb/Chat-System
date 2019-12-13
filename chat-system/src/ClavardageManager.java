@@ -2,18 +2,16 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class ClavardageManager extends Thread{
     private static int port = 5678;
     private Utilisateur me;
-    private static ArrayList<Session> listeClavardage = new ArrayList<Session>();
+    private static final ArrayList<Session> listeClavardage = new ArrayList<>();
     private boolean continuer;
 
 
-    public ClavardageManager (Utilisateur me){
+    ClavardageManager (Utilisateur me){
         super();
         this.me = me;
         this.continuer = true;
@@ -25,7 +23,6 @@ public class ClavardageManager extends Thread{
             System.out.println(me.getAdresseIp());
             // Création du serveur Socket
             ServerSocket servSock = new ServerSocket(port);
-            int i = 0;
             while (this.continuer) {
                 System.out.println("waiting for clavardeur to clavarde ...");
                 // Récupération du socket associé
@@ -39,21 +36,19 @@ public class ClavardageManager extends Thread{
         }
     }
 
-    public static void demandeClavardage(Utilisateur moi, Id id){
-        InetAddress serverAdress = null;
+    static void demandeClavardage(Utilisateur moi, Id id){
+        InetAddress serverAdress;
         try {
             serverAdress = InetAddress.getByName(moi.trouveClient(id).getAdresseIp());
             synchronized (listeClavardage) {
                 listeClavardage.add(new Session(new Socket(serverAdress, port), moi));
             }
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void supprimerSession(Session sess){
+    static void supprimerSession(Session sess){
         synchronized (listeClavardage) {
             listeClavardage.remove(sess);
         }

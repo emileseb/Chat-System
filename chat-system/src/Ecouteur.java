@@ -23,6 +23,7 @@ public class Ecouteur extends Thread {
             while (continuer) {
                 input = in.readLine();
                 if (input == null) {
+                    currentSession.fermerSession();
                     continuer = false;
                 }else {
                     rcvMsg = new Message(currentSession.getMoi().trouveClient(currentSession.getSonId()),currentSession.getMoi(),input);

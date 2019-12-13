@@ -1,12 +1,8 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class Session{
+class Session{
     private Parleur bouche;
     private Ecouteur oreille;
     private ArrayList<Message> conversation;
@@ -18,33 +14,33 @@ public class Session{
     Session(Socket sock, Utilisateur me) throws IOException {
         this.moi = me;
         this.sock = sock;
-        this.conversation = new ArrayList<Message>();
+        this.conversation = new ArrayList<>();
         this.bouche = new Parleur(this);
         this.oreille = new Ecouteur(this);
         System.out.println("Etablissement du clavardage avec " + this.sonId);
     }
 
-    public Socket getSock() {
+    Socket getSock() {
         return sock;
     }
 
-    public void setSonId(Id sonId) {
+    void setSonId(Id sonId) {
         this.sonId = sonId;
     }
 
-    public Utilisateur getMoi() {
+    Utilisateur getMoi() {
         return moi;
     }
 
-    public ArrayList<Message> getConversation() {
+    ArrayList<Message> getConversation() {
         return conversation;
     }
 
-    public Id getSonId() {
+    Id getSonId() {
         return sonId;
     }
 
-    public void fermerSession(){
+    void fermerSession(){
         moi.mettreAJourHistorique(conversation,sonId);
         oreille.interrupt();
         bouche.interrupt();

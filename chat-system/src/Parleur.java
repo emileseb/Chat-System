@@ -1,9 +1,5 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Parleur extends Thread {
@@ -23,11 +19,12 @@ public class Parleur extends Thread {
 
     public void run(){
         boolean continuer = true;
-        String scanned = "";
+        String scanned;
         Message sentMsg;
         while (continuer) {
             scanned = this.scan.nextLine();
             if (scanned.equals("quit")) {
+                currentSession.fermerSession();
                 continuer = false;
             } else {
                 sentMsg = new Message(currentSession.getMoi(), currentSession.getMoi().trouveClient(currentSession.getSonId()), scanned);
@@ -36,6 +33,6 @@ public class Parleur extends Thread {
                 System.out.println(sentMsg);
             }
         }
-        System.out.println("Fermeture de la Parleur ...");
+        System.out.println("Fermeture de la bouche ...");
     }
 }
