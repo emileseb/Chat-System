@@ -23,7 +23,7 @@ public class Ecouteur extends Thread {
         String input;
         Message rcvMsg;
         try {
-            while (true) {
+            while (!this.isInterrupted()) {
                 input = in.readLine();
                 if (input != null) {
                     if (input.equals("quit")){
@@ -36,11 +36,9 @@ public class Ecouteur extends Thread {
                 }
             }
         }catch (SocketException e){
-            System.out.println("closing oreille");
-            currentSession.fermerSession();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("oreille : IO exception raised " + e);
         }
-        System.out.println("oreille closed");
+        System.out.println("oreille : Fin");
     }
 }

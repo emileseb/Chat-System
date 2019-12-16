@@ -2,6 +2,7 @@ package clavardage;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import conversation.Message;
 import utilisateur.Id;
@@ -14,9 +15,11 @@ class Session{
     private Utilisateur moi;
     private Id sonId;
     private Socket sock;
+    private Scanner scan;
 
 
     Session(Socket sock, Utilisateur me) throws IOException {
+        this.scan = new Scanner(System.in);
         this.moi = me;
         this.sock = sock;
         this.conversation = new ArrayList<>();
@@ -27,6 +30,10 @@ class Session{
 
     Socket getSock() {
         return sock;
+    }
+
+    Scanner getScan() {
+        return scan;
     }
 
     void setSonId(Id sonId) {
@@ -54,8 +61,7 @@ class Session{
         } catch (IOException e) {
             System.out.println("Unable to close Socket");
         }
-
-        System.out.println("Historique : \n" + moi.getHistoriqueDe(new Id(222222222)));
+        System.out.println("Historique : \n" + moi.getHistoriqueDe(sonId));
         ClavardageManager.supprimerSession(this);
     }
 }

@@ -40,7 +40,7 @@ public class ClavardageManager extends Thread{
         }
     }
 
-    static void demandeClavardage(Utilisateur moi, Id id){
+    public static void demandeClavardage(Utilisateur moi, Id id){
         InetAddress serverAdress;
         try {
             serverAdress = InetAddress.getByName(moi.trouveClient(id).getAdresseIp());
