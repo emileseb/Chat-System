@@ -14,38 +14,43 @@ public class Notifieur{
 		this.utilisateur = utilisateur;
 	}
 
-	public void envoiBroadcast(String message) throws IOException {
+	public void envoiBroadcast(String message){
 		try {
 			DatagramSocket udpSocket = new DatagramSocket();
-			InetAddress adresseBroadcast = InetAddress.getByName(this.utilisateur.getAdresseBroadcast());
-			DatagramPacket outPacket = new DatagramPacket(message.getBytes(), message.length(), adresseBroadcast, 1234);
-			udpSocket.send(outPacket);
-			udpSocket.close();
+			try {
+				InetAddress adresseBroadcast = InetAddress.getByName(this.utilisateur.getAdresseBroadcast());
+				DatagramPacket outPacket = new DatagramPacket(message.getBytes(), message.length(), adresseBroadcast, 1234);
+				udpSocket.send(outPacket);
+				udpSocket.close();
+			}
+			catch(IOException e1) {
+				System.out.println("Probleme envoi message broadcast");
+			}
 		}
 		catch(SocketException e2) {
 			System.out.println("Udp socket failure");
 		}
 	}
 
-	public void demandeInformation() throws IOException {
+	public void demandeInformation(){
 		//message envoye sous la forme info, demande les infos des utilisateurs pour remplir liste utilisateur
 		String message = new String("0/" + this.utilisateur.getId());
 		envoiBroadcast(message);
 	}
 	
-	public void envoiInformation() throws IOException {
+	public void envoiInformation() {
 		//message envoye sous la forme info/Id/pseudo/adresseIp
 		String message = new String("1/" + this.utilisateur.getId() + "/" + this.utilisateur.getPseudo() + "/" + this.utilisateur.getAdresseIp());
 		envoiBroadcast(message);
 	}
 	
-	public void notifierAgentInActif() throws IOException {
+	public void notifierAgentInActif(){
 		//message envoye sous la forme info/Id
 		String message = new String("2/" + this.utilisateur.getId());
 		envoiBroadcast(message);
 	}
 
-	public void notifierChangementPseudo() throws IOException {
+	public void notifierChangementPseudo(){
 		//message envoye sous la forme info/Id/pseudo
 		String message = new String("3/" + this.utilisateur.getPseudo() + "/" + this.utilisateur.getId());
 		envoiBroadcast(message);

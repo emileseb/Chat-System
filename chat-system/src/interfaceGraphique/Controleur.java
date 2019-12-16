@@ -1,23 +1,33 @@
 package interfaceGraphique;
 import utilisateur.*;
+import communicationInformation.*;
 
 public class Controleur {	
 	
-	Utilisateur modele;
-	Fenetre vue;
+	FenetreAccueil fenetreAccueil;
+	FenetrePrincipale fenetrePrincipale;
 	
-	public Controleur(Utilisateur modele, Fenetre vue) {
+	Utilisateur modele;
+	Notifieur notifieur;
+	
+	public Controleur(Utilisateur modele) {
 		this.modele = modele;
-		this.vue = vue;
+		this.notifieur = new Notifieur(modele);
+		//demande les informations des utilisateurs pour remplir la liste utilisateurs dans rafraichisseur
+		notifieur.demandeInformation();
+		this.fenetreAccueil = new FenetreAccueil(this);
 	}
 	
 	public void verifierPseudo(String pseudo) {
 		if (pseudo.length() != 0) {
 			if (modele.pseudoPris(pseudo)) {
-				this.vue.erreurPseudo();
+				fenetreAccueil.erreurPseudo();
 			}else {
 				modele.changerPseudo(pseudo);
-				vue.toHomePage();
+				//envoi des infos a tous les utilisateurs
+				notifieur.envoiInformation();
+				fenetreAccueil.toHomePage();
+				fenetrePrincipale = new FenetrePrincipale(this);
 			}
 		}
 	}
