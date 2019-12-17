@@ -32,4 +32,8 @@ public class Controleur {
 		}
 	}
 	
+	public String demandePseudo() {
+		return (modele.getPseudo());
+	}
+	
 }
