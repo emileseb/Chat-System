@@ -18,7 +18,7 @@ public class Controleur {
 		this.fenetreAccueil = new FenetreAccueil(this);
 	}
 	
-	public void verifierPseudo(String pseudo) {
+	public void verifierPseudoAccueil(String pseudo) {
 		if (pseudo.length() != 0) {
 			if (modele.pseudoPris(pseudo)) {
 				fenetreAccueil.erreurPseudo();
@@ -28,6 +28,19 @@ public class Controleur {
 				notifieur.envoiInformation();
 				fenetreAccueil.toHomePage();
 				fenetrePrincipale = new FenetrePrincipale(this);
+			}
+		}
+	}
+
+	public void verifierPseudo(String pseudo) {
+		if (pseudo.length() != 0) {
+			if (modele.pseudoPris(pseudo)) {
+				fenetrePrincipale.erreurPseudo();
+			}else {
+				modele.changerPseudo(pseudo);
+				//envoi des infos a tous les utilisateurs
+				notifieur.envoiInformation();
+				fenetrePrincipale.pseudoChange();
 			}
 		}
 	}

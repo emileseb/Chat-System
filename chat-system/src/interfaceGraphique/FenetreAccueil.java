@@ -58,14 +58,14 @@ public class FenetreAccueil {
 		labelChoisirPseudo.setBounds(203, 228, 157, 13);
 		welcomePage.add(labelChoisirPseudo);
 		
-		JButton buttonValider = new JButton("Valider");
-		buttonValider.setBounds(221, 302, 96, 21);
-		buttonValider.addActionListener(new ActionListener() {
+		JButton bouttonValider = new JButton("Valider");
+		bouttonValider.setBounds(221, 302, 96, 21);
+		bouttonValider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clicValider();
 			}
 		});
-		welcomePage.add(buttonValider);
+		welcomePage.add(bouttonValider);
 		
 		fieldEntreePseudo = new JTextField();
 		fieldEntreePseudo.addKeyListener(new KeyAdapter() {
@@ -94,7 +94,7 @@ public class FenetreAccueil {
 	}
 	
 	private void clicValider() {
-		controleur.verifierPseudo(fieldEntreePseudo.getText());
+		controleur.verifierPseudoAccueil(fieldEntreePseudo.getText());
 	}
 	
 	public void erreurPseudo() {

@@ -7,17 +7,23 @@ import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JTextField;
 import javax.swing.JTabbedPane;
-import java.awt.BorderLayout;
 import java.awt.Color;
-
-import javax.swing.BoxLayout;
-import javax.swing.SwingConstants;
 
 public class FenetrePrincipale {
 
 	private JFrame frame;
+	private JPanel panelLeft;
+	private JPanel panelPseudo;
+	private JLabel labelPseudo;
+	private JButton boutonChangerPseudo;
+	private JButton boutonValider;
+	private JTextField fieldEntreePseudo;
+	private JLabel labelPseudoErreur;
 
 	private Controleur controleur;
 	
@@ -43,7 +49,18 @@ public class FenetrePrincipale {
 		gridBagLayout.columnWeights = new double[]{1.0};
 		frame.getContentPane().setLayout(gridBagLayout);
 		
-		JPanel panelLeft = new JPanel();
+		panelLeft();
+
+		panelPseudo();
+		
+		panelOnglets();
+		
+		panelRight();
+		
+	}
+	
+	private void panelLeft() {
+		panelLeft = new JPanel();
 		GridBagConstraints gbc_panelLeft = new GridBagConstraints();
 		gbc_panelLeft.fill = GridBagConstraints.BOTH;
 		gbc_panelLeft.gridx = 0;
@@ -53,8 +70,10 @@ public class FenetrePrincipale {
 		gbl_panelLeft.columnWeights = new double[]{1.0};
 		gbl_panelLeft.rowWeights = new double[]{1.0, 1.0};
 		panelLeft.setLayout(gbl_panelLeft);
-		
-		JPanel panelPseudo = new JPanel();
+	}
+	
+	private void panelPseudo() {
+		panelPseudo = new JPanel();
 		GridBagConstraints gbc_panelPseudo = new GridBagConstraints();
 		gbc_panelPseudo.insets = new Insets(0, 0, 5, 0);
 		gbc_panelPseudo.fill = GridBagConstraints.BOTH;
@@ -64,38 +83,84 @@ public class FenetrePrincipale {
 		GridBagLayout gbl_panelPseudo = new GridBagLayout();
 		gbl_panelPseudo.columnWidths = new int[]{0, 0, 0};
 		gbl_panelPseudo.rowHeights = new int[]{0, 0, 0};
-		gbl_panelPseudo.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelPseudo.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_panelPseudo.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panelPseudo.setLayout(gbl_panelPseudo);
-
-		/*--------------------Panel Pseudo----------------------------*/
 		
-		JLabel labelPseudo = new JLabel(controleur.demandePseudo());
+		labelPseudo = new JLabel(controleur.demandePseudo());
 		GridBagConstraints gbc_labelPseudo = new GridBagConstraints();
-		gbc_labelPseudo.insets = new Insets(10, 10, 0, 0);
+		gbc_labelPseudo.insets = new Insets(10, 10, 5, 5);
 		gbc_labelPseudo.gridx = 0;
 		gbc_labelPseudo.gridy = 0;
 		gbc_labelPseudo.weightx = 2;
-		panelPseudo.add(labelPseudo, gbc_labelPseudo);
+		panelPseudo.add(labelPseudo, gbc_labelPseudo);		
+
+		fieldEntreePseudo = new JTextField();
+		fieldEntreePseudo.setVisible(false);
+		GridBagConstraints gbc_fieldEntreePseudo = new GridBagConstraints();
+		gbc_fieldEntreePseudo.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldEntreePseudo.gridx = 0;
+		gbc_fieldEntreePseudo.gridy = 0;
+		panelPseudo.add(fieldEntreePseudo, gbc_fieldEntreePseudo);
+		fieldEntreePseudo.setColumns(10);
 		
-		JButton bouttonChangerPseudo = new JButton("Changer pseudo");
-		GridBagConstraints gbc_bouttonChangerPseudo = new GridBagConstraints();
-		gbc_bouttonChangerPseudo.insets = new Insets(5, 0, 0, 0);
-		gbc_bouttonChangerPseudo.gridx = 1;
-		gbc_bouttonChangerPseudo.gridy = 0;
-		panelPseudo.add(bouttonChangerPseudo, gbc_bouttonChangerPseudo);
+		boutonChangerPseudo = new JButton("Changer pseudo");
+		boutonChangerPseudo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boutonChangerPseudo.setVisible(false);
+				boutonValider.setVisible(true);
+				labelPseudo.setVisible(false);
+				fieldEntreePseudo.setVisible(true);
+			}
+		});
+		GridBagConstraints gbc_boutonChangerPseudo = new GridBagConstraints();
+		gbc_boutonChangerPseudo.insets = new Insets(5, 0, 5, 0);
+		gbc_boutonChangerPseudo.gridx = 1;
+		gbc_boutonChangerPseudo.gridy = 0;
+		panelPseudo.add(boutonChangerPseudo, gbc_boutonChangerPseudo);
+
+		boutonValider = new JButton("Valider");
+		boutonValider.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clicValider();
+			}
+		});
+		boutonValider.setVisible(false);
+		GridBagConstraints gbc_boutonValider = new GridBagConstraints();
+		gbc_boutonValider.insets = new Insets(5, 0, 5, 0);
+		gbc_boutonValider.gridx = 1;
+		gbc_boutonValider.gridy = 0;
+		panelPseudo.add(boutonValider, gbc_boutonValider);
 		
-		JLabel labelPseudoErreur = new JLabel("Pseudo d√©j√† pris");
+		labelPseudoErreur = new JLabel("Pseudo dÈj‡ pris");
 		labelPseudoErreur.setForeground(Color.RED);
 		labelPseudoErreur.setVisible(false);
 		GridBagConstraints gbc_labelPseudoErreur = new GridBagConstraints();
-		gbc_labelPseudoErreur.insets = new Insets(0, 0, 0, 0);
+		gbc_labelPseudoErreur.anchor = GridBagConstraints.EAST;
+		gbc_labelPseudoErreur.insets = new Insets(0, 0, 0, 5);
 		gbc_labelPseudoErreur.gridx = 0;
 		gbc_labelPseudoErreur.gridy = 1;
 		panelPseudo.add(labelPseudoErreur, gbc_labelPseudoErreur);
-		
-		/*--------------------Onglets----------------------------*/
-		
+	}
+
+	private void clicValider() {
+		controleur.verifierPseudo(fieldEntreePseudo.getText());
+	}
+	
+	public void erreurPseudo() {
+		labelPseudoErreur.setVisible(true);
+	}
+	
+	public void pseudoChange() {
+		boutonChangerPseudo.setVisible(true);
+		boutonValider.setVisible(false);
+		labelPseudo.setVisible(true);
+		labelPseudo.setText(controleur.demandePseudo());
+		fieldEntreePseudo.setVisible(false);
+		fieldEntreePseudo.setText("");
+	}
+	
+	private void panelOnglets() {
 		JTabbedPane panelOnglets = new JTabbedPane(JTabbedPane.TOP);
 		GridBagConstraints gbc_panelOnglets = new GridBagConstraints();
 		gbc_panelOnglets.fill = GridBagConstraints.BOTH;
@@ -111,9 +176,10 @@ public class FenetrePrincipale {
 		panelOnglets.addTab("Actifs", null, panelActifs, null);
 		
 		JPanel panelEnCours = new JPanel();
-		panelOnglets.addTab("En Cours", null, panelEnCours, null);
-		
-		/*----------------------Panel Right---------------------------*/
+		panelOnglets.addTab("En Cours", null, panelEnCours, null);		
+	}
+	
+	private void panelRight() {
 		JPanel panelRight = new JPanel();
 		GridBagConstraints gbc_panelRight = new GridBagConstraints();
 		gbc_panelRight.fill = GridBagConstraints.BOTH;
