@@ -9,16 +9,24 @@ import javax.swing.JButton;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JTextField;
+
+import utilisateur.Utilisateur;
+
 import javax.swing.JTabbedPane;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import javax.swing.JScrollBar;
 
 public class FenetrePrincipale {
 
 	private JFrame frame;
 	private JPanel panelLeft;
 	private JPanel panelPseudo;
+	private JTabbedPane panelOnglets;
 	private JLabel labelPseudo;
 	private JButton boutonChangerPseudo;
 	private JButton boutonValider;
@@ -26,6 +34,12 @@ public class FenetrePrincipale {
 	private JLabel labelPseudoErreur;
 
 	private Controleur controleur;
+	private JButton btnUser;
+	private JLabel labelPseudoPartenaire;
+	private JPanel panelConversation;
+	private JScrollBar scrollBar;
+	private JTextField entreeMessage;
+	private JButton boutonEnvoyer;
 	
 	/**
 	 * Create the application.
@@ -72,6 +86,7 @@ public class FenetrePrincipale {
 		panelLeft.setLayout(gbl_panelLeft);
 	}
 	
+	/*Panel Pseudo*/
 	private void panelPseudo() {
 		panelPseudo = new JPanel();
 		GridBagConstraints gbc_panelPseudo = new GridBagConstraints();
@@ -99,6 +114,7 @@ public class FenetrePrincipale {
 		fieldEntreePseudo.setVisible(false);
 		GridBagConstraints gbc_fieldEntreePseudo = new GridBagConstraints();
 		gbc_fieldEntreePseudo.fill = GridBagConstraints.HORIZONTAL;
+		gbc_fieldEntreePseudo.insets = new Insets(10, 10, 5, 5);
 		gbc_fieldEntreePseudo.gridx = 0;
 		gbc_fieldEntreePseudo.gridy = 0;
 		panelPseudo.add(fieldEntreePseudo, gbc_fieldEntreePseudo);
@@ -156,12 +172,14 @@ public class FenetrePrincipale {
 		boutonValider.setVisible(false);
 		labelPseudo.setVisible(true);
 		labelPseudo.setText(controleur.demandePseudo());
+		labelPseudoErreur.setVisible(false);
 		fieldEntreePseudo.setVisible(false);
 		fieldEntreePseudo.setText("");
 	}
 	
+	/*Panel Onglets*/
 	private void panelOnglets() {
-		JTabbedPane panelOnglets = new JTabbedPane(JTabbedPane.TOP);
+		panelOnglets = new JTabbedPane(JTabbedPane.TOP);
 		GridBagConstraints gbc_panelOnglets = new GridBagConstraints();
 		gbc_panelOnglets.fill = GridBagConstraints.BOTH;
 		gbc_panelOnglets.gridx = 0;
@@ -169,16 +187,39 @@ public class FenetrePrincipale {
 		gbc_panelOnglets.weighty = 15;
 		panelLeft.add(panelOnglets, gbc_panelOnglets);
 		
-		JPanel panelHistoriques = new JPanel();
-		panelOnglets.addTab("Historiques", null, panelHistoriques, null);
+		panelHistoriques();
 		
-		JPanel panelActifs = new JPanel();
-		panelOnglets.addTab("Actifs", null, panelActifs, null);
+		panelActifs();
 		
 		JPanel panelEnCours = new JPanel();
 		panelOnglets.addTab("En Cours", null, panelEnCours, null);		
 	}
 	
+	private void panelHistoriques() {
+		JPanel panelHistoriques = new JPanel();
+		panelOnglets.addTab("Historiques", null, panelHistoriques, null);
+		panelHistoriques.setLayout(new GridLayout(10, 1));
+		
+		ArrayList<Utilisateur> listeUtilisateurs = controleur.demandeUtilisateursHistorique();
+		for (Utilisateur user : listeUtilisateurs) {
+			btnUser = new JButton(user.getPseudo());
+			panelHistoriques.add(btnUser);			
+		}
+	}
+	
+	private void panelActifs() {
+		JPanel panelActifs = new JPanel();
+		panelOnglets.addTab("Actifs", null, panelActifs, null);
+		panelActifs.setLayout(new GridLayout(10, 1));
+		
+		ArrayList<Utilisateur> listeUtilisateurs = controleur.demandeUtilisateursActifs();
+		for (Utilisateur user : listeUtilisateurs) {
+			btnUser = new JButton(user.getPseudo());
+			panelActifs.add(btnUser);			
+		}
+	}
+	
+	/*Panel Droite*/
 	private void panelRight() {
 		JPanel panelRight = new JPanel();
 		GridBagConstraints gbc_panelRight = new GridBagConstraints();
@@ -187,5 +228,48 @@ public class FenetrePrincipale {
 		gbc_panelRight.weightx = 3;
 		gbc_panelRight.gridy = 0;
 		frame.getContentPane().add(panelRight, gbc_panelRight);
+		GridBagLayout gbl_panelRight = new GridBagLayout();
+		gbl_panelRight.columnWeights = new double[]{1.0, 0.0};
+		gbl_panelRight.rowWeights = new double[]{0.0, 1.0, 0.0};
+		panelRight.setLayout(gbl_panelRight);
+		
+		labelPseudoPartenaire = new JLabel("Pseudo partenaire");
+		GridBagConstraints gbc_labelPseudoPartenaire = new GridBagConstraints();
+		gbc_labelPseudoPartenaire.insets = new Insets(0, 0, 5, 5);
+		gbc_labelPseudoPartenaire.gridx = 0;
+		gbc_labelPseudoPartenaire.gridy = 0;
+		panelRight.add(labelPseudoPartenaire, gbc_labelPseudoPartenaire);
+		
+		panelConversation = new JPanel();
+		GridBagConstraints gbc_panelConversation = new GridBagConstraints();
+		gbc_panelConversation.insets = new Insets(0, 0, 5, 5);
+		gbc_panelConversation.fill = GridBagConstraints.BOTH;
+		gbc_panelConversation.gridx = 0;
+		gbc_panelConversation.gridy = 1;
+		panelRight.add(panelConversation, gbc_panelConversation);
+		
+		scrollBar = new JScrollBar();
+		GridBagConstraints gbc_scrollBar = new GridBagConstraints();
+		gbc_scrollBar.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollBar.gridx = 1;
+		gbc_scrollBar.gridy = 1;
+		gbc_scrollBar.fill = GridBagConstraints.VERTICAL;
+		panelRight.add(scrollBar, gbc_scrollBar);
+		
+		entreeMessage = new JTextField();
+		GridBagConstraints gbc_entreeMessage = new GridBagConstraints();
+		gbc_entreeMessage.insets = new Insets(0, 0, 5, 5);
+		gbc_entreeMessage.fill = GridBagConstraints.HORIZONTAL;
+		gbc_entreeMessage.gridx = 0;
+		gbc_entreeMessage.gridy = 2;
+		panelRight.add(entreeMessage, gbc_entreeMessage);
+		entreeMessage.setColumns(10);
+		
+		boutonEnvoyer = new JButton("Envoyer");
+		GridBagConstraints gbc_boutonEnvoyer = new GridBagConstraints();
+		gbc_boutonEnvoyer.insets = new Insets(0, 0, 5, 5);
+		gbc_boutonEnvoyer.gridx = 1;
+		gbc_boutonEnvoyer.gridy = 2;
+		panelRight.add(boutonEnvoyer, gbc_boutonEnvoyer);
 	}
 }

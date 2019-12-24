@@ -1,5 +1,8 @@
 package interfaceGraphique;
 import utilisateur.*;
+
+import java.util.ArrayList;
+
 import communicationInformation.*;
 
 public class Controleur {	
@@ -47,6 +50,14 @@ public class Controleur {
 	
 	public String demandePseudo() {
 		return (modele.getPseudo());
+	}
+	
+	public ArrayList<Utilisateur> demandeUtilisateursActifs(){
+		return modele.getListeUtilisateurs(); 
+	}
+
+	public ArrayList<Utilisateur> demandeUtilisateursHistorique(){
+		return modele.getUtilisateursHistorique(); 
 	}
 	
 }
