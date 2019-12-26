@@ -17,9 +17,15 @@ import utilisateur.Utilisateur;
 
 import javax.swing.JTabbedPane;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+
+import conversation.Message;
+
+import javax.swing.JTextArea;
+import javax.swing.JList;
+import javax.swing.JTextPane;
 
 public class FenetrePrincipale {
 
@@ -27,20 +33,21 @@ public class FenetrePrincipale {
 	private JPanel panelLeft;
 	private JPanel panelPseudo;
 	private JTabbedPane panelOnglets;
+	private JPanel panelHistoriques;
+	private JPanel panelActifs;
+	private JScrollPane scrollPanel;
+	
 	private JLabel labelPseudo;
 	private JButton boutonChangerPseudo;
 	private JButton boutonValider;
 	private JTextField fieldEntreePseudo;
 	private JLabel labelPseudoErreur;
-
-	private Controleur controleur;
-	private JButton btnUser;
 	private JLabel labelPseudoPartenaire;
-	private JPanel panelConversation;
-	private JScrollBar scrollBar;
 	private JTextField entreeMessage;
 	private JButton boutonEnvoyer;
-	
+
+	private Controleur controleur;
+	private JTextPane areaMessages;
 	/**
 	 * Create the application.
 	 */
@@ -196,27 +203,55 @@ public class FenetrePrincipale {
 	}
 	
 	private void panelHistoriques() {
-		JPanel panelHistoriques = new JPanel();
+		panelHistoriques = new JPanel();
 		panelOnglets.addTab("Historiques", null, panelHistoriques, null);
 		panelHistoriques.setLayout(new GridLayout(10, 1));
 		
+		afficherHistoriques();
+	}
+	
+	public void afficherHistoriques() {
+		panelHistoriques.removeAll();
 		ArrayList<Utilisateur> listeUtilisateurs = controleur.demandeUtilisateursHistorique();
 		for (Utilisateur user : listeUtilisateurs) {
-			btnUser = new JButton(user.getPseudo());
-			panelHistoriques.add(btnUser);			
+			JButton btnUser = new JButton(user.getPseudo());
+			btnUser.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					clicUtilisateurHistorique(user);
+				}
+			});
+			panelHistoriques.add(btnUser);
 		}
 	}
 	
 	private void panelActifs() {
-		JPanel panelActifs = new JPanel();
+		panelActifs = new JPanel();
 		panelOnglets.addTab("Actifs", null, panelActifs, null);
 		panelActifs.setLayout(new GridLayout(10, 1));
 		
+		afficherActifs();
+	}
+	
+	public void afficherActifs() {
+		panelActifs.removeAll();
 		ArrayList<Utilisateur> listeUtilisateurs = controleur.demandeUtilisateursActifs();
 		for (Utilisateur user : listeUtilisateurs) {
-			btnUser = new JButton(user.getPseudo());
+			JButton btnUser = new JButton(user.getPseudo());
 			panelActifs.add(btnUser);			
 		}
+	}
+	
+	private void clicUtilisateurHistorique(Utilisateur user) {
+		entreeMessage.setVisible(false);
+		boutonEnvoyer.setVisible(false);
+		labelPseudoPartenaire.setText(user.getPseudo());
+		
+		ArrayList<Message> conversation = controleur.demandeHistoriqueDe(user);
+		String messages = "";
+		for (Message msg : conversation) {
+			messages += (msg + "\n");
+		}
+		areaMessages.setText(messages);
 	}
 	
 	/*Panel Droite*/
@@ -235,26 +270,26 @@ public class FenetrePrincipale {
 		
 		labelPseudoPartenaire = new JLabel("Pseudo partenaire");
 		GridBagConstraints gbc_labelPseudoPartenaire = new GridBagConstraints();
-		gbc_labelPseudoPartenaire.insets = new Insets(0, 0, 5, 5);
+		gbc_labelPseudoPartenaire.insets = new Insets(0, 0, 5, 0);
 		gbc_labelPseudoPartenaire.gridx = 0;
 		gbc_labelPseudoPartenaire.gridy = 0;
+		gbc_labelPseudoPartenaire.gridwidth = 2;
 		panelRight.add(labelPseudoPartenaire, gbc_labelPseudoPartenaire);
 		
-		panelConversation = new JPanel();
-		GridBagConstraints gbc_panelConversation = new GridBagConstraints();
-		gbc_panelConversation.insets = new Insets(0, 0, 5, 5);
-		gbc_panelConversation.fill = GridBagConstraints.BOTH;
-		gbc_panelConversation.gridx = 0;
-		gbc_panelConversation.gridy = 1;
-		panelRight.add(panelConversation, gbc_panelConversation);
+		scrollPanel = new JScrollPane();
+		scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		GridBagConstraints gbc_scrollPanel = new GridBagConstraints();
+		gbc_scrollPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPanel.fill = GridBagConstraints.BOTH;
+		gbc_scrollPanel.gridx = 0;
+		gbc_scrollPanel.gridy = 1;
+		gbc_scrollPanel.gridwidth = 2;
+		panelRight.add(scrollPanel, gbc_scrollPanel);
 		
-		scrollBar = new JScrollBar();
-		GridBagConstraints gbc_scrollBar = new GridBagConstraints();
-		gbc_scrollBar.insets = new Insets(0, 0, 5, 5);
-		gbc_scrollBar.gridx = 1;
-		gbc_scrollBar.gridy = 1;
-		gbc_scrollBar.fill = GridBagConstraints.VERTICAL;
-		panelRight.add(scrollBar, gbc_scrollBar);
+		areaMessages = new JTextPane();
+		areaMessages.setEditable(false);
+		scrollPanel.setViewportView(areaMessages);
 		
 		entreeMessage = new JTextField();
 		GridBagConstraints gbc_entreeMessage = new GridBagConstraints();
@@ -267,7 +302,7 @@ public class FenetrePrincipale {
 		
 		boutonEnvoyer = new JButton("Envoyer");
 		GridBagConstraints gbc_boutonEnvoyer = new GridBagConstraints();
-		gbc_boutonEnvoyer.insets = new Insets(0, 0, 5, 5);
+		gbc_boutonEnvoyer.insets = new Insets(0, 0, 5, 0);
 		gbc_boutonEnvoyer.gridx = 1;
 		gbc_boutonEnvoyer.gridy = 2;
 		panelRight.add(boutonEnvoyer, gbc_boutonEnvoyer);

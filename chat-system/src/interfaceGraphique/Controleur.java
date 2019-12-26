@@ -4,6 +4,7 @@ import utilisateur.*;
 import java.util.ArrayList;
 
 import communicationInformation.*;
+import conversation.Message;
 
 public class Controleur {	
 	
@@ -60,4 +61,7 @@ public class Controleur {
 		return modele.getUtilisateursHistorique(); 
 	}
 	
+	public ArrayList<Message> demandeHistoriqueDe(Utilisateur user) {
+		return modele.getHistoriqueDe(user.getId());
+	}
 }
