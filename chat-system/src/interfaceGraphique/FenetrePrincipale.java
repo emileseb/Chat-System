@@ -45,6 +45,7 @@ public class FenetrePrincipale {
 	private JLabel labelPseudoPartenaire;
 	private JTextField entreeMessage;
 	private JButton boutonEnvoyer;
+	private JButton boutonClavarder;
 
 	private Controleur controleur;
 	private JTextPane areaMessages;
@@ -223,6 +224,20 @@ public class FenetrePrincipale {
 			panelHistoriques.add(btnUser);
 		}
 	}
+
+	private void clicUtilisateurHistorique(Utilisateur user) {
+		entreeMessage.setVisible(false);
+		boutonEnvoyer.setVisible(false);
+		boutonClavarder.setVisible(false);
+		labelPseudoPartenaire.setText(user.getPseudo());
+		
+		ArrayList<Message> conversation = controleur.demandeHistoriqueDe(user);
+		String messages = "";
+		for (Message msg : conversation) {
+			messages += (msg + "\n");
+		}
+		areaMessages.setText(messages);
+	}
 	
 	private void panelActifs() {
 		panelActifs = new JPanel();
@@ -237,21 +252,19 @@ public class FenetrePrincipale {
 		ArrayList<Utilisateur> listeUtilisateurs = controleur.demandeUtilisateursActifs();
 		for (Utilisateur user : listeUtilisateurs) {
 			JButton btnUser = new JButton(user.getPseudo());
+			btnUser.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					clicUtilisateurActifs(user);
+				}
+			});
 			panelActifs.add(btnUser);			
 		}
 	}
 	
-	private void clicUtilisateurHistorique(Utilisateur user) {
-		entreeMessage.setVisible(false);
-		boutonEnvoyer.setVisible(false);
+	private void clicUtilisateurActifs(Utilisateur user) {
+		boutonClavarder.setVisible(true);
 		labelPseudoPartenaire.setText(user.getPseudo());
-		
-		ArrayList<Message> conversation = controleur.demandeHistoriqueDe(user);
-		String messages = "";
-		for (Message msg : conversation) {
-			messages += (msg + "\n");
-		}
-		areaMessages.setText(messages);
+		areaMessages.setText("");
 	}
 	
 	/*Panel Droite*/
@@ -268,7 +281,7 @@ public class FenetrePrincipale {
 		gbl_panelRight.rowWeights = new double[]{0.0, 1.0, 0.0};
 		panelRight.setLayout(gbl_panelRight);
 		
-		labelPseudoPartenaire = new JLabel("Pseudo partenaire");
+		labelPseudoPartenaire = new JLabel("");
 		GridBagConstraints gbc_labelPseudoPartenaire = new GridBagConstraints();
 		gbc_labelPseudoPartenaire.insets = new Insets(0, 0, 5, 0);
 		gbc_labelPseudoPartenaire.gridx = 0;
@@ -292,6 +305,7 @@ public class FenetrePrincipale {
 		scrollPanel.setViewportView(areaMessages);
 		
 		entreeMessage = new JTextField();
+		entreeMessage.setVisible(false);
 		GridBagConstraints gbc_entreeMessage = new GridBagConstraints();
 		gbc_entreeMessage.insets = new Insets(0, 0, 5, 5);
 		gbc_entreeMessage.fill = GridBagConstraints.HORIZONTAL;
@@ -301,10 +315,19 @@ public class FenetrePrincipale {
 		entreeMessage.setColumns(10);
 		
 		boutonEnvoyer = new JButton("Envoyer");
+		boutonEnvoyer.setVisible(false);
 		GridBagConstraints gbc_boutonEnvoyer = new GridBagConstraints();
 		gbc_boutonEnvoyer.insets = new Insets(0, 0, 5, 0);
 		gbc_boutonEnvoyer.gridx = 1;
 		gbc_boutonEnvoyer.gridy = 2;
 		panelRight.add(boutonEnvoyer, gbc_boutonEnvoyer);
+		
+		boutonClavarder = new JButton("Clavarder");
+		boutonClavarder.setVisible(false);
+		GridBagConstraints gbc_boutonClavarder = new GridBagConstraints();
+		gbc_boutonEnvoyer.insets = new Insets(0, 0, 5, 0);
+		gbc_boutonEnvoyer.gridx = 1;
+		gbc_boutonEnvoyer.gridy = 2;
+		panelRight.add(boutonClavarder, gbc_boutonClavarder);
 	}
 }
