@@ -35,8 +35,7 @@ public class Message {
 
 	@Override
 	public String toString() {
-		return ("Auteur - " + this.auteur.getPseudo() + ", Destinataire - " + this.destinataire.getPseudo() + ", Date - " +
-	getDate() + " : " + this.contenu);
+		return (this.auteur.getPseudo() + " - " +	getDate() + "\n" + this.contenu);
 	}
 	
 }

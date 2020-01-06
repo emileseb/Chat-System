@@ -1,6 +1,10 @@
 package interfaceGraphique;
 import utilisateur.*;
+
+import java.util.ArrayList;
+
 import communicationInformation.*;
+import conversation.Message;
 
 public class Controleur {	
 	
@@ -18,7 +22,7 @@ public class Controleur {
 		this.fenetreAccueil = new FenetreAccueil(this);
 	}
 	
-	public void verifierPseudo(String pseudo) {
+	public void verifierPseudoAccueil(String pseudo) {
 		if (pseudo.length() != 0) {
 			if (modele.pseudoPris(pseudo)) {
 				fenetreAccueil.erreurPseudo();
@@ -31,9 +35,33 @@ public class Controleur {
 			}
 		}
 	}
+
+	public void verifierPseudo(String pseudo) {
+		if (pseudo.length() != 0) {
+			if (modele.pseudoPris(pseudo)) {
+				fenetrePrincipale.erreurPseudo();
+			}else {
+				modele.changerPseudo(pseudo);
+				//envoi des infos a tous les utilisateurs
+				notifieur.envoiInformation();
+				fenetrePrincipale.pseudoChange();
+			}
+		}
+	}
 	
 	public String demandePseudo() {
 		return (modele.getPseudo());
 	}
 	
+	public ArrayList<Utilisateur> demandeUtilisateursActifs(){
+		return modele.getListeUtilisateurs(); 
+	}
+
+	public ArrayList<Utilisateur> demandeUtilisateursHistorique(){
+		return modele.getUtilisateursHistorique(); 
+	}
+	
+	public ArrayList<Message> demandeHistoriqueDe(Utilisateur user) {
+		return modele.getHistoriqueDe(user.getId());
+	}
 }

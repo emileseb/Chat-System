@@ -165,6 +165,14 @@ public class Utilisateur {
         	listeHistoriques.add(new Historique(idPartenaire, conversation));
     }
     
+    public ArrayList<Utilisateur> getUtilisateursHistorique(){
+    	ArrayList<Utilisateur> utilisateurs = new ArrayList<Utilisateur>();
+    	for (Historique hist : listeHistoriques) {
+    		utilisateurs.add(trouveClient(hist.getIdPartenaire()));
+    	}
+    	return utilisateurs;
+    }
+    
 	public String toString() {
 		return ("Pseudo : " + this.pseudo + ", Id : " + this.idUtilisateur.getValue() + ", Actif : " + this.actif + ", Adresse Ip : " + this.adresseIp);
 	}
