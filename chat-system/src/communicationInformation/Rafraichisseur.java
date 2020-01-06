@@ -15,6 +15,7 @@ public class Rafraichisseur extends Thread {
 	public Rafraichisseur(Utilisateur utilisateur){
 		this.utilisateur = utilisateur;
 		this.actif = true;
+		start();
 	}
 	
 	public void run() {
@@ -22,7 +23,6 @@ public class Rafraichisseur extends Thread {
 			DatagramSocket udpSocket = new DatagramSocket(1234);
 			byte[] buffer = new byte[256];
 			while(this.actif) {
-				
 				DatagramPacket inPacket = new DatagramPacket(buffer, buffer.length);
 				//attend de recevoir un message (changement Actif ou changement Pseudo)
 				try {
@@ -35,8 +35,8 @@ public class Rafraichisseur extends Thread {
 					
 					//message broadcast donc si on reçoit un message venant de nous même on ne le traite pas
 					if (!utilisateur.getId().equals(new Id(messageFormate[1]))) {
-						traitementMessage(messageFormate, inPacket, udpSocket);						
-					}					
+						traitementMessage(messageFormate, inPacket, udpSocket);
+					}
 				}
 				
 				catch(IOException e) {
