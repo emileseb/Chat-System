@@ -20,11 +20,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-
+import javax.swing.text.*;
 import conversation.Message;
-
-import javax.swing.JTextArea;
-import javax.swing.JList;
 import javax.swing.JTextPane;
 
 public class FenetrePrincipale {
@@ -34,8 +31,12 @@ public class FenetrePrincipale {
 	private JPanel panelPseudo;
 	private JTabbedPane panelOnglets;
 	private JPanel panelHistoriques;
-	private JPanel panelActifs;
+	private JPanel panelClavardeurs;
 	private JScrollPane scrollPanel;
+	private JTextPane areaMessages;
+	private StyledDocument document;
+	private SimpleAttributeSet left;
+	private SimpleAttributeSet right;
 	
 	private JLabel labelPseudo;
 	private JButton boutonChangerPseudo;
@@ -48,7 +49,7 @@ public class FenetrePrincipale {
 	private JButton boutonClavarder;
 
 	private Controleur controleur;
-	private JTextPane areaMessages;
+	private Utilisateur utilisateurSelectionne;
 	/**
 	 * Create the application.
 	 */
@@ -156,7 +157,7 @@ public class FenetrePrincipale {
 		gbc_boutonValider.gridy = 0;
 		panelPseudo.add(boutonValider, gbc_boutonValider);
 		
-		labelPseudoErreur = new JLabel("Pseudo dÈj‡ pris");
+		labelPseudoErreur = new JLabel("Pseudo d√©j√† pris");
 		labelPseudoErreur.setForeground(Color.RED);
 		labelPseudoErreur.setVisible(false);
 		GridBagConstraints gbc_labelPseudoErreur = new GridBagConstraints();
@@ -197,10 +198,7 @@ public class FenetrePrincipale {
 		
 		panelHistoriques();
 		
-		panelActifs();
-		
-		JPanel panelEnCours = new JPanel();
-		panelOnglets.addTab("En Cours", null, panelEnCours, null);		
+		panelClavardeur();	
 	}
 	
 	private void panelHistoriques() {
@@ -232,23 +230,22 @@ public class FenetrePrincipale {
 		labelPseudoPartenaire.setText(user.getPseudo());
 		
 		ArrayList<Message> conversation = controleur.demandeHistoriqueDe(user);
-		String messages = "";
 		for (Message msg : conversation) {
-			messages += (msg + "\n");
-		}
-		areaMessages.setText(messages);
+			afficherMessage(msg);
+		}	
+
 	}
 	
-	private void panelActifs() {
-		panelActifs = new JPanel();
-		panelOnglets.addTab("Actifs", null, panelActifs, null);
-		panelActifs.setLayout(new GridLayout(10, 1));
+	private void panelClavardeur() {
+		panelClavardeurs = new JPanel();
+		panelOnglets.addTab("Clavardeurs", null, panelClavardeurs, null);
+		panelClavardeurs.setLayout(new GridLayout(10, 1));
 		
-		afficherActifs();
+		afficherClavardeurs();
 	}
 	
-	public void afficherActifs() {
-		panelActifs.removeAll();
+	public void afficherClavardeurs() {
+		panelClavardeurs.removeAll();
 		ArrayList<Utilisateur> listeUtilisateurs = controleur.demandeUtilisateursActifs();
 		for (Utilisateur user : listeUtilisateurs) {
 			JButton btnUser = new JButton(user.getPseudo());
@@ -257,7 +254,7 @@ public class FenetrePrincipale {
 					clicUtilisateurActifs(user);
 				}
 			});
-			panelActifs.add(btnUser);			
+			panelClavardeurs.add(btnUser);			
 		}
 	}
 	
@@ -265,6 +262,7 @@ public class FenetrePrincipale {
 		boutonClavarder.setVisible(true);
 		labelPseudoPartenaire.setText(user.getPseudo());
 		areaMessages.setText("");
+		utilisateurSelectionne = user;
 	}
 	
 	/*Panel Droite*/
@@ -302,6 +300,11 @@ public class FenetrePrincipale {
 		
 		areaMessages = new JTextPane();
 		areaMessages.setEditable(false);
+		document = areaMessages.getStyledDocument();
+		left = new SimpleAttributeSet();
+		right = new SimpleAttributeSet();
+		StyleConstants.setAlignment(left, StyleConstants.ALIGN_LEFT);
+		StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT); 
 		scrollPanel.setViewportView(areaMessages);
 		
 		entreeMessage = new JTextField();
@@ -323,11 +326,34 @@ public class FenetrePrincipale {
 		panelRight.add(boutonEnvoyer, gbc_boutonEnvoyer);
 		
 		boutonClavarder = new JButton("Clavarder");
+		boutonClavarder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clicClavarder();
+			}
+		});
 		boutonClavarder.setVisible(false);
 		GridBagConstraints gbc_boutonClavarder = new GridBagConstraints();
 		gbc_boutonEnvoyer.insets = new Insets(0, 0, 5, 0);
 		gbc_boutonEnvoyer.gridx = 1;
 		gbc_boutonEnvoyer.gridy = 2;
 		panelRight.add(boutonClavarder, gbc_boutonClavarder);
+	}
+
+	private void clicClavarder() {
+		System.out.println("clavarder avec " + utilisateurSelectionne);
+	}
+	
+	private void afficherMessage(Message msg) {       
+		try{
+			if (msg.getAuteur().equals(controleur.demandeUtilisateur())) {
+				document.setParagraphAttributes(document.getLength(), 1, right, false);
+				document.insertString(document.getLength(), msg.toString() + "\n", right);
+			}else {
+				document.setParagraphAttributes(document.getLength(), 1, left, false);	
+				document.insertString(document.getLength(), msg.toString() + "\n", left);				
+			}			
+		}catch(BadLocationException ex) {
+			
+		}		
 	}
 }
