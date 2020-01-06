@@ -1,23 +1,17 @@
 package application;
-import clavardage.*;
-
 import clavardage.ClavardageManager;
 import utilisateur.*;
-import interfaceGraphique.*;
 
 public class Application {
 
 	public static void main(String[] args) {
-		Utilisateur user1 = new Utilisateur("joe", new Id(1111), "192.168.1.1");
-		Utilisateur user2 = new Utilisateur("paulo", new Id(22), "192.168.1.2");
-		user1.getListeUtilisateurs().add(user2);
-		
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				Fenetre fenetre = new Fenetre(user1);
-				}
-			});
+		Utilisateur serverGuy = new Utilisateur("servguy", new Id(1111111111), "127.0.0.1");
+		Utilisateur client1 = new Utilisateur("Thomas", new Id(222222222), "127.0.0.1");
+		Utilisateur client2 = new Utilisateur("Théo", new Id(333333333), "127.0.0.1");
+		serverGuy.getListeUtilisateurs().add(client1);
+		serverGuy.getListeUtilisateurs().add(client2);
 
+		ClavardageManager com = new ClavardageManager(serverGuy);
 	}
 
 }
