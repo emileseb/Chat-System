@@ -11,8 +11,8 @@ public class Controleur {
 	FenetreAccueil fenetreAccueil;
 	FenetrePrincipale fenetrePrincipale;
 	
-	Utilisateur modele;
-	Notifieur notifieur;
+	private Utilisateur modele;
+	private Notifieur notifieur;
 	
 	public Controleur(Utilisateur modele) {
 		this.modele = modele;
@@ -53,8 +53,12 @@ public class Controleur {
 		return (modele.getPseudo());
 	}
 	
+	public Utilisateur demandeUtilisateur() {
+		return (modele);
+	}
+	
 	public ArrayList<Utilisateur> demandeUtilisateursActifs(){
-		return modele.getListeUtilisateurs(); 
+		return modele.getListeUtilisateursActifs();
 	}
 
 	public ArrayList<Utilisateur> demandeUtilisateursHistorique(){

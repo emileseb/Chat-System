@@ -86,6 +86,16 @@ public class Utilisateur {
     public ArrayList<Utilisateur> getListeUtilisateurs() {
         return listeUtilisateurs;
     }
+    
+    public ArrayList<Utilisateur> getListeUtilisateursActifs(){
+    	ArrayList<Utilisateur> utilisateursActifs = new ArrayList<Utilisateur>();
+        for(Utilisateur user : listeUtilisateurs) {
+            if (user.getActif()) {
+            	utilisateursActifs.add(user);
+            }
+        }
+        return utilisateursActifs;
+    }
 
     public Utilisateur trouveClient(Id idAgent){
         Utilisateur user;

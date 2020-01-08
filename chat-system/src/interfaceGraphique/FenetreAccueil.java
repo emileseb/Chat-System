@@ -85,7 +85,7 @@ public class FenetreAccueil {
 		labelLogo.setIcon(new ImageIcon(new File("image/logo.jpg").getAbsolutePath()));
 		welcomePage.add(labelLogo);
 		
-		labelErreurPseudo = new JLabel("Pseudo d\u00E9j\u00E0 pris, veuillez en choisir un autre");
+		labelErreurPseudo = new JLabel("Pseudo déjà pris, veuillez en choisir un autre");
 		labelErreurPseudo.setBounds(145, 246, 351, 13);
 		labelErreurPseudo.setForeground(Color.RED);
 		labelErreurPseudo.setVisible(false);
