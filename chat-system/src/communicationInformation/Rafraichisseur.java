@@ -2,25 +2,29 @@ package communicationInformation;
 import java.io.IOException;
 import java.net.*;
 
+import interfaceGraphique.Controleur;
 import utilisateur.Id;
 import utilisateur.Utilisateur;
 
 // Cette classe permet de rafraichir la page. Elle reçoit des messages UDP d'un utilisateur pour actualiser ses infos 
 public class Rafraichisseur extends Thread {
 
-	Utilisateur utilisateur;
+	private Utilisateur utilisateur;
+	
+	private Controleur controleur;
 	
 	boolean actif;
 	
-	public Rafraichisseur(Utilisateur utilisateur){
+	public Rafraichisseur(Utilisateur utilisateur, Controleur controleur){
 		this.utilisateur = utilisateur;
 		this.actif = true;
+		this.controleur = controleur;
 		start();
 	}
 	
 	public void run() {
 		try {
-			DatagramSocket udpSocket = new DatagramSocket(1234);
+			DatagramSocket udpSocket = new DatagramSocket(2222);
 			byte[] buffer = new byte[256];
 			while(this.actif) {
 				DatagramPacket inPacket = new DatagramPacket(buffer, buffer.length);
@@ -63,7 +67,7 @@ public class Rafraichisseur extends Thread {
 				//envoie ses infos a l'utilisateur qui a envoye le message
 				InetAddress clientAddress = inPacket.getAddress();
 				String reponse = new String("1/" + utilisateur.getId() + "/" + utilisateur.getPseudo() + "/" + utilisateur.getAdresseIp());
-				DatagramPacket outPacket = new DatagramPacket(reponse.getBytes(), reponse.length(),clientAddress, 1234);
+				DatagramPacket outPacket = new DatagramPacket(reponse.getBytes(), reponse.length(),clientAddress, 2222);
 				udpSocket.send(outPacket);
 				break;
 			case "1":
@@ -71,15 +75,23 @@ public class Rafraichisseur extends Thread {
 				System.out.println("Reception des infos");
 				System.out.println("Ajout utilisateur dans liste utilisateurs");
 				System.out.println(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), messageFormate[3]));
-				utilisateur.getListeUtilisateurs().add(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), messageFormate[3]));
+				if (utilisateur.clientExiste(new Id(messageFormate[1]))) {
+					utilisateur.changeActif(true, new Id(messageFormate[1]));
+					utilisateur.changerPseudo(messageFormate[2], new Id(messageFormate[1]));
+				}else {
+					utilisateur.getListeUtilisateurs().add(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), messageFormate[3]));
+				}
+				controleur.actualisationUtilisateurs();
 				break;
 			case "2":
 				System.out.println("Reception utilisateur inactif");
 				utilisateur.changeActif(false, new Id(messageFormate[1]));
+				controleur.actualisationUtilisateurs();
 				break;
 			case "3":
 				System.out.println("Reception changement pseudo");
 				utilisateur.changerPseudo(messageFormate[2], new Id(messageFormate[1]));
+				controleur.actualisationUtilisateurs();
 				break;
 			default:
 				System.out.println("Mauvais format de message");

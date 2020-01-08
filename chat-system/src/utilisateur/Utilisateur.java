@@ -129,7 +129,7 @@ public class Utilisateur {
     }
 
     public void changeActif(boolean actif, Id idAgent) {
-        trouveClient(idAgent).changeActif(actif,idAgent);
+        trouveClient(idAgent).setActif(actif);
     }
 
     //liste historique

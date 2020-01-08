@@ -19,7 +19,7 @@ public class Notifieur{
 			DatagramSocket udpSocket = new DatagramSocket();
 			try {
 				InetAddress adresseBroadcast = InetAddress.getByName(this.utilisateur.getAdresseBroadcast());
-				DatagramPacket outPacket = new DatagramPacket(message.getBytes(), message.length(), adresseBroadcast, 1234);
+				DatagramPacket outPacket = new DatagramPacket(message.getBytes(), message.length(), adresseBroadcast, 2222);
 				udpSocket.send(outPacket);
 				udpSocket.close();
 			}
@@ -52,7 +52,7 @@ public class Notifieur{
 
 	public void notifierChangementPseudo(){
 		//message envoye sous la forme info/Id/pseudo
-		String message = new String("3/" + this.utilisateur.getPseudo() + "/" + this.utilisateur.getId());
+		String message = new String("3/" + this.utilisateur.getId() + "/" + this.utilisateur.getPseudo());
 		envoiBroadcast(message);
 	}
 

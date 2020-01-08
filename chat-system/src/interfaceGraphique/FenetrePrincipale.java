@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.JTextField;
@@ -66,7 +68,16 @@ public class FenetrePrincipale {
 		frame = new JFrame();
 		frame.setTitle("ChatSystem");
 		frame.setBounds(100, 100, 739, 520);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                System.out.println("Closed");
+                controleur.fermetureApp();
+                e.getWindow().dispose();
+            }
+        });
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.rowWeights = new double[]{1.0};
 		gridBagLayout.columnWeights = new double[]{1.0};
@@ -249,6 +260,7 @@ public class FenetrePrincipale {
 		ArrayList<Utilisateur> listeUtilisateurs = controleur.demandeUtilisateursActifs();
 		for (Utilisateur user : listeUtilisateurs) {
 			JButton btnUser = new JButton(user.getPseudo());
+			btnUser.setBackground(Color.CYAN);
 			btnUser.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					clicUtilisateurActifs(user);

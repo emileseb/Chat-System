@@ -13,10 +13,12 @@ public class Controleur {
 	
 	private Utilisateur modele;
 	private Notifieur notifieur;
+	private Rafraichisseur rafraichisseur;
 	
 	public Controleur(Utilisateur modele) {
 		this.modele = modele;
 		this.notifieur = new Notifieur(modele);
+		this.rafraichisseur = new Rafraichisseur(modele, this);
 		//demande les informations des utilisateurs pour remplir la liste utilisateurs dans rafraichisseur
 		notifieur.demandeInformation();
 		this.fenetreAccueil = new FenetreAccueil(this);
@@ -43,9 +45,15 @@ public class Controleur {
 			}else {
 				modele.changerPseudo(pseudo);
 				//envoi des infos a tous les utilisateurs
-				notifieur.envoiInformation();
+				notifieur.notifierChangementPseudo();
 				fenetrePrincipale.pseudoChange();
 			}
+		}
+	}
+	
+	public void actualisationUtilisateurs() {
+		if (fenetrePrincipale != null) {
+			fenetrePrincipale.afficherClavardeurs();
 		}
 	}
 	
@@ -67,5 +75,10 @@ public class Controleur {
 	
 	public ArrayList<Message> demandeHistoriqueDe(Utilisateur user) {
 		return modele.getHistoriqueDe(user.getId());
+	}
+	
+	public void fermetureApp() {
+		notifieur.notifierAgentInActif();
+		rafraichisseur.close();
 	}
 }
