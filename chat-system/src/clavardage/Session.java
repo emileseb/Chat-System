@@ -3,25 +3,21 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import conversation.Message;
 import utilisateur.Id;
 import utilisateur.Utilisateur;
 
 public class Session{
-    private Parleur bouche;
     private Ecouteur oreille;
     private ArrayList<Message> conversation;
     private Utilisateur moi;
     private Utilisateur lui;
     private Socket sock;
-    private Scanner scan;
     private PrintWriter out;
 
     // pour celui qui demande la connexion, il connait le destinataire
     public Session(Socket sock, Utilisateur me, Utilisateur lui) throws IOException {
-        this.scan = new Scanner(System.in);
         this.moi = me;
         this.lui = lui;
         this.sock = sock;
@@ -35,7 +31,6 @@ public class Session{
     
     // pour celui qui recoit la connexion, il ne connait pas le demandeur
     public Session(Socket sock, Utilisateur me) throws IOException {
-        this.scan = new Scanner(System.in);
         this.moi = me;
         this.sock = sock;
         this.conversation = new ArrayList<>();
@@ -46,10 +41,6 @@ public class Session{
 
     public Socket getSock() {
         return sock;
-    }
-
-    public Scanner getScan() {
-        return scan;
     }
 
     public Utilisateur getMoi() {
