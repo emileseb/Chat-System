@@ -78,8 +78,10 @@ public class Controleur {
 	}
 	
 	public void receptionMessage(Message msg) {
-		if (fenetrePrincipale.utilisateurSelectionne.equals(msg.getAuteur())) {
-			fenetrePrincipale.afficherMessage(msg);
+		if (fenetrePrincipale.utilisateurSelectionne != null) {
+			if (fenetrePrincipale.utilisateurSelectionne.equals(msg.getAuteur())) {
+				fenetrePrincipale.afficherMessage(msg);
+			}
 		}
 	}
 	

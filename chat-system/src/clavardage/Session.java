@@ -23,6 +23,7 @@ public class Session{
     public Session(Socket sock, Utilisateur me, Utilisateur lui) throws IOException {
         this.scan = new Scanner(System.in);
         this.moi = me;
+        this.lui = lui;
         this.sock = sock;
         this.conversation = new ArrayList<>();
         this.oreille = new Ecouteur(this,true);
