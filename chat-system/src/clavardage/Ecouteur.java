@@ -32,6 +32,7 @@ public class Ecouteur extends Thread {
                 if (input != null) {
                     if (input.equals("quit")){
                         currentSession.fermerSession();
+                        ClavardageManager.controleur.receptionConnexion();
                     }else {
                         rcvMsg = new Message(currentSession.getLui(), currentSession.getMoi(), input);
                         this.currentSession.getConversation().add(rcvMsg);

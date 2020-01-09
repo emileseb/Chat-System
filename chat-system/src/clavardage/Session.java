@@ -64,9 +64,13 @@ public class Session{
     }
     
     public void envoyerMessage(String msg) {
-    	Message sentMsg = new Message(moi, lui, msg);
-        conversation.add(sentMsg);
-        this.out.println(msg);
+    	if (msg.equals("quit")) {
+    		fermerSession();
+    	}else {
+	    	Message sentMsg = new Message(moi, lui, msg);
+	        conversation.add(sentMsg);
+	        this.out.println(msg);
+        }
     }
 
     public void fermerSession(){
