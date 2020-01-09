@@ -25,8 +25,7 @@ public class Session{
         this.moi = me;
         this.sock = sock;
         this.conversation = new ArrayList<>();
-        //this.bouche = new Parleur(this);
-        this.oreille = new Ecouteur(this);
+        this.oreille = new Ecouteur(this,true);
         this.out = new PrintWriter(sock.getOutputStream(), true);
         //send my identity
         this.out.println(moi.getId().toString());
@@ -39,10 +38,7 @@ public class Session{
         this.moi = me;
         this.sock = sock;
         this.conversation = new ArrayList<>();
-        //this.bouche = new Parleur(this);
-        this.oreille = new Ecouteur(this);
-        //send my identity
-        this.out.println(moi.getId().toString());
+        this.oreille = new Ecouteur(this,false);
         this.out = new PrintWriter(sock.getOutputStream(), true);
         System.out.println("Etablissement du clavardage avec " + lui.getId());
     }

@@ -11,11 +11,15 @@ public class Ecouteur extends Thread {
     private BufferedReader in;
     private Session currentSession;
 
-    public Ecouteur(Session sess) throws IOException {
+    // demandeur de connexion, il connait celui avec qui il parle
+    // recepteur de connexion, il ne connait pas le demandeur
+    public Ecouteur(Session sess, boolean demandeur) throws IOException {
         super();
         this.currentSession = sess;
         this.in = new BufferedReader(new InputStreamReader(sess.getSock().getInputStream()));
-        sess.setLui(new Id(in.readLine()));
+        if (!demandeur) {
+        	sess.setLui(new Id(in.readLine()));
+        }
         this.start();
     }
 
