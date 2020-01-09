@@ -3,6 +3,8 @@ import utilisateur.*;
 
 import java.util.ArrayList;
 
+import clavardage.ClavardageManager;
+import clavardage.Session;
 import communicationInformation.*;
 import conversation.Message;
 
@@ -93,5 +95,9 @@ public class Controleur {
 	public void fermetureApp() {
 		notifieur.notifierAgentInActif();
 		rafraichisseur.close();
+		for (Session sess : ClavardageManager.getListeSessions()) {
+			sess.fermerSession();
+			ClavardageManager.supprimerSession(sess);
+		}
 	}
 }
