@@ -86,6 +86,7 @@ public class Controleur {
 	}
 	
 	public void receptionConnexion() {
+		System.out.println("reception connexion");
 		fenetrePrincipale.afficherClavardeurs();
 	}
 	
