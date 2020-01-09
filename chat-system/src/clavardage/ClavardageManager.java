@@ -37,6 +37,7 @@ public class ClavardageManager extends Thread{
                 Session sess = new Session(servSock.accept(), me);
                 synchronized (listeClavardage) {
                     listeClavardage.add(sess);
+                    ClavardageManager.controleur.receptionConnexion();
                 }
             }
         } catch (IOException e) {
