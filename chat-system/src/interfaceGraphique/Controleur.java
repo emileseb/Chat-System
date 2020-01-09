@@ -70,11 +70,17 @@ public class Controleur {
 	}
 
 	public ArrayList<Utilisateur> demandeUtilisateursHistorique(){
-		return modele.getUtilisateursHistorique(); 
+		return modele.getUtilisateursHistorique();
 	}
 	
 	public ArrayList<Message> demandeHistoriqueDe(Utilisateur user) {
 		return modele.getHistoriqueDe(user.getId());
+	}
+	
+	public void receptionMessage(Message msg) {
+		if (fenetrePrincipale.utilisateurSelectionne.equals(msg.getAuteur())) {
+			fenetrePrincipale.afficherMessage(msg);
+		}
 	}
 	
 	public void fermetureApp() {

@@ -11,11 +11,11 @@ public class Ecouteur extends Thread {
     private BufferedReader in;
     private Session currentSession;
 
-    Ecouteur(Session sess) throws IOException {
+    public Ecouteur(Session sess) throws IOException {
         super();
         this.currentSession = sess;
         this.in = new BufferedReader(new InputStreamReader(sess.getSock().getInputStream()));
-        sess.setSonId(new Id(in.readLine()));
+        sess.setLui(new Id(in.readLine()));
         this.start();
     }
 
@@ -29,9 +29,9 @@ public class Ecouteur extends Thread {
                     if (input.equals("quit")){
                         currentSession.fermerSession();
                     }else {
-                        rcvMsg = new Message(currentSession.getMoi().trouveClient(currentSession.getSonId()), currentSession.getMoi(), input);
+                        rcvMsg = new Message(currentSession.getLui(), currentSession.getMoi(), input);
                         this.currentSession.getConversation().add(rcvMsg);
-                        System.out.println(rcvMsg);
+                        ClavardageManager.controleur.receptionMessage(rcvMsg);
                     }
                 }
             }

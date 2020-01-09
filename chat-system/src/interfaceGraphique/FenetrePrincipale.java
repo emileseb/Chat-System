@@ -23,6 +23,9 @@ import java.awt.GridLayout;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.text.*;
+
+
+import clavardage.*;
 import conversation.Message;
 import javax.swing.JTextPane;
 
@@ -49,9 +52,10 @@ public class FenetrePrincipale {
 	private JTextField entreeMessage;
 	private JButton boutonEnvoyer;
 	private JButton boutonClavarder;
+	private JButton boutonFinClavardage;
 
 	private Controleur controleur;
-	private Utilisateur utilisateurSelectionne;
+	public Utilisateur utilisateurSelectionne;
 	/**
 	 * Create the application.
 	 */
@@ -257,16 +261,32 @@ public class FenetrePrincipale {
 	
 	public void afficherClavardeurs() {
 		panelClavardeurs.removeAll();
-		ArrayList<Utilisateur> listeUtilisateurs = controleur.demandeUtilisateursActifs();
-		for (Utilisateur user : listeUtilisateurs) {
-			JButton btnUser = new JButton(user.getPseudo());
-			btnUser.setBackground(Color.CYAN);
+		//ajout utilisateurs en cours
+		ArrayList<Utilisateur> listeUtilisateursEnCours = new ArrayList<>();
+		for (Session sess : ClavardageManager.getListeSessions()) {
+			listeUtilisateursEnCours.add(sess.getLui());
+			JButton btnUser = new JButton(sess.getLui().getPseudo());
+			btnUser.setBackground(Color.GREEN);
 			btnUser.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					clicUtilisateurActifs(user);
+					clicUtilisateurEnCours(sess.getLui());
 				}
 			});
 			panelClavardeurs.add(btnUser);			
+		}
+		// ajout utilisateur actifs
+		ArrayList<Utilisateur> listeUtilisateurs = controleur.demandeUtilisateursActifs();
+		for (Utilisateur user : listeUtilisateurs) {
+			if (!listeUtilisateursEnCours.contains(user)) {
+				JButton btnUser = new JButton(user.getPseudo());
+				btnUser.setBackground(Color.CYAN);
+				btnUser.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						clicUtilisateurActifs(user);
+					}
+				});
+				panelClavardeurs.add(btnUser);		
+			}	
 		}
 	}
 	
@@ -275,6 +295,21 @@ public class FenetrePrincipale {
 		labelPseudoPartenaire.setText(user.getPseudo());
 		areaMessages.setText("");
 		utilisateurSelectionne = user;
+	}
+	
+	private void clicUtilisateurEnCours(Utilisateur user) {
+		boutonClavarder.setVisible(false);
+		boutonFinClavardage.setVisible(true);
+		boutonEnvoyer.setVisible(true);
+		entreeMessage.setVisible(true);
+		labelPseudoPartenaire.setText(user.getPseudo());
+		utilisateurSelectionne = user;
+		//afficher la conversation
+		areaMessages.setText("");
+		ArrayList<Message> conv = ClavardageManager.trouveSession(utilisateurSelectionne.getId()).getConversation();
+		for (Message msg : conv) {
+			afficherMessage(msg);
+		}		
 	}
 	
 	/*Panel Droite*/
@@ -330,6 +365,11 @@ public class FenetrePrincipale {
 		entreeMessage.setColumns(10);
 		
 		boutonEnvoyer = new JButton("Envoyer");
+		boutonEnvoyer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clicEnvoyer();
+			}
+		});
 		boutonEnvoyer.setVisible(false);
 		GridBagConstraints gbc_boutonEnvoyer = new GridBagConstraints();
 		gbc_boutonEnvoyer.insets = new Insets(0, 0, 5, 0);
@@ -349,13 +389,41 @@ public class FenetrePrincipale {
 		gbc_boutonEnvoyer.gridx = 1;
 		gbc_boutonEnvoyer.gridy = 2;
 		panelRight.add(boutonClavarder, gbc_boutonClavarder);
+		
+		boutonFinClavardage = new JButton("Fin");
+		boutonFinClavardage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clicFinClavardage();
+			}
+		});
+		boutonFinClavardage.setVisible(false);
+		GridBagConstraints gbc_boutonFinClavarder = new GridBagConstraints();
+		gbc_boutonEnvoyer.insets = new Insets(0, 0, 5, 0);
+		gbc_boutonEnvoyer.gridx = 1;
+		gbc_boutonEnvoyer.gridy = 2;
+		panelRight.add(boutonFinClavardage, gbc_boutonFinClavarder);
 	}
 
 	private void clicClavarder() {
-		System.out.println("clavarder avec " + utilisateurSelectionne);
+		boutonClavarder.setVisible(false);
+		boutonFinClavardage.setVisible(true);
+		boutonEnvoyer.setVisible(true);
+		entreeMessage.setVisible(true);
+		ClavardageManager.demandeClavardage(controleur.demandeUtilisateur(), utilisateurSelectionne);
+		afficherClavardeurs();
 	}
 	
-	private void afficherMessage(Message msg) {       
+	private void clicFinClavardage() {
+		
+	}
+	
+	private void clicEnvoyer() {
+		ClavardageManager.envoyerMessage(utilisateurSelectionne, entreeMessage.getText());
+		afficherMessage(new Message(controleur.demandeUtilisateur(), utilisateurSelectionne, entreeMessage.getText()));
+		entreeMessage.setText("");
+	}
+	
+	public void afficherMessage(Message msg) {       
 		try{
 			if (msg.getAuteur().equals(controleur.demandeUtilisateur())) {
 				document.setParagraphAttributes(document.getLength(), 1, right, false);
