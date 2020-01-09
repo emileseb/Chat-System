@@ -52,6 +52,17 @@ public class Utilisateur {
 		this.listeUtilisateurs = new ArrayList<Utilisateur>();
 		this.listeHistoriques = new ArrayList<Historique>();
 	}
+
+	//pour test
+	public Utilisateur(String pseudo, Id idUtilisateur, String adresseIp, String adresseBroadcast) {
+		this.pseudo = pseudo;
+		this.idUtilisateur = idUtilisateur;
+		this.actif = true;
+		this.adresseIp = adresseIp;
+		this.adresseBroadcast = adresseBroadcast;
+		this.listeUtilisateurs = new ArrayList<Utilisateur>();
+		this.listeHistoriques = new ArrayList<Historique>();
+	}
 	
 	public String getPseudo() {
 		return this.pseudo;

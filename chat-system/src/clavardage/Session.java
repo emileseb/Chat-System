@@ -28,6 +28,8 @@ public class Session{
         //this.bouche = new Parleur(this);
         this.oreille = new Ecouteur(this);
         this.out = new PrintWriter(sock.getOutputStream(), true);
+        //send my identity
+        this.out.println(moi.getId().toString());
         System.out.println("Etablissement du clavardage avec " + lui.getId());
     }
     
@@ -39,6 +41,8 @@ public class Session{
         this.conversation = new ArrayList<>();
         //this.bouche = new Parleur(this);
         this.oreille = new Ecouteur(this);
+        //send my identity
+        this.out.println(moi.getId().toString());
         this.out = new PrintWriter(sock.getOutputStream(), true);
         System.out.println("Etablissement du clavardage avec " + lui.getId());
     }

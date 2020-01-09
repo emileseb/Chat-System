@@ -414,7 +414,7 @@ public class FenetrePrincipale {
 	}
 	
 	private void clicFinClavardage() {
-		
+		ClavardageManager.envoyerMessage(utilisateurSelectionne, "quit");
 	}
 	
 	private void clicEnvoyer() {
