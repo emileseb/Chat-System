@@ -85,6 +85,10 @@ public class Controleur {
 		}
 	}
 	
+	public void receptionConnexion() {
+		fenetrePrincipale.afficherClavardeurs();
+	}
+	
 	public void fermetureApp() {
 		notifieur.notifierAgentInActif();
 		rafraichisseur.close();

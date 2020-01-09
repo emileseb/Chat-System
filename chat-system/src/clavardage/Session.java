@@ -81,7 +81,6 @@ public class Session{
     public void fermerSession(){
         moi.mettreAJourHistorique(conversation,lui.getId());
         oreille.interrupt();
-        bouche.interrupt();
         try {
             sock.close();
         } catch (IOException e) {
