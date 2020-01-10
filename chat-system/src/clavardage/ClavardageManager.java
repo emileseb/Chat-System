@@ -15,14 +15,14 @@ public class ClavardageManager extends Thread{
     private static int port = 5678;
     private Utilisateur me;
     private static ArrayList<Session> listeClavardage = new ArrayList<>();
-    private boolean continuer;
+    private static boolean continuer;
     public static Controleur controleur;
 
-    public ClavardageManager(Utilisateur me, Controleur controleur){
+    public ClavardageManager(Utilisateur me, Controleur control){
         super();
         this.me = me;
-        this.continuer = true;
-        this.controleur = controleur;
+       	continuer = true;
+        controleur = control;
         this.start();
     }
 
@@ -31,7 +31,7 @@ public class ClavardageManager extends Thread{
             System.out.println(me.getAdresseIp());
             // Création du serveur Socket
             ServerSocket servSock = new ServerSocket(port);
-            while (this.continuer) {
+            while (continuer) {
                 System.out.println("waiting for clavardeur to clavarde ...");
                 // Récupération du socket associé
                 Session sess = new Session(servSock.accept(), me);
@@ -40,6 +40,7 @@ public class ClavardageManager extends Thread{
                     ClavardageManager.controleur.actualisationUtilisateurs();
                 }
             }
+            servSock.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,5 +82,9 @@ public class ClavardageManager extends Thread{
     
     public static ArrayList<Session> getListeSessions() {
     	return listeClavardage;
+    }
+    
+    public static void close() {
+    	continuer = false;
     }
 }
