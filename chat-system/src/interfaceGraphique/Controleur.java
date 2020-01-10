@@ -90,6 +90,7 @@ public class Controleur {
 	public void receptionConnexion() {
 		System.out.println("reception connexion");
 		fenetrePrincipale.afficherClavardeurs();
+		fenetrePrincipale.afficherHistoriques();
 	}
 	
 	public void fermetureApp() {
