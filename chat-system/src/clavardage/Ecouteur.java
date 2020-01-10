@@ -44,6 +44,6 @@ public class Ecouteur extends Thread {
         } catch (IOException e) {
             System.out.println("oreille : IO exception raised " + e);
         }
-        System.out.println("oreille : Fin");
+        System.out.println("Fermeture oreille");
     }
 }

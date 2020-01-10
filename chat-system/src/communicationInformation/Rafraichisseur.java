@@ -49,6 +49,7 @@ public class Rafraichisseur extends Thread {
 			}
 			//fin du rafraichisseur = fin de l'appli
 			udpSocket.close();
+			System.out.println("Fermeture rafraichisseur");
 		}
 		catch(SocketException e2) {
 			System.out.println("Rafraichisseur Udp socket failure");

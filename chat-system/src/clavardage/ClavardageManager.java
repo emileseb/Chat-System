@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -31,16 +32,22 @@ public class ClavardageManager extends Thread{
             System.out.println(me.getAdresseIp());
             // Création du serveur Socket
             ServerSocket servSock = new ServerSocket(port);
+            servSock.setSoTimeout(5000);
             while (continuer) {
                 System.out.println("waiting for clavardeur to clavarde ...");
                 // Récupération du socket associé
-                Session sess = new Session(servSock.accept(), me);
-                synchronized (listeClavardage) {
-                    listeClavardage.add(sess);
-                    ClavardageManager.controleur.actualisationUtilisateurs();
+                try {
+                	Session sess = new Session(servSock.accept(), me);
+                    synchronized (listeClavardage) {
+                        listeClavardage.add(sess);
+                        ClavardageManager.controleur.actualisationUtilisateurs();
+                    }
+                }catch(SocketTimeoutException ex) {
+                	
                 }
             }
             servSock.close();
+            System.out.println("Fermeture clavardage manager");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,7 +88,7 @@ public class ClavardageManager extends Thread{
     }
     
     public static ArrayList<Session> getListeSessions() {
-    	return listeClavardage;
+        return listeClavardage;
     }
     
     public static void close() {

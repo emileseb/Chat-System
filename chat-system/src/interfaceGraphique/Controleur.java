@@ -89,8 +89,10 @@ public class Controleur {
 	}
 	
 	public void fermetureApp() {
+		System.out.println("Fermeture application");
 		rafraichisseur.close();
-		for (Session sess : ClavardageManager.getListeSessions()) {
+		ArrayList<Session> sessions = new ArrayList<Session>(ClavardageManager.getListeSessions());
+		for (Session sess : sessions) {
 			ClavardageManager.envoyerMessage(sess.getLui(), "quit");
 		}
 		ClavardageManager.close();

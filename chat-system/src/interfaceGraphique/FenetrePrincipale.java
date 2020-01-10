@@ -79,7 +79,6 @@ public class FenetrePrincipale {
             @Override
             public void windowClosing(WindowEvent e)
             {
-                System.out.println("Closed");
                 controleur.fermetureApp();
                 e.getWindow().dispose();
             }
