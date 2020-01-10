@@ -47,7 +47,6 @@ public class ClavardageManager extends Thread{
                 	
                 }
             }
-            servSock.close();
             System.out.println("Fermeture clavardage manager");
         } catch (IOException e) {
             e.printStackTrace();
