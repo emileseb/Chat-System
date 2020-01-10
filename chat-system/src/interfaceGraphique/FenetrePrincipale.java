@@ -246,6 +246,7 @@ public class FenetrePrincipale {
 		boutonClavarder.setVisible(false);
 		labelPseudoPartenaire.setText(user.getPseudo());
 		
+		areaMessages.setText("");
 		ArrayList<Message> conversation = controleur.demandeHistoriqueDe(user);
 		for (Message msg : conversation) {
 			afficherMessage(msg);
