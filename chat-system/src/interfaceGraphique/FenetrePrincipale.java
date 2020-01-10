@@ -429,15 +429,15 @@ public class FenetrePrincipale {
 	private void clicFinClavardage() {
 		ClavardageManager.envoyerMessage(utilisateurSelectionne, ClavardageManager.messageFin);
 		affichageFinClavardage();
+		afficherClavardeurs();
+		afficherHistoriques();	
 	}
 	
 	public void affichageFinClavardage() {
 		boutonClavarder.setVisible(true);
 		boutonFinClavardage.setVisible(false);
 		boutonEnvoyer.setVisible(false);
-		entreeMessage.setVisible(false);
-		afficherClavardeurs();
-		afficherHistoriques();		
+		entreeMessage.setVisible(false);	
 	}
 	
 	private void clicEnvoyer() {
