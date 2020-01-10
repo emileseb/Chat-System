@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -285,7 +287,7 @@ public class FenetrePrincipale {
 						clicUtilisateurActifs(user);
 					}
 				});
-				panelClavardeurs.add(btnUser);		
+				panelClavardeurs.add(btnUser);
 			}	
 		}
 	}
@@ -358,6 +360,14 @@ public class FenetrePrincipale {
 		scrollPanel.setViewportView(areaMessages);
 		
 		entreeMessage = new JTextField();
+		entreeMessage.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER){
+					clicEnvoyer();
+				}
+			}
+		});
 		entreeMessage.setVisible(false);
 		GridBagConstraints gbc_entreeMessage = new GridBagConstraints();
 		gbc_entreeMessage.insets = new Insets(0, 0, 5, 5);
@@ -423,6 +433,7 @@ public class FenetrePrincipale {
 		entreeMessage.setVisible(false);
 		ClavardageManager.envoyerMessage(utilisateurSelectionne, "quit");
 		afficherClavardeurs();
+		afficherHistoriques();
 	}
 	
 	private void clicEnvoyer() {
