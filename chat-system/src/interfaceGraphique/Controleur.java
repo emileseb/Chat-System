@@ -89,11 +89,11 @@ public class Controleur {
 	}
 	
 	public void fermetureApp() {
-		notifieur.notifierAgentInActif();
 		rafraichisseur.close();
 		for (Session sess : ClavardageManager.getListeSessions()) {
-			sess.fermerSession();
+			ClavardageManager.envoyerMessage(sess.getLui(), "quit");
 		}
 		ClavardageManager.close();
+		notifieur.notifierAgentInActif();
 	}
 }
