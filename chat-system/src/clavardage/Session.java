@@ -64,7 +64,7 @@ public class Session{
     }
     
     public void envoyerMessage(String msg) {
-    	if (msg.equals("quit")) {
+    	if (msg.equals(ClavardageManager.messageFin)) {
 	        this.out.println(msg);
     		fermerSession();
     	}else {

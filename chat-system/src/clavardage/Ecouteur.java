@@ -30,14 +30,13 @@ public class Ecouteur extends Thread {
             while (!this.isInterrupted()) {
                 input = in.readLine();
                 if (input != null) {
-                    if (input.equals("quit")){
+                    rcvMsg = new Message(currentSession.getLui(), currentSession.getMoi(), input);
+                    if (input.equals(ClavardageManager.messageFin)){
                         currentSession.fermerSession();
-                        ClavardageManager.controleur.actualisationUtilisateurs();
                     }else {
-                        rcvMsg = new Message(currentSession.getLui(), currentSession.getMoi(), input);
                         this.currentSession.getConversation().add(rcvMsg);
-                        ClavardageManager.controleur.receptionMessage(rcvMsg);
                     }
+                    ClavardageManager.controleur.receptionMessage(rcvMsg);
                 }
             }
         }catch (SocketException e){

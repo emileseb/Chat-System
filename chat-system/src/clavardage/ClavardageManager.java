@@ -18,6 +18,7 @@ public class ClavardageManager extends Thread{
     private static ArrayList<Session> listeClavardage = new ArrayList<>();
     private static boolean continuer;
     public static Controleur controleur;
+    public static String messageFin = "END_OF_CONNEXION";
 
     public ClavardageManager(Utilisateur me, Controleur control){
         super();
@@ -33,8 +34,8 @@ public class ClavardageManager extends Thread{
             // Création du serveur Socket
             ServerSocket servSock = new ServerSocket(port);
             servSock.setSoTimeout(5000);
+            System.out.println("waiting for clavardeur to clavarde ...");
             while (continuer) {
-                System.out.println("waiting for clavardeur to clavarde ...");
                 // Récupération du socket associé
                 try {
                 	Session sess = new Session(servSock.accept(), me);

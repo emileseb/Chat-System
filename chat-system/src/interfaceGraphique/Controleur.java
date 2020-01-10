@@ -83,7 +83,11 @@ public class Controleur {
 	public void receptionMessage(Message msg) {
 		if (fenetrePrincipale.utilisateurSelectionne != null) {
 			if (fenetrePrincipale.utilisateurSelectionne.equals(msg.getAuteur())) {
-				fenetrePrincipale.afficherMessage(msg);
+				if (msg.getContenu().equals(ClavardageManager.messageFin)) {
+					fenetrePrincipale.affichageFinClavardage();
+				}else {
+					fenetrePrincipale.afficherMessage(msg);					
+				}
 			}
 		}
 	}
@@ -93,7 +97,7 @@ public class Controleur {
 		rafraichisseur.close();
 		ArrayList<Session> sessions = new ArrayList<Session>(ClavardageManager.getListeSessions());
 		for (Session sess : sessions) {
-			ClavardageManager.envoyerMessage(sess.getLui(), "quit");
+			ClavardageManager.envoyerMessage(sess.getLui(), ClavardageManager.messageFin);
 		}
 		ClavardageManager.close();
 		notifieur.notifierAgentInActif();
