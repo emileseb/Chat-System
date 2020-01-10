@@ -292,6 +292,9 @@ public class FenetrePrincipale {
 	
 	private void clicUtilisateurActifs(Utilisateur user) {
 		boutonClavarder.setVisible(true);
+		boutonFinClavardage.setVisible(false);
+		boutonEnvoyer.setVisible(false);
+		entreeMessage.setVisible(false);
 		labelPseudoPartenaire.setText(user.getPseudo());
 		areaMessages.setText("");
 		utilisateurSelectionne = user;

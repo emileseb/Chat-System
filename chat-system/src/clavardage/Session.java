@@ -65,6 +65,7 @@ public class Session{
     
     public void envoyerMessage(String msg) {
     	if (msg.equals("quit")) {
+	        this.out.println(msg);
     		fermerSession();
     	}else {
 	    	Message sentMsg = new Message(moi, lui, msg);
