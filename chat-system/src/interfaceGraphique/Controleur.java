@@ -56,6 +56,7 @@ public class Controleur {
 	public void actualisationUtilisateurs() {
 		if (fenetrePrincipale != null) {
 			fenetrePrincipale.afficherClavardeurs();
+			fenetrePrincipale.afficherHistoriques();
 		}
 	}
 	
@@ -85,12 +86,6 @@ public class Controleur {
 				fenetrePrincipale.afficherMessage(msg);
 			}
 		}
-	}
-	
-	public void receptionConnexion() {
-		System.out.println("reception connexion");
-		fenetrePrincipale.afficherClavardeurs();
-		fenetrePrincipale.afficherHistoriques();
 	}
 	
 	public void fermetureApp() {
