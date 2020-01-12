@@ -39,7 +39,6 @@ public class FenetrePrincipale {
 	private JTabbedPane panelOnglets;
 	private JPanel panelHistoriques;
 	private JPanel panelClavardeurs;
-	private JScrollPane scrollPanel;
 	private JTextPane areaMessages;
 	private StyledDocument document;
 	private SimpleAttributeSet left;
@@ -219,8 +218,9 @@ public class FenetrePrincipale {
 	
 	private void panelHistoriques() {
 		panelHistoriques = new JPanel();
-		panelOnglets.addTab("Historiques", null, panelHistoriques, null);
-		panelHistoriques.setLayout(new GridLayout(10, 1));
+		JScrollPane scroll = new JScrollPane(panelHistoriques, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		panelOnglets.addTab("Historiques", null, scroll, null);
+		panelHistoriques.setLayout(new GridLayout(50, 1));
 		
 		afficherHistoriques();
 	}
@@ -255,8 +255,9 @@ public class FenetrePrincipale {
 	
 	private void panelClavardeur() {
 		panelClavardeurs = new JPanel();
-		panelOnglets.addTab("Clavardeurs", null, panelClavardeurs, null);
-		panelClavardeurs.setLayout(new GridLayout(10, 1));
+		JScrollPane scroll = new JScrollPane(panelClavardeurs, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		panelOnglets.addTab("Clavardeurs", null, scroll, null);
+		panelClavardeurs.setLayout(new GridLayout(50, 1));
 		
 		afficherClavardeurs();
 	}
@@ -339,7 +340,7 @@ public class FenetrePrincipale {
 		gbc_labelPseudoPartenaire.gridwidth = 2;
 		panelRight.add(labelPseudoPartenaire, gbc_labelPseudoPartenaire);
 		
-		scrollPanel = new JScrollPane();
+		JScrollPane scrollPanel = new JScrollPane();
 		scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GridBagConstraints gbc_scrollPanel = new GridBagConstraints();
