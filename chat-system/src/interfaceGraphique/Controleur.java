@@ -64,7 +64,7 @@ public class Controleur {
 		if (fenetrePrincipale != null) {
 			if (fenetrePrincipale.utilisateurSelectionne != null) {
 				if (fenetrePrincipale.utilisateurSelectionne.equals(user)) {
-					fenetrePrincipale.afficherConversation(user);
+					fenetrePrincipale.afficherHistorique(user);
 				}
 			}
 		}		
