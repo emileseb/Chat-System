@@ -244,13 +244,8 @@ public class FenetrePrincipale {
 		boutonEnvoyer.setVisible(false);
 		boutonClavarder.setVisible(false);
 		labelPseudoPartenaire.setText(user.getPseudo());
-		
-		areaMessages.setText("");
-		ArrayList<Message> conversation = controleur.demandeHistoriqueDe(user);
-		for (Message msg : conversation) {
-			afficherMessage(msg);
-		}	
 
+		afficherConversation(user);
 	}
 	
 	private void panelClavardeur() {
@@ -425,6 +420,7 @@ public class FenetrePrincipale {
 		entreeMessage.setVisible(true);
 		ClavardageManager.demandeClavardage(controleur.demandeUtilisateur(), utilisateurSelectionne);
 		afficherClavardeurs();
+		afficherConversation(utilisateurSelectionne);
 	}
 	
 	private void clicFinClavardage() {
@@ -459,5 +455,13 @@ public class FenetrePrincipale {
 		}catch(BadLocationException ex) {
 			
 		}		
+	}
+	
+	public void afficherConversation(Utilisateur user) {
+		areaMessages.setText("");
+		ArrayList<Message> conversation = controleur.demandeHistoriqueDe(user);
+		for (Message msg : conversation) {
+			afficherMessage(msg);
+		}	
 	}
 }

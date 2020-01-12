@@ -19,6 +19,7 @@ public class Ecouteur extends Thread {
         this.in = new BufferedReader(new InputStreamReader(sess.getSock().getInputStream()));
         if (!demandeur) {
         	sess.setLui(new Id(in.readLine()));
+        	ClavardageManager.controleur.actualisationHistorique(sess.getLui());
         }
         this.start();
     }

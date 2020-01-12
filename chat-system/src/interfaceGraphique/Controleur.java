@@ -60,6 +60,14 @@ public class Controleur {
 		}
 	}
 	
+	public void actualisationHistorique(Utilisateur user) {
+		if (fenetrePrincipale != null) {
+			if (fenetrePrincipale.utilisateurSelectionne.equals(user)) {
+				fenetrePrincipale.afficherConversation(user);
+			}
+		}		
+	}
+	
 	public String demandePseudo() {
 		return (modele.getPseudo());
 	}
