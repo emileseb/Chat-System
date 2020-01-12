@@ -424,11 +424,8 @@ public class FenetrePrincipale {
 	}
 
 	private void clicClavarder() {
-		boutonClavarder.setVisible(false);
-		boutonFinClavardage.setVisible(true);
-		boutonEnvoyer.setVisible(true);
-		entreeMessage.setVisible(true);
 		ClavardageManager.demandeClavardage(controleur.demandeUtilisateur(), utilisateurSelectionne);
+		affichageDebutClavardage();
 		afficherClavardeurs();
 		afficherHistorique(utilisateurSelectionne);
 	}
@@ -438,6 +435,13 @@ public class FenetrePrincipale {
 		affichageFinClavardage();
 		afficherClavardeurs();
 		afficherHistoriques();	
+	}
+	
+	public void affichageDebutClavardage() {
+		boutonClavarder.setVisible(false);
+		boutonFinClavardage.setVisible(true);
+		boutonEnvoyer.setVisible(true);
+		entreeMessage.setVisible(true);		
 	}
 	
 	public void affichageFinClavardage() {

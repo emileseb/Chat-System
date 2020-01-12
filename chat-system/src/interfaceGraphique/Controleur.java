@@ -79,6 +79,17 @@ public class Controleur {
 		}		
 	}
 	
+	public void receptionDebutClavardage(Utilisateur user) {
+		actualisationUtilisateurs();
+		if (fenetrePrincipale != null) {
+			if (fenetrePrincipale.utilisateurSelectionne != null) {
+				if (fenetrePrincipale.utilisateurSelectionne.equals(user)) {
+					fenetrePrincipale.affichageDebutClavardage();
+				}
+			}
+		}			
+	}
+	
 	public String demandePseudo() {
 		return (modele.getPseudo());
 	}

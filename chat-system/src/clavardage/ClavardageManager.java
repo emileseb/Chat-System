@@ -41,7 +41,7 @@ public class ClavardageManager extends Thread{
                 	Session sess = new Session(servSock.accept(), me);
                     synchronized (listeClavardage) {
                         listeClavardage.add(sess);
-                        ClavardageManager.controleur.actualisationUtilisateurs();
+                        ClavardageManager.controleur.receptionDebutClavardage(sess.getLui());
                     }
                 }catch(SocketTimeoutException ex) {
                 	
