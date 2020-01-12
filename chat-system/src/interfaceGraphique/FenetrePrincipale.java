@@ -307,8 +307,8 @@ public class FenetrePrincipale {
 		utilisateurSelectionne = user;
 		//afficher la conversation
 		areaMessages.setText("");
-		afficherHistorique(utilisateurSelectionne);
-		ArrayList<Message> conv = ClavardageManager.trouveSession(utilisateurSelectionne.getId()).getConversation();
+		afficherHistorique(user);
+		ArrayList<Message> conv = ClavardageManager.trouveSession(user.getId()).getConversation();
 		for (Message msg : conv) {
 			afficherMessage(msg);
 		}		
@@ -412,6 +412,15 @@ public class FenetrePrincipale {
 		gbc_boutonEnvoyer.gridx = 1;
 		gbc_boutonEnvoyer.gridy = 2;
 		panelRight.add(boutonFinClavardage, gbc_boutonFinClavarder);
+	}
+	
+	public void clearRightPanel() {
+		areaMessages.setText("");
+		entreeMessage.setVisible(false);
+		boutonEnvoyer.setVisible(false);
+		boutonClavarder.setVisible(false);
+		boutonFinClavardage.setVisible(false);
+		
 	}
 
 	private void clicClavarder() {

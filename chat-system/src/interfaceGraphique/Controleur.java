@@ -70,6 +70,15 @@ public class Controleur {
 		}		
 	}
 	
+	public void receptionUtilisateurInactif() {
+		if (fenetrePrincipale != null) {
+			if (fenetrePrincipale.utilisateurSelectionne != null) {
+				fenetrePrincipale.clearRightPanel();
+			}
+			fenetrePrincipale.afficherClavardeurs();
+		}		
+	}
+	
 	public String demandePseudo() {
 		return (modele.getPseudo());
 	}

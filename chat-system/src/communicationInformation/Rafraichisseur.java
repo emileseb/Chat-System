@@ -87,7 +87,7 @@ public class Rafraichisseur extends Thread {
 			case "2":
 				System.out.println("Reception utilisateur inactif");
 				utilisateur.changeActif(false, new Id(messageFormate[1]));
-				controleur.actualisationUtilisateurs();
+				controleur.receptionUtilisateurInactif();
 				break;
 			case "3":
 				System.out.println("Reception changement pseudo");
