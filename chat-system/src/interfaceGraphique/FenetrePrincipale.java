@@ -243,6 +243,7 @@ public class FenetrePrincipale {
 		entreeMessage.setVisible(false);
 		boutonEnvoyer.setVisible(false);
 		boutonClavarder.setVisible(false);
+		boutonFinClavardage.setVisible(false);
 		labelPseudoPartenaire.setText(user.getPseudo());
 
 		afficherHistorique(user);
