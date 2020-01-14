@@ -1,4 +1,5 @@
 package application;
+import baseDeDonnees.LocalDB;
 import clavardage.ClavardageManager;
 import utilisateur.*;
 
@@ -12,6 +13,8 @@ public class Application {
 		serverGuy.getListeUtilisateurs().add(client2);
 
 		ClavardageManager com = new ClavardageManager(serverGuy);
+
+		LocalDB database = new LocalDB();
 	}
 
 }

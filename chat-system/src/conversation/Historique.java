@@ -10,14 +10,12 @@ public class Historique {
     //Constructor
     public Historique(Id idPartenaire, ArrayList<Message> historique){
         this.idPartenaire = idPartenaire;
-        this.historique= new ArrayList<Message>();
+        this.historique= new ArrayList<>();
         this.ajouterMessage(historique);
     }
 
     public void ajouterMessage(ArrayList<Message> conversation){
-        for (Message msg : conversation) {
-            this.historique.add(msg);
-        }
+        this.historique.addAll(conversation);
     }
 
     //Getters
@@ -26,11 +24,11 @@ public class Historique {
 
     @Override
     public String toString() {
-        String retour = "";
+        StringBuilder retour = new StringBuilder();
         for (Message m : historique ) {
-            retour += m.toString() + "\n";
+            retour.append(m.toString()).append("\n");
         }
-        return retour;
+        return retour.toString();
     }
 
 }
