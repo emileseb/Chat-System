@@ -2,20 +2,22 @@ package baseDeDonnees;
 
 import conversation.Historique;
 import conversation.Message;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import utilisateur.Id;
+import utilisateur.Utilisateur;
+
+import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
  * @author Emile Sebastianutti
  */
 public class LocalDB {
-
     protected Connection conn;
+    private Utilisateur me;
 
-    public LocalDB(){
+    public LocalDB(Utilisateur me){
+        this.me = me;
         this.conn = connectionDB();
         this.createTableConv();
     }
@@ -46,10 +48,10 @@ public class LocalDB {
     private void createTableConv(){
         String query = "CREATE TABLE IF NOT EXISTS messages \n"
                 + "(\n"
-                + "     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,\n"
-                + "     idPartenaire BIGINT NOT NULL"
-                + "     Auteur boolean NOT NULL,\n" //true si je suis l'auteur, false si c'est mon partenaire
-                + "     contenu text,\n"
+                + "     id INTEGER IDENTITY PRIMARY KEY,\n"
+                + "     idPartenaire BIGINT NOT NULL,"
+                + "     auteur boolean NOT NULL,\n" //true si je suis l'auteur, false si c'est mon partenaire
+                + "     contenu LONGVARCHAR,\n"
                 + "     horodatage VARCHAR(20) NOT NULL\n"
                 + ");";
         try {
@@ -62,18 +64,54 @@ public class LocalDB {
         }
     }
 
-    private void sauvegarderConversation(Historique hist){
+    public void sauvegarderConversation(Historique hist){
         for (Message m : hist.getHistorique()){
-            String query = "INSERT INTO messages VALUES ('33', 'true', 'bonjour', '11111111111111111111')";
+            String query = "INSERT INTO messages (idPartenaire, auteur, contenu, horodatage) VALUES (?, ?, ?, ?)"; //INSERT INTO users (name, email) VALUES ('mkyong', 'aaa@gmail.com');
             try {
+                PreparedStatement pstmt = this.conn.prepareStatement(query);
+                pstmt.setString(1, hist.getIdPartenaire().toString());
+                if (m.getAuteur().getId().equals(me.getId())){
+                    pstmt.setString(2, "true");
+                } else {
+                    pstmt.setString(2, "false");
+                }
+                pstmt.setString(3, m.getContenu());
+                pstmt.setString(4, m.getDate());
+                pstmt.executeUpdate();
+                pstmt.close();
+            } catch (SQLException e) {
+                System.out.println("LocalDB: Error createTableKnownUsers");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Historique getConversation(Utilisateur partenaire){
+        ArrayList<Message> msgs = new ArrayList<>();
+        try {
+            /*String query = "SELECT auteur FROM table where idPartenaire = " + partenaire.toString();
             Statement stmt = this.conn.createStatement();
-            stmt.executeUpdate(query);
-            stmt.close();
+            ResultSet rs = stmt.executeUpdate(query);
+            stmt.close();*/
+            String query = "SELECT * FROM messages WHERE idPartenaire = ?";
+            PreparedStatement pstmt = this.conn.prepareStatement(query);
+            pstmt.setString(1, partenaire.getId().toString());
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+                if (rs.getBoolean(3)){
+                    msgs.add(new Message(this.me, partenaire, rs.getString(4), rs.getString(5)));
+                } else {
+                    msgs.add(new Message(partenaire, this.me, rs.getString(4), rs.getString(5)));
+                }
+            }
+            rs.close();
+            pstmt.close();
         } catch (SQLException e) {
             System.out.println("LocalDB: Error createTableKnownUsers");
             e.printStackTrace();
         }
-        }
+        Historique hist = new Historique(partenaire.getId(), msgs);
+        return hist;
     }
 
     /*// Create and execute statement

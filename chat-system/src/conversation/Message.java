@@ -9,14 +9,24 @@ public class Message {
 	private Utilisateur auteur;
 	private Utilisateur destinataire;
 	private String contenu;
-	private LocalDateTime date;
+	private String date;
 	
 	public Message(Utilisateur auteur, Utilisateur destinataire, String contenu) {
 		this.auteur = auteur;
 		this.destinataire = destinataire;
 		this.contenu = contenu;
-		this.date = LocalDateTime.now();
+		LocalDateTime horodatage = LocalDateTime.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+		this.date = horodatage.format(formatter);
 	}
+
+	public Message(Utilisateur auteur, Utilisateur destinataire, String contenu, String date) {
+		this.auteur = auteur;
+		this.destinataire = destinataire;
+		this.contenu = contenu;
+		this.date = date;
+	}
+
 	
 	public Utilisateur getAuteur() {
 		return this.auteur;
@@ -27,8 +37,7 @@ public class Message {
 	}
 	
 	public String getDate() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-		return date.format(formatter);
+		return this.date;
 	}
 
 	public String getContenu() {return this.contenu;}
