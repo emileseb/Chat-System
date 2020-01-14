@@ -3,6 +3,8 @@ import utilisateur.*;
 
 import java.util.ArrayList;
 
+import clavardage.ClavardageManager;
+import clavardage.Session;
 import communicationInformation.*;
 import conversation.Message;
 
@@ -13,10 +15,12 @@ public class Controleur {
 	
 	private Utilisateur modele;
 	private Notifieur notifieur;
+	private Rafraichisseur rafraichisseur;
 	
 	public Controleur(Utilisateur modele) {
 		this.modele = modele;
 		this.notifieur = new Notifieur(modele);
+		this.rafraichisseur = new Rafraichisseur(modele, this);
 		//demande les informations des utilisateurs pour remplir la liste utilisateurs dans rafraichisseur
 		notifieur.demandeInformation();
 		this.fenetreAccueil = new FenetreAccueil(this);
@@ -43,10 +47,47 @@ public class Controleur {
 			}else {
 				modele.changerPseudo(pseudo);
 				//envoi des infos a tous les utilisateurs
-				notifieur.envoiInformation();
+				notifieur.notifierChangementPseudo();
 				fenetrePrincipale.pseudoChange();
 			}
 		}
+	}
+	
+	public void actualisationUtilisateurs() {
+		if (fenetrePrincipale != null) {
+			fenetrePrincipale.afficherClavardeurs();
+			fenetrePrincipale.afficherHistoriques();
+		}
+	}
+	
+	public void actualisationHistorique(Utilisateur user) {
+		if (fenetrePrincipale != null) {
+			if (fenetrePrincipale.utilisateurSelectionne != null) {
+				if (fenetrePrincipale.utilisateurSelectionne.equals(user)) {
+					fenetrePrincipale.afficherHistorique(user);
+				}
+			}
+		}		
+	}
+	
+	public void receptionUtilisateurInactif() {
+		if (fenetrePrincipale != null) {
+			if (fenetrePrincipale.utilisateurSelectionne != null) {
+				fenetrePrincipale.clearRightPanel();
+			}
+			fenetrePrincipale.afficherClavardeurs();
+		}		
+	}
+	
+	public void receptionDebutClavardage(Utilisateur user) {
+		actualisationUtilisateurs();
+		if (fenetrePrincipale != null) {
+			if (fenetrePrincipale.utilisateurSelectionne != null) {
+				if (fenetrePrincipale.utilisateurSelectionne.equals(user)) {
+					fenetrePrincipale.affichageDebutClavardage();
+				}
+			}
+		}			
 	}
 	
 	public String demandePseudo() {
@@ -62,10 +103,33 @@ public class Controleur {
 	}
 
 	public ArrayList<Utilisateur> demandeUtilisateursHistorique(){
-		return modele.getUtilisateursHistorique(); 
+		return modele.getUtilisateursHistorique();
 	}
 	
 	public ArrayList<Message> demandeHistoriqueDe(Utilisateur user) {
 		return modele.getHistoriqueDe(user.getId());
+	}
+	
+	public void receptionMessage(Message msg) {
+		if (fenetrePrincipale.utilisateurSelectionne != null) {
+			if (fenetrePrincipale.utilisateurSelectionne.equals(msg.getAuteur())) {
+				if (msg.getContenu().equals(ClavardageManager.messageFin)) {
+					fenetrePrincipale.affichageFinClavardage();
+				}else {
+					fenetrePrincipale.afficherMessage(msg);					
+				}
+			}
+		}
+	}
+	
+	public void fermetureApp() {
+		System.out.println("Fermeture application");
+		rafraichisseur.close();
+		ArrayList<Session> sessions = new ArrayList<Session>(ClavardageManager.getListeSessions());
+		for (Session sess : sessions) {
+			ClavardageManager.envoyerMessage(sess.getLui(), ClavardageManager.messageFin);
+		}
+		ClavardageManager.close();
+		notifieur.notifierAgentInActif();
 	}
 }

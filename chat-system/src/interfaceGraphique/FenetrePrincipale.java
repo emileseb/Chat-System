@@ -9,6 +9,10 @@ import javax.swing.JButton;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.JTextField;
@@ -21,6 +25,9 @@ import java.awt.GridLayout;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.text.*;
+
+
+import clavardage.*;
 import conversation.Message;
 import javax.swing.JTextPane;
 
@@ -32,7 +39,6 @@ public class FenetrePrincipale {
 	private JTabbedPane panelOnglets;
 	private JPanel panelHistoriques;
 	private JPanel panelClavardeurs;
-	private JScrollPane scrollPanel;
 	private JTextPane areaMessages;
 	private StyledDocument document;
 	private SimpleAttributeSet left;
@@ -47,9 +53,10 @@ public class FenetrePrincipale {
 	private JTextField entreeMessage;
 	private JButton boutonEnvoyer;
 	private JButton boutonClavarder;
+	private JButton boutonFinClavardage;
 
 	private Controleur controleur;
-	private Utilisateur utilisateurSelectionne;
+	public Utilisateur utilisateurSelectionne;
 	/**
 	 * Create the application.
 	 */
@@ -66,7 +73,15 @@ public class FenetrePrincipale {
 		frame = new JFrame();
 		frame.setTitle("ChatSystem");
 		frame.setBounds(100, 100, 739, 520);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                controleur.fermetureApp();
+                e.getWindow().dispose();
+            }
+        });
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.rowWeights = new double[]{1.0};
 		gridBagLayout.columnWeights = new double[]{1.0};
@@ -203,8 +218,9 @@ public class FenetrePrincipale {
 	
 	private void panelHistoriques() {
 		panelHistoriques = new JPanel();
-		panelOnglets.addTab("Historiques", null, panelHistoriques, null);
-		panelHistoriques.setLayout(new GridLayout(10, 1));
+		JScrollPane scroll = new JScrollPane(panelHistoriques, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		panelOnglets.addTab("Historiques", null, scroll, null);
+		panelHistoriques.setLayout(new GridLayout(50, 1));
 		
 		afficherHistoriques();
 	}
@@ -227,42 +243,76 @@ public class FenetrePrincipale {
 		entreeMessage.setVisible(false);
 		boutonEnvoyer.setVisible(false);
 		boutonClavarder.setVisible(false);
+		boutonFinClavardage.setVisible(false);
 		labelPseudoPartenaire.setText(user.getPseudo());
-		
-		ArrayList<Message> conversation = controleur.demandeHistoriqueDe(user);
-		for (Message msg : conversation) {
-			afficherMessage(msg);
-		}	
 
+		afficherHistorique(user);
 	}
 	
 	private void panelClavardeur() {
 		panelClavardeurs = new JPanel();
-		panelOnglets.addTab("Clavardeurs", null, panelClavardeurs, null);
-		panelClavardeurs.setLayout(new GridLayout(10, 1));
+		JScrollPane scroll = new JScrollPane(panelClavardeurs, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		panelOnglets.addTab("Clavardeurs", null, scroll, null);
+		panelClavardeurs.setLayout(new GridLayout(50, 1));
 		
 		afficherClavardeurs();
 	}
 	
 	public void afficherClavardeurs() {
 		panelClavardeurs.removeAll();
-		ArrayList<Utilisateur> listeUtilisateurs = controleur.demandeUtilisateursActifs();
-		for (Utilisateur user : listeUtilisateurs) {
-			JButton btnUser = new JButton(user.getPseudo());
+		//ajout utilisateurs en cours
+		ArrayList<Utilisateur> listeUtilisateursEnCours = new ArrayList<>();
+		for (Session sess : ClavardageManager.getListeSessions()) {
+			listeUtilisateursEnCours.add(sess.getLui());
+			JButton btnUser = new JButton(sess.getLui().getPseudo());
+			btnUser.setBackground(Color.GREEN);
 			btnUser.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					clicUtilisateurActifs(user);
+					clicUtilisateurEnCours(sess.getLui());
 				}
 			});
 			panelClavardeurs.add(btnUser);			
+		}
+		// ajout utilisateur actifs
+		ArrayList<Utilisateur> listeUtilisateurs = controleur.demandeUtilisateursActifs();
+		for (Utilisateur user : listeUtilisateurs) {
+			if (!listeUtilisateursEnCours.contains(user)) {
+				JButton btnUser = new JButton(user.getPseudo());
+				btnUser.setBackground(Color.CYAN);
+				btnUser.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						clicUtilisateurActifs(user);
+					}
+				});
+				panelClavardeurs.add(btnUser);
+			}	
 		}
 	}
 	
 	private void clicUtilisateurActifs(Utilisateur user) {
 		boutonClavarder.setVisible(true);
+		boutonFinClavardage.setVisible(false);
+		boutonEnvoyer.setVisible(false);
+		entreeMessage.setVisible(false);
 		labelPseudoPartenaire.setText(user.getPseudo());
 		areaMessages.setText("");
 		utilisateurSelectionne = user;
+	}
+	
+	private void clicUtilisateurEnCours(Utilisateur user) {
+		boutonClavarder.setVisible(false);
+		boutonFinClavardage.setVisible(true);
+		boutonEnvoyer.setVisible(true);
+		entreeMessage.setVisible(true);
+		labelPseudoPartenaire.setText(user.getPseudo());
+		utilisateurSelectionne = user;
+		//afficher la conversation
+		areaMessages.setText("");
+		afficherHistorique(user);
+		ArrayList<Message> conv = ClavardageManager.trouveSession(user.getId()).getConversation();
+		for (Message msg : conv) {
+			afficherMessage(msg);
+		}		
 	}
 	
 	/*Panel Droite*/
@@ -287,7 +337,7 @@ public class FenetrePrincipale {
 		gbc_labelPseudoPartenaire.gridwidth = 2;
 		panelRight.add(labelPseudoPartenaire, gbc_labelPseudoPartenaire);
 		
-		scrollPanel = new JScrollPane();
+		JScrollPane scrollPanel = new JScrollPane();
 		scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GridBagConstraints gbc_scrollPanel = new GridBagConstraints();
@@ -308,6 +358,14 @@ public class FenetrePrincipale {
 		scrollPanel.setViewportView(areaMessages);
 		
 		entreeMessage = new JTextField();
+		entreeMessage.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER){
+					clicEnvoyer();
+				}
+			}
+		});
 		entreeMessage.setVisible(false);
 		GridBagConstraints gbc_entreeMessage = new GridBagConstraints();
 		gbc_entreeMessage.insets = new Insets(0, 0, 5, 5);
@@ -318,6 +376,11 @@ public class FenetrePrincipale {
 		entreeMessage.setColumns(10);
 		
 		boutonEnvoyer = new JButton("Envoyer");
+		boutonEnvoyer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clicEnvoyer();
+			}
+		});
 		boutonEnvoyer.setVisible(false);
 		GridBagConstraints gbc_boutonEnvoyer = new GridBagConstraints();
 		gbc_boutonEnvoyer.insets = new Insets(0, 0, 5, 0);
@@ -337,13 +400,65 @@ public class FenetrePrincipale {
 		gbc_boutonEnvoyer.gridx = 1;
 		gbc_boutonEnvoyer.gridy = 2;
 		panelRight.add(boutonClavarder, gbc_boutonClavarder);
+		
+		boutonFinClavardage = new JButton("Fin");
+		boutonFinClavardage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clicFinClavardage();
+			}
+		});
+		boutonFinClavardage.setVisible(false);
+		GridBagConstraints gbc_boutonFinClavarder = new GridBagConstraints();
+		gbc_boutonEnvoyer.insets = new Insets(0, 0, 5, 0);
+		gbc_boutonEnvoyer.gridx = 1;
+		gbc_boutonEnvoyer.gridy = 2;
+		panelRight.add(boutonFinClavardage, gbc_boutonFinClavarder);
+	}
+	
+	public void clearRightPanel() {
+		areaMessages.setText("");
+		entreeMessage.setVisible(false);
+		boutonEnvoyer.setVisible(false);
+		boutonClavarder.setVisible(false);
+		boutonFinClavardage.setVisible(false);
+		
 	}
 
 	private void clicClavarder() {
-		System.out.println("clavarder avec " + utilisateurSelectionne);
+		ClavardageManager.demandeClavardage(controleur.demandeUtilisateur(), utilisateurSelectionne);
+		affichageDebutClavardage();
+		afficherClavardeurs();
+		afficherHistorique(utilisateurSelectionne);
 	}
 	
-	private void afficherMessage(Message msg) {       
+	private void clicFinClavardage() {
+		ClavardageManager.envoyerMessage(utilisateurSelectionne, ClavardageManager.messageFin);
+		affichageFinClavardage();
+		afficherClavardeurs();
+		afficherHistoriques();	
+	}
+	
+	public void affichageDebutClavardage() {
+		boutonClavarder.setVisible(false);
+		boutonFinClavardage.setVisible(true);
+		boutonEnvoyer.setVisible(true);
+		entreeMessage.setVisible(true);		
+	}
+	
+	public void affichageFinClavardage() {
+		boutonClavarder.setVisible(true);
+		boutonFinClavardage.setVisible(false);
+		boutonEnvoyer.setVisible(false);
+		entreeMessage.setVisible(false);	
+	}
+	
+	private void clicEnvoyer() {
+		ClavardageManager.envoyerMessage(utilisateurSelectionne, entreeMessage.getText());
+		afficherMessage(new Message(controleur.demandeUtilisateur(), utilisateurSelectionne, entreeMessage.getText()));
+		entreeMessage.setText("");
+	}
+	
+	public void afficherMessage(Message msg) {       
 		try{
 			if (msg.getAuteur().equals(controleur.demandeUtilisateur())) {
 				document.setParagraphAttributes(document.getLength(), 1, right, false);
@@ -355,5 +470,13 @@ public class FenetrePrincipale {
 		}catch(BadLocationException ex) {
 			
 		}		
+	}
+	
+	public void afficherHistorique(Utilisateur user) {
+		areaMessages.setText("");
+		ArrayList<Message> conversation = controleur.demandeHistoriqueDe(user);
+		for (Message msg : conversation) {
+			afficherMessage(msg);
+		}	
 	}
 }

@@ -11,11 +11,17 @@ public class Ecouteur extends Thread {
     private BufferedReader in;
     private Session currentSession;
 
-    Ecouteur(Session sess) throws IOException {
+    // demandeur de connexion, il connait celui avec qui il parle
+    // recepteur de connexion, il ne connait pas le demandeur
+    public Ecouteur(Session sess, boolean demandeur) throws IOException {
         super();
         this.currentSession = sess;
         this.in = new BufferedReader(new InputStreamReader(sess.getSock().getInputStream()));
-        sess.setSonId(new Id(in.readLine()));
+        if (!demandeur) {
+        	sess.setLui(new Id(in.readLine()));
+        	System.out.println(sess.getLui());
+        	ClavardageManager.controleur.actualisationHistorique(sess.getLui());
+        }
         this.start();
     }
 
@@ -26,12 +32,14 @@ public class Ecouteur extends Thread {
             while (!this.isInterrupted()) {
                 input = in.readLine();
                 if (input != null) {
-                    if (input.equals("quit")){
+                    rcvMsg = new Message(currentSession.getLui(), currentSession.getMoi(), input);
+                    if (input.equals(ClavardageManager.messageFin)){
                         currentSession.fermerSession();
+                        ClavardageManager.controleur.receptionMessage(rcvMsg);
+                        ClavardageManager.controleur.actualisationUtilisateurs();
                     }else {
-                        rcvMsg = new Message(currentSession.getMoi().trouveClient(currentSession.getSonId()), currentSession.getMoi(), input);
                         this.currentSession.getConversation().add(rcvMsg);
-                        System.out.println(rcvMsg);
+                        ClavardageManager.controleur.receptionMessage(rcvMsg);
                     }
                 }
             }
@@ -39,6 +47,6 @@ public class Ecouteur extends Thread {
         } catch (IOException e) {
             System.out.println("oreille : IO exception raised " + e);
         }
-        System.out.println("oreille : Fin");
+        System.out.println("Fermeture oreille");
     }
 }
