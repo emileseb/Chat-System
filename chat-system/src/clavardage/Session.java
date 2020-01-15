@@ -75,7 +75,9 @@ public class Session{
     }
 
     public void fermerSession(){
-        moi.mettreAJourHistorique(conversation,lui.getId());
+    	if (conversation.size() != 0) {
+    		moi.mettreAJourHistorique(conversation,lui.getId());
+    	}
         oreille.interrupt();
         try {
             sock.close();
