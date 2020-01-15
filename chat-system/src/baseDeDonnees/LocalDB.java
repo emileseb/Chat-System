@@ -22,7 +22,9 @@ public class LocalDB {
         this.createTableConv();
     }
 
-
+    /* Pour lancer la database,
+    java -cp ../lib/hsqldb.jar org.hsqldb.server.Server --database.0 file:mydb --dbname.0 xdb
+     */
     private static Connection connectionDB() {
         Connection conn = null;
         String db = "jdbc:hsqldb:hsql://localhost/xdb";   //Connection c = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/xdb", "sa", "");         ../../database/hsqldb-2.5.0/hsqldb/
