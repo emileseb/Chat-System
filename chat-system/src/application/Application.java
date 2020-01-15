@@ -1,12 +1,7 @@
 package application;
-import baseDeDonnees.LocalDB;
 import clavardage.ClavardageManager;
-import conversation.Historique;
-import conversation.Message;
 import interfaceGraphique.Controleur;
 import utilisateur.*;
-
-import java.util.ArrayList;
 
 public class Application {
 

@@ -144,10 +144,19 @@ public class LocalDB {
     
     //besoin de verifier si l utilisateur existe deja dans la liste
     public void sauvegarderUsers(){
+    	try {
+        String query = "DELETE FROM utilisateurs";
+        PreparedStatement pstmt = this.conn.prepareStatement(query);
+        pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("LocalDB: Error delete users");
+            e.printStackTrace();
+        }
+        
         for (Utilisateur user : me.getUtilisateursHistorique()){
-            String query = "INSERT INTO utilisateurs (pseudo, idUtilisateur, ipUtilisateur) VALUES (?, ?, ?)";
+        	String query = "INSERT INTO utilisateurs (pseudo, idUtilisateur, ipUtilisateur) VALUES (?, ?, ?)";
             try {
-                PreparedStatement pstmt = this.conn.prepareStatement(query);
+            	PreparedStatement pstmt = this.conn.prepareStatement(query);
                 pstmt.setString(1, user.getPseudo());
                 pstmt.setString(2, user.getId().toString());
                 pstmt.setString(3, user.getAdresseIp());
