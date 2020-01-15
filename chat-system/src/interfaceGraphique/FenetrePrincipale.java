@@ -483,4 +483,8 @@ public class FenetrePrincipale {
 			afficherMessage(msg);
 		}	
 	}
+	
+	public void afficherPseudoPartenaire(Utilisateur user) {
+		labelPseudoPartenaire.setText(user.getPseudo());		
+	}
 }

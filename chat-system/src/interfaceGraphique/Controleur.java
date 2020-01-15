@@ -135,6 +135,7 @@ public class Controleur {
 				}
 			}
 			actualisationUtilisateurs();
+			fenetrePrincipale.afficherPseudoPartenaire(user);
 		}
 		
 	}
