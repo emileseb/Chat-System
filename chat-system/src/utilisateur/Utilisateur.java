@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 
+import baseDeDonnees.LocalDB;
 import conversation.Historique;
 import conversation.Message;
 
@@ -15,6 +16,7 @@ public class Utilisateur {
 	private String adresseBroadcast;
     private ArrayList<Utilisateur> listeUtilisateurs;
     private ArrayList<Historique> listeHistoriques;
+    private LocalDB database;
 	
     //creation de l'utilisateur sur le poste
 	public Utilisateur() {
@@ -37,9 +39,10 @@ public class Utilisateur {
 		catch(SocketException e){
 			System.out.println("Pas d'adresse ip valide");
 		}
-		
+        this.database = new LocalDB(this);
 		this.listeUtilisateurs = new ArrayList<Utilisateur>();
 		this.listeHistoriques = new ArrayList<Historique>();
+
 	}
 
 	//creation d'utilisateurs pour la liste utilisateurs
@@ -184,6 +187,7 @@ public class Utilisateur {
         }
         if (pastrouve)
         	listeHistoriques.add(new Historique(idPartenaire, conversation));
+
     }
     
     public ArrayList<Utilisateur> getUtilisateursHistorique(){

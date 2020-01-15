@@ -100,10 +100,6 @@ public class LocalDB {
     public Historique getConversation(Utilisateur partenaire){
         ArrayList<Message> msgs = new ArrayList<>();
         try {
-            /*String query = "SELECT auteur FROM table where idPartenaire = " + partenaire.toString();
-            Statement stmt = this.conn.createStatement();
-            ResultSet rs = stmt.executeUpdate(query);
-            stmt.close();*/
             String query = "SELECT * FROM messages WHERE idPartenaire = ?";
             PreparedStatement pstmt = this.conn.prepareStatement(query);
             pstmt.setString(1, partenaire.getId().toString());
@@ -124,8 +120,75 @@ public class LocalDB {
         Historique hist = new Historique(partenaire.getId(), msgs);
         return hist;
     }
-    
+
+    private void createTableUsers(){
+        String query = "CREATE TABLE IF NOT EXISTS utilisateurs \n"
+                + "(\n"
+                + "     id INTEGER IDENTITY PRIMARY KEY,\n"
+                + "     pseudo VARCHAR(30) NOT NULL,"
+                + "     idUtilisateur BIGINT NOT NULL,\n" //true si je suis l'auteur, false si c'est mon partenaire
+                + "     ipUtilisateur VARCHAR(15),\n"
+                + ");";
+        try {
+            Statement stmt = this.conn.createStatement();
+            stmt.executeUpdate(query);
+            stmt.close();
+        } catch (SQLException e) {
+            System.out.println("LocalDB: Error createTableKnownUsers");
+            e.printStackTrace();
+        }
+    }
+
+    /*
+    On ne va sauvegarder que les Utilisateurs avec lesquels nous avons clavardé afin de conserver leurs Historiques.
+     */
+    public void sauvegarderUsers(){
+        for (Utilisateur user : me.getUtilisateursHistorique()){
+            String query = "INSERT INTO utilisateurs (pseudo, idUtilisateur, ipUtilisateur) VALUES (?, ?, ?)";
+            try {
+                PreparedStatement pstmt = this.conn.prepareStatement(query);
+                pstmt.setString(1, user.getPseudo());
+                pstmt.setString(2, user.getId().toString());
+                pstmt.setString(3, user.getAdresseIp());
+                pstmt.executeUpdate();
+                pstmt.close();
+            } catch (SQLException e) {
+                System.out.println("LocalDB: Error createTableKnownUsers");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public Historique getUsers(Utilisateur partenaire){
+        ArrayList<Message> msgs = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM messages WHERE idPartenaire = ?";
+            PreparedStatement pstmt = this.conn.prepareStatement(query);
+            pstmt.setString(1, partenaire.getId().toString());
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+                if (rs.getBoolean(3)){
+                    msgs.add(new Message(this.me, partenaire, rs.getString(4), rs.getString(5)));
+                } else {
+                    msgs.add(new Message(partenaire, this.me, rs.getString(4), rs.getString(5)));
+                }
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            System.out.println("LocalDB: Error createTableKnownUsers");
+            e.printStackTrace();
+        }
+        Historique hist = new Historique(partenaire.getId(), msgs);
+        return hist;
+    }
+
     public void close() {
-    	serv.stop();
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        serv.stop();
     }
 }
