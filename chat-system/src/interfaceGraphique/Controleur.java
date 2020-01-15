@@ -3,7 +3,6 @@ import utilisateur.*;
 
 import java.util.ArrayList;
 
-import baseDeDonnees.LocalDB;
 import clavardage.ClavardageManager;
 import clavardage.Session;
 import communicationInformation.*;
@@ -14,28 +13,26 @@ public class Controleur {
 	FenetreAccueil fenetreAccueil;
 	FenetrePrincipale fenetrePrincipale;
 	
-	private Utilisateur modele;
+	private Utilisateur utilisateur;
 	private Notifieur notifieur;
 	private Rafraichisseur rafraichisseur;
-	private LocalDB database;
 	
 	
-	public Controleur(Utilisateur modele, LocalDB db) {
-		this.modele = modele;
-		this.notifieur = new Notifieur(modele);
-		this.rafraichisseur = new Rafraichisseur(modele, this);
+	public Controleur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+		this.notifieur = new Notifieur(utilisateur);
+		this.rafraichisseur = new Rafraichisseur(utilisateur, this);
 		//demande les informations des utilisateurs pour remplir la liste utilisateurs dans rafraichisseur
 		notifieur.demandeInformation();
-		this.database = db;
 		this.fenetreAccueil = new FenetreAccueil(this);
 	}
 	
 	public void verifierPseudoAccueil(String pseudo) {
 		if (pseudo.length() != 0) {
-			if (modele.pseudoPris(pseudo) || pseudo.length() > 30) {
+			if (utilisateur.pseudoPris(pseudo) || pseudo.length() > 30) {
 				fenetreAccueil.erreurPseudo();
 			}else {
-				modele.changerPseudo(pseudo);
+				utilisateur.changerPseudo(pseudo);
 				//envoi des infos a tous les utilisateurs
 				notifieur.envoiInformation();
 				fenetreAccueil.toHomePage();
@@ -46,10 +43,10 @@ public class Controleur {
 
 	public void verifierPseudo(String pseudo) {
 		if (pseudo.length() != 0) {
-			if (modele.pseudoPris(pseudo) || pseudo.length() > 30) {
+			if (utilisateur.pseudoPris(pseudo) || pseudo.length() > 30) {
 				fenetrePrincipale.erreurPseudo();
 			}else {
-				modele.changerPseudo(pseudo);
+				utilisateur.changerPseudo(pseudo);
 				//envoi des infos a tous les utilisateurs
 				notifieur.notifierChangementPseudo();
 				fenetrePrincipale.pseudoChange();
@@ -95,23 +92,23 @@ public class Controleur {
 	}
 	
 	public String demandePseudo() {
-		return (modele.getPseudo());
+		return (utilisateur.getPseudo());
 	}
 	
 	public Utilisateur demandeUtilisateur() {
-		return (modele);
+		return (utilisateur);
 	}
 	
 	public ArrayList<Utilisateur> demandeUtilisateursActifs(){
-		return modele.getListeUtilisateursActifs();
+		return utilisateur.getListeUtilisateursActifs();
 	}
 
 	public ArrayList<Utilisateur> demandeUtilisateursHistorique(){
-		return modele.getUtilisateursHistorique();
+		return utilisateur.getUtilisateursHistorique();
 	}
 	
 	public ArrayList<Message> demandeHistoriqueDe(Utilisateur user) {
-		return modele.getHistoriqueDe(user.getId());
+		return utilisateur.getHistoriqueDe(user.getId());
 	}
 	
 	public void receptionMessage(Message msg) {
@@ -134,7 +131,8 @@ public class Controleur {
 			ClavardageManager.envoyerMessage(sess.getLui(), ClavardageManager.messageFin);
 		}
 		ClavardageManager.close();
-		database.close();
+		utilisateur.getDatabase().sauvegarderUsers();
+		utilisateur.getDatabase().close();
 		notifieur.notifierAgentInActif();
 	}
 }

@@ -120,9 +120,6 @@ public class LocalDB {
         return hist;
     }
 
-
-
-
     private void createTableUsers(){
         String query = "CREATE TABLE IF NOT EXISTS utilisateurs \n"
                 + "(\n"
@@ -161,7 +158,7 @@ public class LocalDB {
         }
     }
 
-    public ArrayList<Utilisateur> getUsers(Utilisateur partenaire){
+    public ArrayList<Utilisateur> getUsers(){
         ArrayList<Utilisateur> UserList = new ArrayList<>();
         try {
             String query = "SELECT * FROM utilisateurs";
@@ -179,6 +176,19 @@ public class LocalDB {
         return UserList;
     }
 
+    public void clearDatabase() {
+        try {
+            String query = "DROP SCHEMA PUBLIC CASCADE";
+            PreparedStatement pstmt = this.conn.prepareStatement(query);
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            System.out.println("LocalDB: Error clearDB");
+            e.printStackTrace();
+        }
+    	
+    }
+    
     public void close() {
         try {
             conn.close();

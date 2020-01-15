@@ -40,9 +40,13 @@ public class Utilisateur {
 			System.out.println("Pas d'adresse ip valide");
 		}
         this.database = new LocalDB(this);
-		this.listeUtilisateurs = new ArrayList<Utilisateur>();
+        //recupere la liste des utilisateurs avec qui on a un historique
+		this.listeUtilisateurs = this.database.getUsers();
 		this.listeHistoriques = new ArrayList<Historique>();
-
+		// ajout des historiques des utilisateurs avec qui on a parle
+		for (Utilisateur user : this.listeUtilisateurs) {
+			this.listeHistoriques.add(this.database.getHistorique(user));
+		}
 	}
 
 	//creation d'utilisateurs pour la liste utilisateurs
@@ -85,6 +89,10 @@ public class Utilisateur {
 	
 	public boolean getActif() {
 		return this.actif;
+	}
+	
+	public LocalDB getDatabase() {
+		return this.database;
 	}
 	
 	public void setActif(boolean actif) {
@@ -191,7 +199,9 @@ public class Utilisateur {
         }
         if (pastrouve)
         	listeHistoriques.add(new Historique(idPartenaire, conversation));
-
+        
+        // ajout de la conversation dans la base de donnees
+        this.database.sauvegarderHistorique(new Historique(idPartenaire, conversation));
     }
     
     public ArrayList<Utilisateur> getUtilisateursHistorique(){
