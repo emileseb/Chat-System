@@ -2,32 +2,41 @@ package baseDeDonnees;
 
 import conversation.Historique;
 import conversation.Message;
-import utilisateur.Id;
-import utilisateur.Utilisateur;
+import utilisateur.*;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author Emile Sebastianutti
- */
+import org.hsqldb.Server;
+
 public class LocalDB {
     protected Connection conn;
     private Utilisateur me;
+    private Server serv;
 
     public LocalDB(Utilisateur me){
         this.me = me;
         this.conn = connectionDB();
         this.createTableConv();
     }
-
+    
     /* Pour lancer la database,
     java -cp ../lib/hsqldb.jar org.hsqldb.server.Server --database.0 file:mydb --dbname.0 xdb
+    clic droit sur le dossier chat-system, proprietes, librairies, add jar -> database/hsqldb-2.5.0/hsqldb/lib/hsqldb.jar
      */
-    private static Connection connectionDB() {
+    private Connection connectionDB() {
+    	// creation de la bdd
+    	serv = new Server();
+    	//serv.setLogWriter(null);
+    	//serv.setSilent(true);
+    	serv.setDatabaseName(0, "messagesDB");
+    	serv.setDatabasePath(0, "file:database/hsqldb-2.5.0/hsqldb/data/mydb");
+    	serv.start();
+    	
+    	//connexion a la bdd
         Connection conn = null;
-        String db = "jdbc:hsqldb:hsql://localhost/xdb";   //Connection c = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/xdb", "sa", "");         ../../database/hsqldb-2.5.0/hsqldb/
+        String db = "jdbc:hsqldb:hsql://localhost/messagesDB";   //Connection c = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/xdb", "sa", "");         ../../database/hsqldb-2.5.0/hsqldb/
         String user = "SA";
         String password = "";
         try {
@@ -115,13 +124,8 @@ public class LocalDB {
         Historique hist = new Historique(partenaire.getId(), msgs);
         return hist;
     }
-
-    /*// Create and execute statement
-    Statement stmt = conn.createStatement();
-    ResultSet rs =  stmt.executeQuery("select FIRSTNAME, LASTNAME from CUSTOMER");
-
-    // Loop through the data and print all artist names
-            while(rs.next()) {
-        System.out.println("Customer Name: " + rs.getString("FIRSTNAME") + " " + rs.getString("LASTNAME"));
-    }*/
+    
+    public void close() {
+    	serv.stop();
+    }
 }
