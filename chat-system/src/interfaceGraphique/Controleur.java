@@ -27,6 +27,26 @@ public class Controleur {
 		this.fenetreAccueil = new FenetreAccueil(this);
 	}
 	
+	public String demandePseudo() {
+		return (utilisateur.getPseudo());
+	}
+	
+	public Utilisateur demandeUtilisateur() {
+		return (utilisateur);
+	}
+	
+	public ArrayList<Utilisateur> demandeUtilisateursActifs(){
+		return utilisateur.getListeUtilisateursActifs();
+	}
+
+	public ArrayList<Utilisateur> demandeUtilisateursHistorique(){
+		return utilisateur.getUtilisateursHistorique();
+	}
+	
+	public ArrayList<Message> demandeHistoriqueDe(Utilisateur user) {
+		return utilisateur.getHistoriqueDe(user.getId());
+	}
+	
 	public void verifierPseudoAccueil(String pseudo) {
 		if (pseudo.length() != 0) {
 			if (utilisateur.pseudoPris(pseudo) || pseudo.length() > 30) {
@@ -91,26 +111,6 @@ public class Controleur {
 		}			
 	}
 	
-	public String demandePseudo() {
-		return (utilisateur.getPseudo());
-	}
-	
-	public Utilisateur demandeUtilisateur() {
-		return (utilisateur);
-	}
-	
-	public ArrayList<Utilisateur> demandeUtilisateursActifs(){
-		return utilisateur.getListeUtilisateursActifs();
-	}
-
-	public ArrayList<Utilisateur> demandeUtilisateursHistorique(){
-		return utilisateur.getUtilisateursHistorique();
-	}
-	
-	public ArrayList<Message> demandeHistoriqueDe(Utilisateur user) {
-		return utilisateur.getHistoriqueDe(user.getId());
-	}
-	
 	public void receptionMessage(Message msg) {
 		if (fenetrePrincipale.utilisateurSelectionne != null) {
 			if (fenetrePrincipale.utilisateurSelectionne.equals(msg.getAuteur())) {
@@ -121,6 +121,22 @@ public class Controleur {
 				}
 			}
 		}
+	}
+	
+	public void receptionChangementPseudo(Id id) {
+		Utilisateur user = utilisateur.trouveClient(id);
+		if (fenetrePrincipale != null) {
+			if (fenetrePrincipale.utilisateurSelectionne != null) {
+				if (fenetrePrincipale.utilisateurSelectionne.equals(user)) {
+					if (ClavardageManager.trouveSession(id) != null) {
+						fenetrePrincipale.afficherHistorique(user);
+						fenetrePrincipale.afficherConversation(user);
+					}
+				}
+			}
+			actualisationUtilisateurs();
+		}
+		
 	}
 	
 	public void fermetureApp() {

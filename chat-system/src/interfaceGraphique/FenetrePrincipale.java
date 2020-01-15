@@ -260,6 +260,7 @@ public class FenetrePrincipale {
 	
 	public void afficherClavardeurs() {
 		panelClavardeurs.removeAll();
+		System.out.println("affichage clavardeurs");
 		//ajout utilisateurs en cours
 		ArrayList<Utilisateur> listeUtilisateursEnCours = new ArrayList<>();
 		for (Session sess : ClavardageManager.getListeSessions()) {
@@ -307,12 +308,8 @@ public class FenetrePrincipale {
 		labelPseudoPartenaire.setText(user.getPseudo());
 		utilisateurSelectionne = user;
 		//afficher la conversation
-		areaMessages.setText("");
 		afficherHistorique(user);
-		ArrayList<Message> conv = ClavardageManager.trouveSession(user.getId()).getConversation();
-		for (Message msg : conv) {
-			afficherMessage(msg);
-		}		
+		afficherConversation(user);
 	}
 	
 	/*Panel Droite*/
@@ -471,11 +468,18 @@ public class FenetrePrincipale {
 			
 		}		
 	}
+
+	public void afficherConversation(Utilisateur user) {
+		ArrayList<Message> conv = ClavardageManager.trouveSession(user.getId()).getConversation();
+		for (Message msg : conv) {
+			afficherMessage(msg);
+		}	
+	}
 	
 	public void afficherHistorique(Utilisateur user) {
 		areaMessages.setText("");
-		ArrayList<Message> conversation = controleur.demandeHistoriqueDe(user);
-		for (Message msg : conversation) {
+		ArrayList<Message> historique = controleur.demandeHistoriqueDe(user);
+		for (Message msg : historique) {
 			afficherMessage(msg);
 		}	
 	}

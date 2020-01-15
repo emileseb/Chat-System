@@ -93,7 +93,7 @@ public class Rafraichisseur extends Thread {
 			case "3":
 				System.out.println("Reception changement pseudo");
 				utilisateur.changerPseudo(messageFormate[2], new Id(messageFormate[1]));
-				controleur.actualisationUtilisateurs();
+				controleur.receptionChangementPseudo(new Id(messageFormate[1]));
 				break;
 			default:
 				System.out.println("Mauvais format de message");
