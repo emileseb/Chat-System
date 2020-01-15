@@ -3,6 +3,7 @@ import utilisateur.*;
 
 import java.util.ArrayList;
 
+import baseDeDonnees.LocalDB;
 import clavardage.ClavardageManager;
 import clavardage.Session;
 import communicationInformation.*;
@@ -16,19 +17,22 @@ public class Controleur {
 	private Utilisateur modele;
 	private Notifieur notifieur;
 	private Rafraichisseur rafraichisseur;
+	private LocalDB database;
 	
-	public Controleur(Utilisateur modele) {
+	
+	public Controleur(Utilisateur modele, LocalDB db) {
 		this.modele = modele;
 		this.notifieur = new Notifieur(modele);
 		this.rafraichisseur = new Rafraichisseur(modele, this);
 		//demande les informations des utilisateurs pour remplir la liste utilisateurs dans rafraichisseur
 		notifieur.demandeInformation();
+		this.database = db;
 		this.fenetreAccueil = new FenetreAccueil(this);
 	}
 	
 	public void verifierPseudoAccueil(String pseudo) {
 		if (pseudo.length() != 0) {
-			if (modele.pseudoPris(pseudo)) {
+			if (modele.pseudoPris(pseudo) || pseudo.length() > 30) {
 				fenetreAccueil.erreurPseudo();
 			}else {
 				modele.changerPseudo(pseudo);
@@ -42,7 +46,7 @@ public class Controleur {
 
 	public void verifierPseudo(String pseudo) {
 		if (pseudo.length() != 0) {
-			if (modele.pseudoPris(pseudo)) {
+			if (modele.pseudoPris(pseudo) || pseudo.length() > 30) {
 				fenetrePrincipale.erreurPseudo();
 			}else {
 				modele.changerPseudo(pseudo);
@@ -130,6 +134,7 @@ public class Controleur {
 			ClavardageManager.envoyerMessage(sess.getLui(), ClavardageManager.messageFin);
 		}
 		ClavardageManager.close();
+		database.close();
 		notifieur.notifierAgentInActif();
 	}
 }
