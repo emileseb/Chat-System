@@ -3,6 +3,7 @@ import baseDeDonnees.LocalDB;
 import clavardage.ClavardageManager;
 import conversation.Historique;
 import conversation.Message;
+import interfaceGraphique.Controleur;
 import utilisateur.*;
 
 import java.util.ArrayList;
@@ -28,7 +29,10 @@ public class Application {
 		Historique hist = database.getHistorique(client1);
 		System.out.println(hist.toString());
 		
-		database.close();
+		Controleur control = new Controleur(serverGuy, database);
+		
+		ClavardageManager clav = new ClavardageManager(serverGuy, control);
+		
 	}
 
 }
