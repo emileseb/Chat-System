@@ -46,10 +46,10 @@ public class Utilisateur {
 	}
 
 	//creation d'utilisateurs pour la liste utilisateurs
-	public Utilisateur(String pseudo, Id idUtilisateur, String adresseIp) {
+	public Utilisateur(String pseudo, Id idUtilisateur, String adresseIp, boolean actif) {
 		this.pseudo = pseudo;
 		this.idUtilisateur = idUtilisateur;
-		this.actif = true;
+		this.actif = actif;
 		this.adresseIp = adresseIp;
 		this.adresseBroadcast = "";
 		this.listeUtilisateurs = new ArrayList<Utilisateur>();
@@ -89,6 +89,10 @@ public class Utilisateur {
 	
 	public void setActif(boolean actif) {
 		this.actif = actif;
+	}
+	
+	public void setAdresseIp(String ip) {
+		this.adresseIp = ip;
 	}
 	
 	public void changerPseudo(String pseudo) {

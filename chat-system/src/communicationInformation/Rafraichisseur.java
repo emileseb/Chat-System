@@ -75,12 +75,13 @@ public class Rafraichisseur extends Thread {
 				// reception des infos
 				System.out.println("Reception des infos");
 				System.out.println("Ajout utilisateur dans liste utilisateurs");
-				System.out.println(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), messageFormate[3]));
+				System.out.println(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), messageFormate[3], true));
 				if (utilisateur.clientExiste(new Id(messageFormate[1]))) {
 					utilisateur.changeActif(true, new Id(messageFormate[1]));
 					utilisateur.changerPseudo(messageFormate[2], new Id(messageFormate[1]));
+					utilisateur.setAdresseIp(messageFormate[3]);
 				}else {
-					utilisateur.getListeUtilisateurs().add(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), messageFormate[3]));
+					utilisateur.getListeUtilisateurs().add(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), messageFormate[3], true));
 				}
 				controleur.actualisationUtilisateurs();
 				break;
