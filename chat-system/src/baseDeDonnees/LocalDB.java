@@ -76,7 +76,7 @@ public class LocalDB {
 
     public void sauvegarderHistorique(Historique hist){
         for (Message m : hist.getHistorique()){
-            String query = "INSERT INTO messages (idPartenaire, auteur, contenu, horodatage) VALUES (?, ?, ?, ?)"; //INSERT INTO users (name, email) VALUES ('mkyong', 'aaa@gmail.com');
+            String query = "INSERT INTO messages (idPartenaire, auteur, contenu, horodatage) VALUES (?, ?, ?, ?)"; 
             try {
                 PreparedStatement pstmt = this.conn.prepareStatement(query);
                 pstmt.setString(1, hist.getIdPartenaire().toString());
@@ -125,7 +125,7 @@ public class LocalDB {
                 + "(\n"
                 + "     id INTEGER IDENTITY PRIMARY KEY,\n"
                 + "     pseudo VARCHAR(30) NOT NULL,"
-                + "     idUtilisateur BIGINT NOT NULL,\n" //true si je suis l'auteur, false si c'est mon partenaire
+                + "     idUtilisateur BIGINT NOT NULL,"
                 + "     ipUtilisateur VARCHAR(15),\n"
                 + ");";
         try {
@@ -141,6 +141,8 @@ public class LocalDB {
     /*
     On ne va sauvegarder que les Utilisateurs avec lesquels nous avons clavardé afin de conserver leurs Historiques.
      */
+    
+    //besoin de verifier si l utilisateur existe deja dans la liste
     public void sauvegarderUsers(){
         for (Utilisateur user : me.getUtilisateursHistorique()){
             String query = "INSERT INTO utilisateurs (pseudo, idUtilisateur, ipUtilisateur) VALUES (?, ?, ?)";
@@ -165,7 +167,7 @@ public class LocalDB {
             PreparedStatement pstmt = this.conn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()){
-                UserList.add(new Utilisateur(rs.getString(1),new Id(rs.getLong(2)),rs.getString(3), false));
+                UserList.add(new Utilisateur(rs.getString(2),new Id(rs.getLong(3)),rs.getString(4), false));
             }
             rs.close();
             pstmt.close();
