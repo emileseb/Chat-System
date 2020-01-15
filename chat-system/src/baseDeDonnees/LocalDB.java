@@ -19,6 +19,7 @@ public class LocalDB {
         this.me = me;
         this.conn = connectionDB();
         this.createTableConv();
+        this.createTableUsers();
     }
     
     /* Pour lancer la database,
@@ -28,8 +29,6 @@ public class LocalDB {
     private Connection connectionDB() {
     	// creation de la bdd
     	serv = new Server();
-    	//serv.setLogWriter(null);
-    	//serv.setSilent(true);
     	serv.setDatabaseName(0, "messagesDB");
     	serv.setDatabasePath(0, "file:database/hsqldb-2.5.0/hsqldb/data/mydb");
     	serv.start();
@@ -75,7 +74,7 @@ public class LocalDB {
         }
     }
 
-    public void sauvegarderConversation(Historique hist){
+    public void sauvegarderHistorique(Historique hist){
         for (Message m : hist.getHistorique()){
             String query = "INSERT INTO messages (idPartenaire, auteur, contenu, horodatage) VALUES (?, ?, ?, ?)"; //INSERT INTO users (name, email) VALUES ('mkyong', 'aaa@gmail.com');
             try {
@@ -97,7 +96,7 @@ public class LocalDB {
         }
     }
 
-    public Historique getConversation(Utilisateur partenaire){
+    public Historique getHistorique(Utilisateur partenaire){
         ArrayList<Message> msgs = new ArrayList<>();
         try {
             String query = "SELECT * FROM messages WHERE idPartenaire = ?";
@@ -120,6 +119,9 @@ public class LocalDB {
         Historique hist = new Historique(partenaire.getId(), msgs);
         return hist;
     }
+
+
+
 
     private void createTableUsers(){
         String query = "CREATE TABLE IF NOT EXISTS utilisateurs \n"
@@ -159,19 +161,14 @@ public class LocalDB {
         }
     }
 
-    public Historique getUsers(Utilisateur partenaire){
-        ArrayList<Message> msgs = new ArrayList<>();
+    public ArrayList<Utilisateur> getUsers(Utilisateur partenaire){
+        ArrayList<Utilisateur> UserList = new ArrayList<>();
         try {
-            String query = "SELECT * FROM messages WHERE idPartenaire = ?";
+            String query = "SELECT * FROM utilisateurs";
             PreparedStatement pstmt = this.conn.prepareStatement(query);
-            pstmt.setString(1, partenaire.getId().toString());
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()){
-                if (rs.getBoolean(3)){
-                    msgs.add(new Message(this.me, partenaire, rs.getString(4), rs.getString(5)));
-                } else {
-                    msgs.add(new Message(partenaire, this.me, rs.getString(4), rs.getString(5)));
-                }
+                UserList.add(new Utilisateur(rs.getString(1),new Id(rs.getLong(2)),rs.getString(3), false));
             }
             rs.close();
             pstmt.close();
@@ -179,8 +176,7 @@ public class LocalDB {
             System.out.println("LocalDB: Error createTableKnownUsers");
             e.printStackTrace();
         }
-        Historique hist = new Historique(partenaire.getId(), msgs);
-        return hist;
+        return UserList;
     }
 
     public void close() {
