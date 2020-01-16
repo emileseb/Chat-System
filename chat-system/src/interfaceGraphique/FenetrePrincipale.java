@@ -78,7 +78,7 @@ public class FenetrePrincipale {
             @Override
             public void windowClosing(WindowEvent e)
             {
-                controleur.fermetureApp();
+                controleur.fermetureAppPrincipale();
                 e.getWindow().dispose();
             }
         });
@@ -260,7 +260,6 @@ public class FenetrePrincipale {
 	
 	public void afficherClavardeurs() {
 		panelClavardeurs.removeAll();
-		System.out.println("affichage clavardeurs");
 		//ajout utilisateurs en cours
 		ArrayList<Utilisateur> listeUtilisateursEnCours = new ArrayList<>();
 		for (Session sess : ClavardageManager.getListeSessions()) {

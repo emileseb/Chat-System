@@ -21,24 +21,41 @@ public class Utilisateur {
     //creation de l'utilisateur sur le poste
 	public Utilisateur() {
 		this.pseudo = "";
-		this.idUtilisateur = new Id();
 		this.actif = true;
 		this.adresseIp = "";	
 		this.adresseBroadcast = "";	
-		try {
-			//recupere la premiere interface reseau
-			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
-			while(e.hasMoreElements()) {
-				NetworkInterface interfaceReseau = e.nextElement();
-				if (interfaceReseau.getDisplayName().contains("eth0")){
-					this.adresseBroadcast = interfaceReseau.getInterfaceAddresses().get(1).getBroadcast().getHostAddress();
-					this.adresseIp = interfaceReseau.getInterfaceAddresses().get(1).getAddress().getHostAddress();					
+		if (System.getProperty("os.name").contains("Linux")) {
+			try {
+				//recupere la premiere interface reseau
+				Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+				while(e.hasMoreElements()) {
+					NetworkInterface interfaceReseau = e.nextElement();
+					if (interfaceReseau.getDisplayName().contains("eth0")){
+						this.adresseIp = interfaceReseau.getInterfaceAddresses().get(1).getAddress().getHostAddress();	
+						this.adresseBroadcast = interfaceReseau.getInterfaceAddresses().get(1).getBroadcast().getHostAddress();
+						this.idUtilisateur = new Id(interfaceReseau.getInterfaceAddresses().get(1).getAddress());
+					}
 				}
 			}
+			catch(SocketException e){
+				System.out.println("Linux : Pas d'adresse ip valide");
+			}
+		}else {
+	        try{
+	        	this.adresseIp = InetAddress.getLocalHost().getHostAddress();
+	            NetworkInterface network;
+				try {
+					network = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
+		        	this.adresseBroadcast = network.getInterfaceAddresses().get(0).getBroadcast().getHostAddress();
+				} catch (SocketException e) {
+		        	System.out.println("Windows : Probleme adresse de broadcast");
+				}
+	        	this.idUtilisateur = new Id(InetAddress.getLocalHost());
+	        } catch (UnknownHostException e) {
+	        	System.out.println("Windows : Pas d'adresse ip valide");
+	        }
 		}
-		catch(SocketException e){
-			System.out.println("Pas d'adresse ip valide");
-		}
+		
         this.database = new LocalDB(this);
         //recupere la liste des utilisateurs avec qui on a un historique
 		this.listeUtilisateurs = this.database.getUsers();
@@ -56,17 +73,6 @@ public class Utilisateur {
 		this.actif = actif;
 		this.adresseIp = adresseIp;
 		this.adresseBroadcast = "";
-		this.listeUtilisateurs = new ArrayList<Utilisateur>();
-		this.listeHistoriques = new ArrayList<Historique>();
-	}
-
-	//pour test
-	public Utilisateur(String pseudo, Id idUtilisateur, String adresseIp, String adresseBroadcast) {
-		this.pseudo = pseudo;
-		this.idUtilisateur = idUtilisateur;
-		this.actif = true;
-		this.adresseIp = adresseIp;
-		this.adresseBroadcast = adresseBroadcast;
 		this.listeUtilisateurs = new ArrayList<Utilisateur>();
 		this.listeHistoriques = new ArrayList<Historique>();
 	}

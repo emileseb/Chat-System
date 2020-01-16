@@ -1,4 +1,5 @@
 package utilisateur;
+import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
@@ -6,10 +7,9 @@ import java.util.Enumeration;
 public class Id {
     private long value;
 
-    public Id() {
+    public Id(InetAddress address) {
         try {
-            Enumeration<NetworkInterface> networkInterface = NetworkInterface.getNetworkInterfaces();
-            NetworkInterface network = networkInterface.nextElement();
+            NetworkInterface network = NetworkInterface.getByInetAddress(address);
             byte[] mac = network.getHardwareAddress();
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < mac.length; i++) {

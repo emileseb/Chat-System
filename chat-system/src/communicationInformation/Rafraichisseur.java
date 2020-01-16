@@ -25,6 +25,7 @@ public class Rafraichisseur extends Thread {
 	public void run() {
 		try {
 			DatagramSocket udpSocket = new DatagramSocket(2222);
+			udpSocket.setSoTimeout(5000);
 			byte[] buffer = new byte[256];
 			while(this.actif) {
 				DatagramPacket inPacket = new DatagramPacket(buffer, buffer.length);
@@ -42,7 +43,9 @@ public class Rafraichisseur extends Thread {
 						traitementMessage(messageFormate, inPacket, udpSocket);
 					}
 				}
-				
+				catch(SocketTimeoutException e) {
+					
+				}				
 				catch(IOException e) {
 					System.out.println("IO Exception reception message udp");
 				}

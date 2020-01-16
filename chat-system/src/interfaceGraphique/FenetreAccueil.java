@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class FenetreAccueil {
 
@@ -40,7 +42,15 @@ public class FenetreAccueil {
 		frame.setTitle("ChatSystem");
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 538, 413);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                controleur.fermetureAppAccueil();
+                e.getWindow().dispose();
+            }
+        });
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		welcomePage = welcomePage();
@@ -82,7 +92,7 @@ public class FenetreAccueil {
 		
 		JLabel labelLogo = new JLabel("Logo");
 		labelLogo.setBounds(183, 40, 195, 157);
-		labelLogo.setIcon(new ImageIcon(new File("image/logo.jpg").getAbsolutePath()));
+		labelLogo.setIcon(new ImageIcon(getClass().getResource("/image/logo.jpg")));
 		welcomePage.add(labelLogo);
 		
 		labelErreurPseudo = new JLabel("Pseudo déjà pris, veuillez en choisir un autre");

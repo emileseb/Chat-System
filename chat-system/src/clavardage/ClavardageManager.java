@@ -30,7 +30,6 @@ public class ClavardageManager extends Thread{
 
     public void run() {
         try {
-            System.out.println(me.getAdresseIp());
             // Création du serveur Socket
             ServerSocket servSock = new ServerSocket(port);
             servSock.setSoTimeout(5000);

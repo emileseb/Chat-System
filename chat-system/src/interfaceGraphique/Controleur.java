@@ -140,7 +140,7 @@ public class Controleur {
 		
 	}
 	
-	public void fermetureApp() {
+	public void fermetureAppPrincipale() {
 		System.out.println("Fermeture application");
 		rafraichisseur.close();
 		ArrayList<Session> sessions = new ArrayList<Session>(ClavardageManager.getListeSessions());
@@ -151,5 +151,12 @@ public class Controleur {
 		utilisateur.getDatabase().sauvegarderUsers();
 		utilisateur.getDatabase().close();
 		notifieur.notifierAgentInActif();
+	}
+
+	public void fermetureAppAccueil() {
+		System.out.println("Fermeture application");
+		rafraichisseur.close();
+		ClavardageManager.close();
+		utilisateur.getDatabase().close();
 	}
 }
