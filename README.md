@@ -11,7 +11,7 @@ La base de données du serveur contient une liste de tous les utilisateurs avec 
 Chaque utilisateur contient une liste d'historiques en local.\
 Cette liste d'historiques est composée des champs :
 - ID d'un utilisateur avec qui on a communiqué
-- L'historique de messages en lui même\
+- L'historique de messages en lui même
 
 ### Initialisation application
 #### Réseau local
@@ -51,8 +51,7 @@ qu'ils viennent d'avoir à la suite de l'historique sinon ils crééent un histo
 viennent de parler.
 
 ### Rafraichisseur
-Il sert pour un réseau distant. Il permet de rafraichir la liste des utilisateurs visibles par l'agent. Toutes
-les 5 secondes il envoie à l'agent le pseudo et si les utilisateurs sont actifs ou non.
+Il permet de rafraichir la liste des utilisateurs visibles par l'agent. A chaque fois qu'il reçoit un message udp, soit un changement de pseudo, une connexion ou déconnexion il va rafraichir la fenêtre en modifiant ce qui a changé.
 
 ### Suppositions
 Utilisateur sur un seul poste, donc historique stocké sur le poste.
