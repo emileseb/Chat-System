@@ -1,11 +1,7 @@
 # projet_coo
 
 ### Liste utilisateurs
-La base de données du serveur contient une liste de tous les utilisateurs avec les champs suivant :
-- ID
-- Pseudo
-- Actif
-- Adresse IP
+Chaque utilisateur a une liste des utilisateurs connectés sur le système. Cette liste se remplit dynamiquement en fonction des connexions et déconnexions des utilisateurs
 
 ### Liste historiques
 Chaque utilisateur contient une liste d'historiques en local.\
