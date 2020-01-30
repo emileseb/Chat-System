@@ -6,8 +6,6 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import conversation.Message;
 import interfaceGraphique.Controleur;
 import utilisateur.Id;
 import utilisateur.Utilisateur;

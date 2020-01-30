@@ -3,8 +3,6 @@ package baseDeDonnees;
 import conversation.Historique;
 import conversation.Message;
 import utilisateur.*;
-
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
