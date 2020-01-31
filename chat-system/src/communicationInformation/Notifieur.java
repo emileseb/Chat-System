@@ -40,7 +40,7 @@ public class Notifieur{
 	
 	public void envoiInformation() {
 		//message envoye sous la forme info/Id/pseudo/adresseIp
-		String message = new String("1/" + this.utilisateur.getId() + "/" + this.utilisateur.getPseudo() + "/" + this.utilisateur.getAdresseIp() + "/" + utilisateur.getActif());
+		String message = new String("1/" + this.utilisateur.getId() + "/" + this.utilisateur.getPseudo() + "/" + this.utilisateur.getAdresseIp() + "/" + this.utilisateur.getActif());
 		envoiBroadcast(message);
 	}
 	

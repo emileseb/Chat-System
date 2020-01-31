@@ -17,6 +17,7 @@ public class Utilisateur {
     private ArrayList<Utilisateur> listeUtilisateurs;
     private ArrayList<Historique> listeHistoriques;
     private LocalDB database;
+    private String interfaceReseau = "eth4";
 	
     //creation de l'utilisateur sur le poste
 	public Utilisateur() {
@@ -30,7 +31,7 @@ public class Utilisateur {
 				Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
 				while(e.hasMoreElements()) {
 					NetworkInterface interfaceReseau = e.nextElement();
-					if (interfaceReseau.getDisplayName().contains("eth0")){
+					if (interfaceReseau.getDisplayName().contains(this.interfaceReseau)){
 						this.adresseIp = interfaceReseau.getInterfaceAddresses().get(1).getAddress().getHostAddress();	
 						this.adresseBroadcast = interfaceReseau.getInterfaceAddresses().get(1).getBroadcast().getHostAddress();
 						this.idUtilisateur = new Id(interfaceReseau.getInterfaceAddresses().get(1).getAddress());
@@ -47,7 +48,7 @@ public class Utilisateur {
 				Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
 				while(e.hasMoreElements()) {
 					NetworkInterface interfaceReseau = e.nextElement();
-					if (interfaceReseau.getName().contains("eth5")){
+					if (interfaceReseau.getName().contains(this.interfaceReseau)){
 						this.adresseIp = interfaceReseau.getInterfaceAddresses().get(0).getAddress().getHostAddress();	
 						this.adresseBroadcast = interfaceReseau.getInterfaceAddresses().get(0).getBroadcast().getHostAddress();
 						this.idUtilisateur = new Id(interfaceReseau.getInterfaceAddresses().get(0).getAddress());
@@ -55,21 +56,8 @@ public class Utilisateur {
 				}
 			}
 			catch(SocketException e){
-				System.out.println("Linux : Pas d'adresse ip valide");
+				System.out.println("Windows : Pas d'adresse ip valide");
 			}
-	        /*try{
-	        	this.adresseIp = InetAddress.getLocalHost().getHostAddress();
-	            NetworkInterface network;
-				try {
-					network = NetworkInterface.getByInetAddress(InetAddress.getLocalHost());
-		        	this.adresseBroadcast = network.getInterfaceAddresses().get(0).getBroadcast().getHostAddress();
-				} catch (SocketException e) {
-		        	System.out.println("Windows : Probleme adresse de broadcast");
-				}
-	        	this.idUtilisateur = new Id(InetAddress.getLocalHost());
-	        } catch (UnknownHostException e) {
-	        	System.out.println("Windows : Pas d'adresse ip valide");
-	        }*/
 		}
 		
         this.database = new LocalDB(this);
