@@ -41,7 +41,23 @@ public class Utilisateur {
 				System.out.println("Linux : Pas d'adresse ip valide");
 			}
 		}else {
-	        try{
+
+			try {
+				//recupere la premiere interface reseau
+				Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+				while(e.hasMoreElements()) {
+					NetworkInterface interfaceReseau = e.nextElement();
+					if (interfaceReseau.getName().contains("eth5")){
+						this.adresseIp = interfaceReseau.getInterfaceAddresses().get(0).getAddress().getHostAddress();	
+						this.adresseBroadcast = interfaceReseau.getInterfaceAddresses().get(0).getBroadcast().getHostAddress();
+						this.idUtilisateur = new Id(interfaceReseau.getInterfaceAddresses().get(0).getAddress());
+					}
+				}
+			}
+			catch(SocketException e){
+				System.out.println("Linux : Pas d'adresse ip valide");
+			}
+	        /*try{
 	        	this.adresseIp = InetAddress.getLocalHost().getHostAddress();
 	            NetworkInterface network;
 				try {
@@ -53,7 +69,7 @@ public class Utilisateur {
 	        	this.idUtilisateur = new Id(InetAddress.getLocalHost());
 	        } catch (UnknownHostException e) {
 	        	System.out.println("Windows : Pas d'adresse ip valide");
-	        }
+	        }*/
 		}
 		
         this.database = new LocalDB(this);

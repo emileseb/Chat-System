@@ -158,5 +158,6 @@ public class Controleur {
 		rafraichisseur.close();
 		ClavardageManager.close();
 		utilisateur.getDatabase().close();
+		notifieur.notifierAgentInActif();
 	}
 }
