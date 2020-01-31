@@ -21,7 +21,7 @@ public class Utilisateur {
     //creation de l'utilisateur sur le poste
 	public Utilisateur() {
 		this.pseudo = "";
-		this.actif = true;
+		this.actif = false;
 		this.adresseIp = "";	
 		this.adresseBroadcast = "";	
 		if (System.getProperty("os.name").contains("Linux")) {

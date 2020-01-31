@@ -53,6 +53,7 @@ public class Controleur {
 				fenetreAccueil.erreurPseudo();
 			}else {
 				utilisateur.changerPseudo(pseudo);
+				utilisateur.setActif(true);
 				//envoi des infos a tous les utilisateurs
 				notifieur.envoiInformation();
 				fenetreAccueil.toHomePage();
