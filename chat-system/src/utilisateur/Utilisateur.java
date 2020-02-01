@@ -17,7 +17,7 @@ public class Utilisateur {
     private ArrayList<Utilisateur> listeUtilisateurs;
     private ArrayList<Historique> listeHistoriques;
     private LocalDB database;
-    private String interfaceReseau = "eth4";
+    private String interfaceReseau = "eth0";
 	
     //creation de l'utilisateur sur le poste
 	public Utilisateur() {
@@ -48,9 +48,9 @@ public class Utilisateur {
 				Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
 				while(e.hasMoreElements()) {
 					NetworkInterface interfaceReseau = e.nextElement();
-					if (interfaceReseau.getName().contains(this.interfaceReseau)){
+					if (interfaceReseau.getName().equals(this.interfaceReseau)){
 						this.adresseIp = interfaceReseau.getInterfaceAddresses().get(0).getAddress().getHostAddress();	
-						this.adresseBroadcast = interfaceReseau.getInterfaceAddresses().get(0).getBroadcast().getHostAddress();
+						this.adresseBroadcast = interfaceReseau.getInterfaceAddresses().get(0).getBroadcast().getHostAddress();						
 						this.idUtilisateur = new Id(interfaceReseau.getInterfaceAddresses().get(0).getAddress());
 					}
 				}
