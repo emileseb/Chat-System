@@ -24,7 +24,7 @@ public class Utilisateur {
 		this.pseudo = "";
 		this.actif = false;
 		this.adresseIp = "";	
-		this.adresseBroadcast = "";	
+		this.adresseBroadcast = "";		
 		if (System.getProperty("os.name").contains("Linux")) {
 			try {
 				//recupere la premiere interface reseau
