@@ -31,7 +31,7 @@ public class Utilisateur {
 				Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
 				while(e.hasMoreElements()) {
 					NetworkInterface interfaceReseau = e.nextElement();
-					if (interfaceReseau.getDisplayName().contains(this.interfaceReseau)){
+					if (interfaceReseau.getName().equals(this.interfaceReseau)){
 						this.adresseIp = interfaceReseau.getInterfaceAddresses().get(1).getAddress().getHostAddress();	
 						this.adresseBroadcast = interfaceReseau.getInterfaceAddresses().get(1).getBroadcast().getHostAddress();
 						this.idUtilisateur = new Id(interfaceReseau.getInterfaceAddresses().get(1).getAddress());
