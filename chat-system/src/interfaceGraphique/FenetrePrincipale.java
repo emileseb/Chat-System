@@ -172,7 +172,7 @@ public class FenetrePrincipale {
 		gbc_boutonValider.gridy = 0;
 		panelPseudo.add(boutonValider, gbc_boutonValider);
 		
-		labelPseudoErreur = new JLabel("Pseudo d√©j√† pris");
+		labelPseudoErreur = new JLabel("Pseudo dÈj‡†pris");
 		labelPseudoErreur.setForeground(Color.RED);
 		labelPseudoErreur.setVisible(false);
 		GridBagConstraints gbc_labelPseudoErreur = new GridBagConstraints();
