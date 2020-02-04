@@ -70,7 +70,7 @@ public class Rafraichisseur extends Thread {
 				System.out.println("Envoi des infos");
 				//envoie ses infos a l'utilisateur qui a envoye le message
 				InetAddress clientAddress = inPacket.getAddress();
-				String reponse = new String("1/" + utilisateur.getId() + "/" + utilisateur.getPseudo() + "/" + utilisateur.getAdresseIp() + "/" + utilisateur.getActif());
+				String reponse = new String("1/" + utilisateur.getId() + "/" + utilisateur.getPseudo() + "/" + utilisateur.getActif());
 				DatagramPacket outPacket = new DatagramPacket(reponse.getBytes(), reponse.length(),clientAddress, 2222);
 				udpSocket.send(outPacket);
 				break;
@@ -78,13 +78,13 @@ public class Rafraichisseur extends Thread {
 				// reception des infos
 				System.out.println("Reception des infos");
 				System.out.println("Ajout utilisateur dans liste utilisateurs");
-				System.out.println(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), messageFormate[3], Boolean.parseBoolean(messageFormate[4])));
+				System.out.println(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), inPacket.getAddress().getHostAddress(), Boolean.parseBoolean(messageFormate[3])));
 				if (utilisateur.clientExiste(new Id(messageFormate[1]))) {
-					utilisateur.changeActif(Boolean.parseBoolean(messageFormate[4]), new Id(messageFormate[1]));
+					utilisateur.changeActif(Boolean.parseBoolean(messageFormate[3]), new Id(messageFormate[1]));
 					utilisateur.changerPseudo(messageFormate[2], new Id(messageFormate[1]));
-					utilisateur.setAdresseIp(messageFormate[3]);
+					utilisateur.changeAdresseIp(inPacket.getAddress().getHostAddress(), new Id(messageFormate[1]));
 				}else {
-					utilisateur.getListeUtilisateurs().add(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), messageFormate[3], Boolean.parseBoolean(messageFormate[4])));
+					utilisateur.getListeUtilisateurs().add(new Utilisateur(messageFormate[2], new Id(messageFormate[1]), inPacket.getAddress().getHostAddress(), Boolean.parseBoolean(messageFormate[3])));
 				}
 				controleur.actualisationUtilisateurs();
 				break;

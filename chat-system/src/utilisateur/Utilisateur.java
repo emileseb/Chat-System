@@ -1,7 +1,5 @@
 package utilisateur;
-import java.net.*;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Iterator;
 
 import baseDeDonnees.LocalDB;
@@ -13,18 +11,20 @@ public class Utilisateur {
 	private Id idUtilisateur;
 	private boolean actif;
 	private String adresseIp;
-	private String adresseBroadcast;
     private ArrayList<Utilisateur> listeUtilisateurs;
     private ArrayList<Historique> listeHistoriques;
     private LocalDB database;
-    private String interfaceReseau = "eth0";
+    //private String interfaceReseau = "eth4";
 	
     //creation de l'utilisateur sur le poste
 	public Utilisateur() {
 		this.pseudo = "";
 		this.actif = false;
-		this.adresseIp = "";	
-		this.adresseBroadcast = "";		
+		this.adresseIp = "";	// pas besoin de connaitre sa propre adresse ip
+		this.idUtilisateur = new Id();
+		System.out.println(this.idUtilisateur);
+		/*
+
 		if (System.getProperty("os.name").contains("Linux")) {
 			try {
 				//recupere la premiere interface reseau
@@ -33,7 +33,6 @@ public class Utilisateur {
 					NetworkInterface interfaceReseau = e.nextElement();
 					if (interfaceReseau.getName().equals(this.interfaceReseau)){
 						this.adresseIp = interfaceReseau.getInterfaceAddresses().get(1).getAddress().getHostAddress();	
-						this.adresseBroadcast = interfaceReseau.getInterfaceAddresses().get(1).getBroadcast().getHostAddress();
 						this.idUtilisateur = new Id(interfaceReseau.getInterfaceAddresses().get(1).getAddress());
 					}
 				}
@@ -50,7 +49,6 @@ public class Utilisateur {
 					NetworkInterface interfaceReseau = e.nextElement();
 					if (interfaceReseau.getName().equals(this.interfaceReseau)){
 						this.adresseIp = interfaceReseau.getInterfaceAddresses().get(0).getAddress().getHostAddress();	
-						this.adresseBroadcast = interfaceReseau.getInterfaceAddresses().get(0).getBroadcast().getHostAddress();						
 						this.idUtilisateur = new Id(interfaceReseau.getInterfaceAddresses().get(0).getAddress());
 					}
 				}
@@ -58,7 +56,7 @@ public class Utilisateur {
 			catch(SocketException e){
 				System.out.println("Windows : Pas d'adresse ip valide");
 			}
-		}
+		}*/
 		
         this.database = new LocalDB(this);
         //recupere la liste des utilisateurs avec qui on a un historique
@@ -76,7 +74,6 @@ public class Utilisateur {
 		this.idUtilisateur = idUtilisateur;
 		this.actif = actif;
 		this.adresseIp = adresseIp;
-		this.adresseBroadcast = "";
 		this.listeUtilisateurs = new ArrayList<Utilisateur>();
 		this.listeHistoriques = new ArrayList<Historique>();
 	}
@@ -91,10 +88,6 @@ public class Utilisateur {
 	
 	public String getAdresseIp() {
 		return this.adresseIp;
-	}
-
-	public String getAdresseBroadcast() {
-		return this.adresseBroadcast;
 	}
 	
 	public boolean getActif() {
@@ -166,6 +159,10 @@ public class Utilisateur {
 
     public void changeActif(boolean actif, Id idAgent) {
         trouveClient(idAgent).setActif(actif);
+    }
+
+    public void changeAdresseIp(String adresseIp, Id idAgent) {
+        trouveClient(idAgent).setAdresseIp(adresseIp);
     }
 
     //liste historique

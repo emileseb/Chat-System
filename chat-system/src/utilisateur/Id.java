@@ -1,20 +1,20 @@
 package utilisateur;
-import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.Enumeration;
 
 public class Id {
     private long value;
 
-    public Id(InetAddress address) {
+    public Id() {
         try {
-            NetworkInterface network = NetworkInterface.getByInetAddress(address);
-            byte[] mac = network.getHardwareAddress();
+			Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+			NetworkInterface interfaceReseau = e.nextElement();
+            byte[] mac = interfaceReseau.getHardwareAddress();
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < mac.length; i++) {
                 sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "" : ""));
             }
-            System.out.println();
             this.value = Long.parseLong(sb.toString(), 16);
         } catch (SocketException e) {
             e.printStackTrace();
