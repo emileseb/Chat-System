@@ -21,43 +21,7 @@ public class Utilisateur {
 		this.pseudo = "";
 		this.actif = false;
 		this.adresseIp = "";	// pas besoin de connaitre sa propre adresse ip
-		this.idUtilisateur = new Id();
-		System.out.println(this.idUtilisateur);
-		/*
-
-		if (System.getProperty("os.name").contains("Linux")) {
-			try {
-				//recupere la premiere interface reseau
-				Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
-				while(e.hasMoreElements()) {
-					NetworkInterface interfaceReseau = e.nextElement();
-					if (interfaceReseau.getName().equals(this.interfaceReseau)){
-						this.adresseIp = interfaceReseau.getInterfaceAddresses().get(1).getAddress().getHostAddress();	
-						this.idUtilisateur = new Id(interfaceReseau.getInterfaceAddresses().get(1).getAddress());
-					}
-				}
-			}
-			catch(SocketException e){
-				System.out.println("Linux : Pas d'adresse ip valide");
-			}
-		}else {
-
-			try {
-				//recupere la premiere interface reseau
-				Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
-				while(e.hasMoreElements()) {
-					NetworkInterface interfaceReseau = e.nextElement();
-					if (interfaceReseau.getName().equals(this.interfaceReseau)){
-						this.adresseIp = interfaceReseau.getInterfaceAddresses().get(0).getAddress().getHostAddress();	
-						this.idUtilisateur = new Id(interfaceReseau.getInterfaceAddresses().get(0).getAddress());
-					}
-				}
-			}
-			catch(SocketException e){
-				System.out.println("Windows : Pas d'adresse ip valide");
-			}
-		}*/
-		
+		this.idUtilisateur = new Id();		
         this.database = new LocalDB(this);
         //recupere la liste des utilisateurs avec qui on a un historique
 		this.listeUtilisateurs = this.database.getUsers();
