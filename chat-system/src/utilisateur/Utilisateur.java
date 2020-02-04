@@ -14,7 +14,6 @@ public class Utilisateur {
     private ArrayList<Utilisateur> listeUtilisateurs;
     private ArrayList<Historique> listeHistoriques;
     private LocalDB database;
-    //private String interfaceReseau = "eth4";
 	
     //creation de l'utilisateur sur le poste
 	public Utilisateur() {
